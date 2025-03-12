@@ -22,8 +22,8 @@ export interface RegisterParams {
   username: string
   email: string
   password: string
-  security_question: string
-  security_answer: string
+  security_question?: string
+  security_answer?: string
 }
 
 export interface RegisterResponse {
@@ -87,9 +87,7 @@ export const authApi = {
     const response = await axios.post(`${API_URL}/auth/register`, {
       username: params.username,
       password: params.password,
-      email: params.email,
-      security_question: params.security_question,
-      security_answer: params.security_answer
+      email: params.email
     })
     return response.data
   },

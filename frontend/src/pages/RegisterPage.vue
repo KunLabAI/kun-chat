@@ -252,9 +252,7 @@ const handleRegister = async () => {
     const response = await authApi.register({
       username: username.value,
       email: email.value,
-      password: password.value,
-      security_question: securityQuestion.value,
-      security_answer: securityAnswer.value
+      password: password.value
     })
     
     // 注册成功后自动登录

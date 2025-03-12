@@ -64,8 +64,8 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password: str
-    security_question: str
-    security_answer: str
+    security_question: Optional[str] = None
+    security_answer: Optional[str] = None
 
 class User(UserBase):
     created_at: datetime
@@ -282,7 +282,7 @@ async def register_user(user: UserCreate, db: Database = Depends(get_db)):
             """,
             (
                 user.username, nickname, user.email, hashed_password,
-                user.security_question, user.security_answer,
+                user.security_question or "", user.security_answer or "",
                 json.dumps({}), datetime.utcnow()
             )
         )
