@@ -1,20 +1,20 @@
 <template>
-  <div class="notifications-container">
-    <TransitionGroup name="notification">
+  <div class="kun-notifications-container">
+    <TransitionGroup name="kun-notification">
       <div
         v-for="notification in notifications"
         :key="notification.id"
-        class="notification"
-        :class="[notification.type.toLowerCase()]"
+        class="kun-notification"
+        :class="[`kun-notification-${notification.type.toLowerCase()}`]"
       >
-        <div class="notification-icon" v-if="notification.type">
+        <div class="kun-notification-icon" v-if="notification.type">
           <component :is="getIcon(notification.type)" class="h-5 w-5" />
         </div>
-        <div class="notification-content">
-          <span class="message">{{ notification.message }}</span>
+        <div class="kun-notification-content">
+          <span class="kun-notification-message">{{ notification.message }}</span>
         </div>
         <button
-          class="close-button"
+          class="kun-notification-close"
           @click="() => removeNotification(notification.id)"
           :aria-label="t('common.notification.close')"
         >
@@ -55,93 +55,141 @@ const getIcon = (type: NotificationType) => {
 </script>
 
 <style scoped>
-.notifications-container {
+/* 通知容器 */
+.kun-notifications-container {
   position: fixed;
   top: 20px;
   right: 20px;
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   pointer-events: none;
 }
 
-.notification {
+/* 通知基础样式 */
+.kun-notification {
   pointer-events: auto;
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
-  background: white;
+  padding: 14px 16px;
+  background-color: var(--bg-color-light);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  min-width: 300px;
+  box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.1), 0 4px 8px -4px rgba(0, 0, 0, 0.06);
+  min-width: 320px;
   max-width: 480px;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-left: 4px solid transparent;
 }
 
-.dark .notification {
-  background: #1f2937;
-  color: white;
+/* 深色模式通知基础样式 */
+:global(.dark) .kun-notification {
+  background-color: var(--gray-800);
+  box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.3), 0 4px 8px -4px rgba(0, 0, 0, 0.2);
 }
 
-.notification-icon {
+/* 通知图标 */
+.kun-notification-icon {
   flex-shrink: 0;
 }
 
-.notification-content {
+/* 通知内容 */
+.kun-notification-content {
   flex-grow: 1;
   font-size: 14px;
+  color: var(--text-color);
 }
 
-.notification.success .notification-icon {
-  color: #10b981;
+/* 成功通知 */
+.kun-notification-success {
+  border-left-color: var(--success-500);
 }
 
-.notification.error .notification-icon {
-  color: #ef4444;
+.kun-notification-success .kun-notification-icon {
+  color: var(--success-500);
 }
 
-.notification.warning .notification-icon {
+:global(.dark) .kun-notification-success .kun-notification-icon {
+  color: var(--success-400);
+}
+
+/* 错误通知 */
+.kun-notification-error {
+  border-left-color: var(--red-500);
+}
+
+.kun-notification-error .kun-notification-icon {
+  color: var(--red-500);
+}
+
+:global(.dark) .kun-notification-error .kun-notification-icon {
+  color: var(--red-400);
+}
+
+/* 警告通知 */
+.kun-notification-warning {
+  border-left-color: #f59e0b;
+}
+
+.kun-notification-warning .kun-notification-icon {
   color: #f59e0b;
 }
 
-.notification.info .notification-icon {
-  color: #3b82f6;
+:global(.dark) .kun-notification-warning .kun-notification-icon {
+  color: #fbbf24;
 }
 
-.close-button {
+/* 信息通知 */
+.kun-notification-info {
+  border-left-color: var(--primary-500);
+}
+
+.kun-notification-info .kun-notification-icon {
+  color: var(--primary-500);
+}
+
+:global(.dark) .kun-notification-info .kun-notification-icon {
+  color: var(--primary-400);
+}
+
+/* 关闭按钮 */
+.kun-notification-close {
   flex-shrink: 0;
   background: none;
   border: none;
-  color: #6b7280;
+  color: var(--text-color-lighter);
   cursor: pointer;
-  padding: 2px;
+  padding: 4px;
   border-radius: 4px;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.close-button:hover {
-  color: #374151;
-  background: rgba(0, 0, 0, 0.05);
+.kun-notification-close:hover {
+  color: var(--text-color-light);
+  background-color: var(--button-hover-bg);
 }
 
-.dark .close-button:hover {
-  color: #e5e7eb;
-  background: rgba(255, 255, 255, 0.1);
+:global(.dark) .kun-notification-close:hover {
+  color: var(--gray-300);
+  background-color: var(--gray-700);
 }
 
-.notification-enter-active,
-.notification-leave-active {
-  transition: all 0.3s ease;
+/* 过渡动画 */
+.kun-notification-enter-active,
+.kun-notification-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.notification-enter-from {
+.kun-notification-enter-from {
   opacity: 0;
   transform: translateX(30px);
 }
 
-.notification-leave-to {
+.kun-notification-leave-to {
   opacity: 0;
   transform: translateX(30px);
 }
