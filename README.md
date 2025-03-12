@@ -1,5 +1,3 @@
-![项目封面](assets/kun-lab_logo.jpg)
-
 
 # kun-lab
 
