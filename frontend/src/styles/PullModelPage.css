@@ -1,0 +1,392 @@
+/* 拉取模型页面样式 */
+.pull-model-page {
+  position: relative;
+  background: var(--bg-color);
+  max-width: 100%;
+  margin: auto;
+  padding: 0 1rem;
+}
+
+/* 页面头部样式 */
+.pull-model-page .page-header {
+  margin-bottom: 24px;
+}
+
+.pull-model-page .page-header .header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.pull-model-page .page-header .title-group {
+  flex: 1;
+}
+
+.pull-model-page .page-header .main-title {
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0;
+  padding-top: 72px;
+  margin-bottom: 8px;
+}
+
+.pull-model-page .page-header .sub-title {
+  font-size: 16px;
+  color: var(--text-color-light);
+  font-weight: normal;
+  margin: 8px 0 0 0;
+}
+
+.pull-model-page .page-header .header-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding-top: 72px;
+}
+
+/* 主要内容区域 */
+.pull-model-page .pull-model-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* 输入区域样式 */
+.pull-model-page .input-section {
+  background: var(--bg-color-light);
+  border-radius: 8px;
+  padding: 24px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 48px;
+  margin-top: 48px;
+}
+
+.pull-model-page .input-section .input-group {
+  margin-bottom: 24px;
+}
+
+.pull-model-page .input-section .input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.pull-model-page .input-section .input-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--text-color-lighter);
+  border-radius: 6px;
+  font-size: 14px;
+  background: var(--bg-color-light);
+  color: var(--text-color);
+}
+
+.pull-model-page .input-section .input-group input.error {
+  border-color: #dc2626;
+}
+
+.pull-model-page .input-section .input-group input:disabled {
+  background: var(--bg-color-dark);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.pull-model-page .input-section .input-group .error-text {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+.pull-model-page .input-section .actions {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-color);
+}
+
+/* 进度区域样式 */
+.pull-model-page .progress-section {
+  border-radius: 8px;
+}
+
+.pull-model-page .progress-card {
+  background: var(--bg-color);
+  border-radius: 8px;
+}
+
+.pull-model-page .progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.pull-model-page .progress-header h3 {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+  color: var(--text-color);
+}
+
+.pull-model-page .status-badge {
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.pull-model-page .status-badge.downloading {
+  background: rgba(37, 99, 235, 0.1);
+  color: #2563eb;
+}
+
+.pull-model-page .status-badge.completed {
+  background: rgba(22, 163, 74, 0.1);
+  color: #16a34a;
+}
+
+.pull-model-page .status-badge.failed {
+  background: rgba(220, 38, 38, 0.1);
+  color: #dc2626;
+}
+
+.pull-model-page .progress-details {
+  border-radius: 6px;
+}
+
+.pull-model-page .progress-bar {
+  height: 8px;
+  background: var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.pull-model-page .progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb, #3b82f6);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.pull-model-page .progress-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.pull-model-page .progress-stats .percentage {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.pull-model-page .progress-stats .size {
+  font-size: 14px;
+  color: var(--text-color-light);
+}
+
+.pull-model-page .download-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  background: var(--bg-color);
+  border-radius: 4px;
+}
+
+.pull-model-page .download-info .speed {
+  font-size: 14px;
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.pull-model-page .download-info .time-left {
+  font-size: 14px;
+  color: var(--text-color-light);
+}
+
+.pull-model-page .error-message {
+  margin-top: 16px;
+  padding: 12px;
+  background: rgba(220, 38, 38, 0.1);
+  border-radius: 6px;
+  color: #dc2626;
+  font-size: 14px;
+}
+
+.pull-model-page .progress-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* 图标容器样式 */
+.pull-model-page .progress-section .icons-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.pull-model-page .progress-section .model-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  filter: var(--icon-filter);
+  transition: filter 0.3s ease;
+}
+
+.pull-model-page .progress-section .plus-icon {
+  font-size: 24px;
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+/* 深色主题适配 */
+[data-theme="dark"] .pull-model-page .progress-section .model-icon {
+  filter: brightness(0) invert(1);
+}
+
+/* 浅色主题适配 */
+[data-theme="light"] .pull-model-page .progress-section .model-icon {
+  filter: brightness(0);
+}
+
+/* 空状态样式 */
+.pull-model-page .progress-section.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px;
+  background: var(--bg-color-light);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  min-height: 300px;
+}
+
+.pull-model-page .progress-section.empty-state .icons-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+.pull-model-page .progress-section.empty-state .icon-circle {
+  width: 80px;
+  height: 80px;
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.pull-model-page .progress-section.empty-state .model-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  transition: filter 0.3s ease;
+}
+
+.pull-model-page .progress-section.empty-state .plus-icon {
+  font-size: 32px;
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+.pull-model-page .progress-section.empty-state .hint-text {
+  color: var(--text-color-light);
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+/* Ollama 图标深色主题适配 */
+.dark .pull-model-page .progress-section.empty-state img[src*="Ollama_icon.svg"] {
+  filter: invert(98%) sepia(3%) saturate(169%) hue-rotate(184deg) brightness(97%) contrast(90%);
+}
+
+/* Ollama 图标浅色主题适配 */
+.pull-model-page .progress-section.empty-state img[src*="Ollama_icon.svg"] {
+  filter: invert(7%) sepia(10%) saturate(395%) hue-rotate(182deg) brightness(95%) contrast(93%);
+}
+
+.pull-model-page .progress-section.empty-state h3 {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+  color: var(--text-color);
+  margin-bottom: 8px;
+}
+
+.pull-model-page .progress-section.empty-state p {
+  font-size: 14px;
+  color: var(--text-color-light);
+  margin: 0;
+}
+
+/* 鼠标悬停效果 */
+.pull-model-page .progress-section.empty-state .icon-circle:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary-color);
+}
+
+/* 完成状态样式 */
+.pull-model-page .completed-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.pull-model-page .completed-state-icon {
+  width: 64px;
+  height: 64px;
+  color: #16a34a;
+}
+
+.pull-model-page .completed-state h3 {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+  color: #16a34a;
+}
+
+.pull-model-page .completed-state p {
+  font-size: 14px;
+  margin: 0;
+  color: var(--text-color-light);
+}
+
+/* 响应式设计 */
+/* 媒体查询 - 中等屏幕 (1024px) */
+@media screen and (min-width: 1024px) {
+  .pull-model-page .page-header .header-content {
+    max-width: 1024px;
+  }
+
+}
+
+/* 媒体查询 - 大屏幕 (1920px) */
+@media screen and (min-width: 1920px) {
+  .pull-model-page .page-header .header-content {
+    max-width: 1200px;
+  }
+}

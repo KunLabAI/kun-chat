@@ -1,0 +1,448 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 64px;
+  background: var(--bg-color-light);
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  font-family: inherit;
+}
+
+.dark .sidebar {
+  background: var(--gray-1000);
+  border-color: var(--gray-800);
+}
+
+/* Logo section */
+.logo-section {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-bottom: 1px solid var(--gray-200);
+  padding: 0 12px;
+}
+
+.dark .logo-section {
+  border-color: var(--gray-800);
+}
+
+.logo-icon {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--primary-600);
+  font-family: inherit;
+}
+
+/* Navigation */
+.nav-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 8px;
+  gap: 4px;
+  height: calc(100vh - 60px);
+  overflow: hidden;
+}
+
+.nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+.nav-group.bottom {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--gray-200);
+}
+
+.dark .nav-group.bottom {
+  border-color: var(--gray-800);
+}
+
+/* Navigation items */
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 6px;
+  color: var(--gray-500);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: none;
+  background: none;
+  width: 100%;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: inherit;
+}
+
+.nav-item:hover {
+  color: var(--primary-600);
+  background: var(--primary-50);
+}
+
+.nav-item .icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  color: currentColor;
+  transition: color 0.2s ease;
+}
+
+/* 为 SVG 图标设置颜色 */
+.nav-item img.icon {
+  filter: invert(60%) sepia(14%) saturate(346%) hue-rotate(202deg) brightness(94%) contrast(92%);
+  transition: all 0.2s ease;
+}
+
+.nav-item:hover img.icon {
+  filter: invert(35%) sepia(34%) saturate(3200%) hue-rotate(254deg) brightness(93%) contrast(93%);
+}
+
+.nav-item .icon.active {
+  color: var(--primary-600);
+}
+
+.nav-item img.icon.active {
+  filter: invert(35%) sepia(34%) saturate(3200%) hue-rotate(254deg) brightness(93%) contrast(93%);
+}
+
+.nav-item.active {
+  color: var(--primary-600);
+  background: var(--primary-50);
+}
+
+/* 深色模式 */
+.dark .nav-item {
+  color: var(--gray-400);
+}
+
+.dark .nav-item:hover {
+  color: var(--primary-400);
+  background: var(--gray-800);
+}
+
+.dark .nav-item img.icon {
+  filter: invert(50%) sepia(9%) saturate(324%) hue-rotate(175deg) brightness(94%) contrast(87%);
+}
+
+.dark .nav-item:hover img.icon {
+  filter: invert(83%) sepia(33%) saturate(7153%) hue-rotate(218deg) brightness(103%) contrast(96%);
+}
+
+.dark .nav-item .icon.active {
+  color: var(--primary-400);
+}
+
+.dark .nav-item img.icon.active {
+  filter: invert(83%) sepia(33%) saturate(7153%) hue-rotate(218deg) brightness(103%) contrast(96%);
+}
+
+.dark .nav-item.active {
+  color: var(--primary-400);
+  background: var(--gray-800);
+}
+
+/* 提示框样式 */
+.nav-item[data-tooltip]::before,
+.logo-icon[data-tooltip]::before {
+  content: attr(data-tooltip);
+  position: fixed;
+  left: 74px;  /* sidebar width (64px) + 10px margin */
+  top: var(--tooltip-y);
+  transform: translateY(-50%) translateX(5px);
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-color);
+  background-color: var(--bg-color-dark);
+  white-space: nowrap;
+  border-radius: 4px;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.2s ease;
+  z-index: 1100;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}
+
+.nav-item[data-tooltip]::after,
+.logo-icon[data-tooltip]::after {
+  content: '';
+  position: fixed;
+  left: 69px;  /* sidebar width (64px) + 5px margin */
+  top: var(--tooltip-y);
+  transform: translateY(-50%) translateX(0);
+  border: 5px solid transparent;
+  border-right-color: var(--bg-color-dark);
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.2s ease;
+  z-index: 1100;
+  pointer-events: none;
+}
+
+.nav-item[data-tooltip]:hover::before,
+.nav-item[data-tooltip]:hover::after,
+.logo-icon[data-tooltip]:hover::before,
+.logo-icon[data-tooltip]:hover::after {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+.dark .nav-item[data-tooltip]::before,
+.dark .logo-icon[data-tooltip]::before {
+  background-color: var(--gray-700);
+  color: var(--gray-100);
+}
+
+.dark .nav-item[data-tooltip]::after,
+.dark .logo-icon[data-tooltip]::after {
+  border-right-color: var(--gray-700);
+}
+
+/* 滚动条 */
+.nav-group::-webkit-scrollbar {
+  width: 4px;
+}
+
+.nav-group::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.nav-group::-webkit-scrollbar-thumb {
+  background: var(--gray-300);
+  border-radius: 2px;
+}
+
+.dark .nav-group::-webkit-scrollbar-thumb {
+  background: var(--gray-700);
+}
+
+/* User Avatar */
+.user-avatar {
+  position: relative;
+  padding: 6px !important;
+}
+
+.avatar-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.user-avatar:hover .avatar-img {
+  border-color: var(--primary-400);
+  transform: scale(1.05);
+}
+
+/* Menu Overlay */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  z-index: 999;
+}
+
+/* User Menu */
+.user-menu {
+  position: fixed;
+  background: var(--bg-color-light);
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  width: 220px;
+  z-index: 1000;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+.dark .user-menu {
+  background: var(--gray-900);
+  border-color: var(--gray-800);
+}
+
+.user-menu-header {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.dark .user-menu-header {
+  border-color: var(--gray-800);
+}
+
+.menu-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.username {
+  font-weight: 500;
+  color: var(--gray-900);
+  font-size: 14px;
+}
+
+.dark .username {
+  color: var(--gray-100);
+}
+
+.menu-items {
+  padding: 8px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  color: var(--gray-700);
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  font-size: 14px;
+  text-align: left;
+}
+
+.dark .menu-item {
+  color: var(--gray-300);
+}
+
+.menu-item:hover {
+  background: var(--primary-50);
+  color: var(--primary-600);
+}
+
+.dark .menu-item:hover {
+  background: var(--gray-800);
+}
+
+.menu-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.menu-item.logout {
+  color: var(--red-600);
+}
+
+.menu-item.logout:hover {
+  background: var(--red-50);
+}
+
+.dark .menu-item.logout:hover {
+  background: var(--gray-800);
+}
+
+/* 移动设备适配 */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    top: auto;
+    width: 100%;
+    height: 60px;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 0;
+    border-top: 1px solid var(--gray-200);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .dark .sidebar {
+    border-color: var(--gray-800);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .logo-section {
+    display: none;
+  }
+  
+  .nav-section {
+    flex-direction: row;
+    height: 60px;
+    padding: 0;
+    width: 100%;
+  }
+  
+  .nav-group {
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    padding: 0;
+    gap: 0;
+  }
+  
+  .nav-group.bottom {
+    width: auto;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+  
+  .nav-item {
+    padding: 8px;
+  }
+  
+  /* 隐藏移动设备上的提示框 */
+  .nav-item[data-tooltip]::before,
+  .nav-item[data-tooltip]::after,
+  .logo-icon[data-tooltip]::before,
+  .logo-icon[data-tooltip]::after {
+    display: none;
+  }
+  
+  /* 调整用户菜单位置 */
+  .user-menu {
+    bottom: 70px !important;
+    left: auto !important;
+    right: 10px;
+    top: auto !important;
+  }
+}
+
+/* 更小屏幕的额外优化 */
+@media (max-width: 480px) {
+  .nav-item .icon {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .avatar-img {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .user-menu {
+    width: 200px;
+    right: 5px;
+  }
+}

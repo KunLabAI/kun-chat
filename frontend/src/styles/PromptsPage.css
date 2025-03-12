@@ -1,0 +1,231 @@
+/* 页面布局 */
+.prompts-page {
+  position: relative;
+  max-width: 100%;
+  margin: auto;
+  padding: 0 1rem; /* 添加基础内边距 */
+}
+
+/* 页面头部 */
+.page-header {
+  margin: auto;
+  padding-top: 48px; /* 减小默认上边距 */
+  margin-bottom: 1.5rem;
+  max-width: 768px; /* 小屏幕默认宽度 */
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* 改为顶部对齐，在小屏幕上更合理 */
+  margin: 0 auto;
+  gap: 1rem;
+  flex-direction: column; /* 默认为列布局，适合小屏幕 */
+}
+
+.title-group {
+  flex: 1;
+  width: 100%;
+}
+
+.main-title {
+  font-size: 28px; /* 小屏幕默认字体大小 */
+  font-weight: bold;
+  color: var(--el-text-color-primary);
+  margin-bottom: 6px;
+}
+
+.sub-title {
+  font-size: 14px;
+  color: var(--el-text-color-secondary);
+  font-weight: normal;
+  line-height: 1.5;
+  max-width: 100%; /* 小屏幕占满宽度 */
+  margin: 0.25rem 0 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 1rem; /* 在列布局中添加上边距 */
+}
+
+.prompt-delete {
+  filter : var(--text-color-light);
+  width: 32px;
+  height: 32px;
+  padding: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+}
+
+.prompt-delete img {
+  filter: brightness(0) saturate(100%) invert(60%) sepia(8%) saturate(382%) hue-rotate(179deg) brightness(94%) contrast(90%);
+}
+
+.prompt-delete:hover img {
+  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+}
+
+/* 提示词网格 */
+.prompts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* 减小卡片最小宽度 */
+  gap: 1rem;
+  max-width: 768px; /* 小屏幕默认宽度 */
+  margin: 0 auto;
+}
+
+.prompt-grid-item {
+  height: 100%;
+}
+
+/* 加载状态 */
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px; /* 减小最小高度 */
+  margin: 24px auto;
+  max-width: 768px; /* 小屏幕默认宽度 */
+  text-align: center;
+  color: var(--el-text-color-secondary);
+  font-size: 14px;
+  background: var(--el-bg-color-overlay);
+  border-radius: 8px;
+  border: 1px dashed var(--el-border-color-lighter);
+}
+
+/* 错误状态 */
+.error-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  margin: 24px auto;
+  max-width: 768px;
+  text-align: center;
+  color: var(--el-color-danger);
+  font-size: 14px;
+  background: var(--el-bg-color-overlay);
+  border-radius: 8px;
+  border: 1px dashed var(--el-border-color-lighter);
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  margin: 24px auto;
+  max-width: 768px;
+  text-align: center;
+  color: var(--el-text-color-secondary);
+  font-size: 14px;
+  background: var(--el-bg-color-overlay);
+  border-radius: 8px;
+  border: 1px dashed var(--el-border-color-lighter);
+}
+
+/* 媒体查询 - 中等屏幕 (1024px) */
+@media screen and (min-width: 1024px) {
+  .prompts-page {
+    padding: 0 1.5rem;
+  }
+  
+  .page-header {
+    padding-top: 60px;
+    margin-bottom: 1.75rem;
+    max-width: 1024px;
+  }
+  
+  .header-content {
+    flex-direction: row; /* 中等屏幕改为行布局 */
+    align-items: flex-end;
+    gap: 1.5rem;
+  }
+  
+  .header-actions {
+    margin-top: 0; /* 行布局不需要上边距 */
+  }
+  
+  .main-title {
+    font-size: 34px;
+    margin-bottom: 7px;
+  }
+  
+  .sub-title {
+    font-size: 15px;
+    max-width: 550px;
+    margin: 0.4rem 0 0;
+  }
+  
+  .prompts-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    max-width: 1024px;
+  }
+  
+  .loading-indicator,
+  .error-message,
+  .empty-state {
+    min-height: 250px;
+    margin: 28px auto;
+    max-width: 1024px;
+    font-size: 15px;
+  }
+}
+
+/* 媒体查询 - 大屏幕 (1920px) */
+@media screen and (min-width: 1920px) {
+  .prompts-page {
+    padding: 0 2rem;
+  }
+  
+  .page-header {
+    padding-top: 72px;
+    margin-bottom: 2rem;
+    max-width: 1200px;
+  }
+  
+  .header-content {
+    gap: 2rem;
+  }
+  
+  .main-title {
+    font-size: 40px;
+    margin-bottom: 8px;
+  }
+  
+  .sub-title {
+    font-size: 16px;
+    max-width: 600px;
+    margin: 0.5rem 0 0;
+  }
+  
+  .header-actions {
+    gap: 1rem;
+  }
+  
+  .prompts-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+  }
+  
+  .loading-indicator,
+  .error-message,
+  .empty-state {
+    min-height: 300px;
+    margin: 32px auto;
+    max-width: 1200px;
+    font-size: 16px;
+  }
+}
+
+/* 引入提示词卡片样式 */
+@import './components/PromptCard.css';

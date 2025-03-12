@@ -1,0 +1,304 @@
+/* 
+ * 按钮样式变量定义
+ * 使用CSS变量实现主题切换
+ * 浅色主题的默认值
+ */
+:root {
+  /* Primary 按钮变量 - 主要操作按钮 */
+  --button-primary-bg: var(--gray-800);
+  --button-primary-text: var(--gray-50);
+  --button-primary-hover: var(--gray-900);
+  --button-primary-active: var(--gray-950);
+  
+  /* Secondary 按钮变量 - 次要操作按钮 */
+  --button-secondary-bg: var(--gray-100);
+  --button-secondary-text: var(--gray-700);
+  --button-secondary-hover: var(--gray-200);
+  --button-secondary-active: var(--gray-300);
+  
+  /* Danger 按钮变量 - 危险操作按钮 */
+  --button-danger-bg: var(--red-600);
+  --button-danger-text: var(--gray-50);
+  --button-danger-hover: var(--red-700);
+  --button-danger-active: var(--red-800);
+  
+  /* Ghost 按钮变量 - 幽灵按钮，透明背景 */
+  --button-ghost-bg: transparent;
+  --button-ghost-text: var(--gray-700);
+  --button-ghost-hover: var(--gray-100);
+  --button-ghost-active: var(--gray-200);
+  
+  /* Link 按钮变量 - 链接形式的按钮 */
+  --button-link-text: var(--gray-600);
+  --button-link-hover: var(--gray-700);
+  --button-link-active: var(--gray-800);
+  
+  /* 通用按钮变量 */
+  --button-focus-ring: var(--gray-300);
+  --button-disabled-opacity: 0.5;
+}
+
+/* 
+ * 深色主题变量覆盖
+ * 当启用深色主题时，这些值会覆盖默认值
+ */
+:root.dark {
+  /* Primary 按钮深色主题 */
+  --button-primary-bg: var(--gray-50);
+  --button-primary-text: var(--gray-900);
+  --button-primary-hover: var(--gray-100);
+  --button-primary-active: var(--gray-200);
+  
+  /* Secondary 按钮深色主题 */
+  --button-secondary-bg: var(--gray-800);
+  --button-secondary-text: var(--gray-200);
+  --button-secondary-hover: var(--gray-700);
+  --button-secondary-active: var(--gray-600);
+  
+  /* Danger 按钮深色主题 */
+  --button-danger-bg: var(--red-500);
+  --button-danger-text: var(--gray-50);
+  --button-danger-hover: var(--red-600);
+  --button-danger-active: var(--red-700);
+  
+  /* Ghost 按钮深色主题 */
+  --button-ghost-text: var(--gray-300);
+  --button-ghost-hover: var(--gray-800);
+  --button-ghost-active: var(--gray-700);
+  
+  /* Link 按钮深色主题 */
+  --button-link-text: var(--gray-400);
+  --button-link-hover: var(--gray-300);
+  --button-link-active: var(--gray-200);
+}
+
+/* 
+ * 基础按钮样式
+ * 定义所有按钮共享的基本样式
+ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: all 0.2s ease; /* 平滑过渡效果 */
+  position: relative;
+  overflow: hidden; /* 用于涟漪效果 */
+  transform: translate3d(0, 0, 0); /* 启用硬件加速 */
+}
+
+/* 按钮焦点状态样式 */
+.btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--button-focus-ring);
+}
+
+/* 
+ * 按钮尺寸变体
+ * 定义不同大小按钮的内边距和字体大小
+ */
+.btn-sm {
+  padding: 0.375rem 0.625rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.btn-md {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.btn-lg {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+/* 
+ * Primary 按钮样式
+ * 用于主要操作，最突出的按钮样式
+ */
+.btn-primary {
+  background-color: var(--primary-500);
+  color: var(--primary-50);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-700);
+}
+
+.btn-primary:active {
+  background-color: var(--button-primary-active);
+}
+
+/* 
+ * Secondary 按钮样式
+ * 用于次要操作，较为柔和的按钮样式
+ */
+.btn-secondary {
+  background-color: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+}
+
+.btn-secondary:hover {
+  background-color: var(--button-secondary-hover);
+}
+
+.btn-secondary:active {
+  background-color: var(--button-secondary-active);
+}
+
+/* 
+ * Danger 按钮样式
+ * 用于危险操作，警示性的按钮样式
+ */
+.btn-danger {
+  background-color: var(--button-danger-bg);
+  color: var(--button-danger-text);
+}
+
+.btn-danger:hover {
+  background-color: var(--button-danger-hover);
+}
+
+.btn-danger:active {
+  background-color: var(--button-danger-active);
+}
+
+/* 
+ * Ghost 按钮样式
+ * 透明背景的按钮，用于次要操作
+ */
+.btn-ghost {
+  background-color: var(--button-ghost-bg);
+  color: var(--button-ghost-text);
+}
+
+.btn-ghost:hover {
+  background-color: var(--button-ghost-hover);
+}
+
+.btn-ghost:active {
+  background-color: var(--button-ghost-active);
+}
+
+/* 
+ * Link 按钮样式
+ * 链接形式的按钮，最轻量级的按钮样式
+ */
+.btn-link {
+  background-color: transparent;
+  color: var(--button-link-text);
+  text-decoration: none;
+}
+
+.btn-link:hover {
+  color: var(--button-link-hover);
+  text-decoration: underline;
+}
+
+.btn-link:active {
+  color: var(--button-link-active);
+}
+
+/* 
+ * 禁用状态样式
+ * 适用于所有类型的按钮禁用状态
+ */
+.btn-disabled,
+.btn[disabled] {
+  opacity: var(--button-disabled-opacity);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* 
+ * 加载状态样式
+ * 显示加载动画，隐藏按钮文本
+ */
+.btn-loading {
+  color: transparent;
+  pointer-events: none;
+}
+
+/* 加载动画 */
+.btn-loading::after {
+  content: "";
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: button-spin 0.75s linear infinite;
+}
+
+/* 加载动画关键帧 */
+@keyframes button-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 
+ * 图标按钮样式
+ * 用于仅包含图标的按钮
+ */
+.btn-icon {
+  padding: 0.5rem;
+}
+
+.btn-icon.btn-sm {
+  padding: 0.25rem;
+}
+
+.btn-icon.btn-lg {
+  padding: 0.75rem;
+}
+
+/* 
+ * 图标间距
+ * 调整按钮中图标和文本之间的间距
+ */
+.btn > svg + span,
+.btn > span + svg {
+  margin-left: 0.5rem;
+}
+
+.btn-sm > svg + span,
+.btn-sm > span + svg {
+  margin-left: 0.375rem;
+}
+
+.btn-lg > svg + span,
+.btn-lg > span + svg {
+  margin-left: 0.75rem;
+}
+
+/* 
+ * 涟漪效果
+ * 点击按钮时的水波纹动画效果
+ */
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease-out, height 0.3s ease-out;
+}
+
+.btn:active::before {
+  width: 200%;
+  height: 200%;
+  transition: width 0s, height 0s;
+}

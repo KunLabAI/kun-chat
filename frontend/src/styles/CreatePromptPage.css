@@ -1,0 +1,426 @@
+/* CreatePromptPage.css */
+
+.prompt-create {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 1rem; /* 添加基础内边距 */
+}
+
+/* 页面头部 */
+.page-header {
+  margin-top: 48px; /* 减小默认上边距 */
+  max-width: 768px; /* 小屏幕默认宽度 */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column; /* 默认为列布局，适合小屏幕 */
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.title-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.main-title {
+  font-size: 28px; /* 小屏幕默认字体大小 */
+  font-weight: bold;
+  color: var(--text-color);
+  margin-bottom: 6px;
+}
+
+.sub-title {
+  font-size: 14px;
+  color: var(--text-color-light);
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  flex-direction: row; /* 确保按钮始终水平排列 */
+  gap: 8px;
+  margin-top: 0.5rem;
+}
+
+/* 主要内容区域 */
+.content-card {
+  background: var(--bg-color-light);
+  border-radius: 12px;
+  margin-top: 20px;
+  max-width: 768px; /* 小屏幕默认宽度 */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 表单部分 */
+.form-section {
+  background: var(--bg-color);
+  border-radius: 8px;
+  padding: 16px; /* 减小内边距 */
+  border: 1px solid var(--border-color);
+}
+
+.section-header {
+  display: flex;
+  flex-direction: column; /* 小屏幕默认列布局 */
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-size: 16px; /* 减小字体大小 */
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0;
+}
+
+.section-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 表单组件 */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.required {
+  color: var(--el-color-danger);
+  margin-left: 4px;
+}
+
+.form-input {
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--text-color);
+  background: var(--bg-color);
+  transition: all 0.2s;
+}
+
+.form-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--primary-color-light);
+  outline: none;
+}
+
+.form-input::placeholder {
+  color: var(--text-color-lighter);
+}
+
+/* 代码块样式 */
+.code-block {
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.code-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 6px 10px; /* 减小内边距 */
+  background: var(--bg-color-light);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.header-right {
+  display: flex;
+  gap: 6px;
+}
+
+.clear-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  font-size: 13px; /* 减小字体大小 */
+  color: var(--text-color-light);
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clear-button:hover {
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  border-color: var(--text-color-light);
+}
+
+.clear-button svg {
+  opacity: 0.7;
+}
+
+.clear-button:hover svg {
+  opacity: 1;
+}
+
+.copy-button {
+  padding: 3px 10px;
+  font-size: 13px; /* 减小字体大小 */
+  color: var(--text-color-light);
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.copy-button:hover {
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  border-color: var(--text-color-light);
+}
+
+.form-textarea {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  width: 100%;
+  min-height: 320px; /* 减小默认高度 */
+  padding: 12px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-color);
+  resize: vertical;
+}
+
+.form-textarea:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.form-textarea::placeholder {
+  color: var(--text-color-lighter);
+  opacity: 0.7;
+}
+
+.error-text {
+  font-size: 12px;
+  color: var(--el-color-danger);
+}
+
+.form-input.error,
+.form-textarea.error {
+  border-color: var(--el-color-danger);
+}
+
+/* 标签样式 */
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #ffffff;
+}
+
+.tag-remove {
+  margin-left: 3px;
+  border: none;
+  background: none;
+  padding: 0 3px;
+  cursor: pointer;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.tag-remove:hover {
+  color: #ffffff;
+}
+
+/* 媒体查询 - 中等屏幕 (1024px) */
+@media screen and (min-width: 1024px) {
+  .prompt-create {
+    padding: 0 1.5rem;
+  }
+  
+  .page-header {
+    margin-top: 60px;
+    max-width: 1024px;
+  }
+  
+  .header-content {
+    flex-direction: row; /* 中等屏幕改为行布局 */
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1.5rem;
+  }
+  
+  .header-actions {
+    display: flex;
+    flex-direction: row; /* 即使在小屏幕上也保持水平排列 */
+    justify-content: end;
+    width: 100%;
+  }
+  
+  .main-title {
+    font-size: 34px;
+    margin-bottom: 7px;
+  }
+  
+  .sub-title {
+    font-size: 15px;
+  }
+  
+  .content-card {
+    margin-top: 22px;
+    max-width: 1024px;
+  }
+  
+  .create-form {
+    gap: 22px;
+  }
+  
+  .form-section {
+    padding: 20px;
+  }
+  
+  .section-header {
+    flex-direction: row; /* 中等屏幕改为行布局 */
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  
+  .section-title {
+    font-size: 17px;
+  }
+  
+  .section-content {
+    gap: 18px;
+  }
+  
+  .form-textarea {
+    min-height: 420px;
+    padding: 14px;
+  }
+  
+  .code-header {
+    padding: 7px 11px;
+  }
+  
+  .clear-button,
+  .copy-button {
+    padding: 4px 11px;
+    font-size: 13.5px;
+  }
+}
+
+/* 媒体查询 - 大屏幕 (1920px) */
+@media screen and (min-width: 1920px) {
+  .prompt-create {
+    padding: 0 2rem;
+  }
+  
+  .page-header {
+    margin-top: 72px;
+    max-width: 1200px;
+  }
+  
+  .header-content {
+    gap: 2rem;
+  }
+  
+  .main-title {
+    font-size: 40px;
+    margin-bottom: 8px;
+  }
+  
+  .sub-title {
+    font-size: 16px;
+  }
+  
+  .header-actions {
+    gap: 12px;
+  }
+  
+  .content-card {
+    margin-top: 24px;
+    max-width: 1200px;
+  }
+  
+  .create-form {
+    gap: 24px;
+  }
+  
+  .form-section {
+    padding: 24px;
+  }
+  
+  .section-header {
+    margin-bottom: 20px;
+  }
+  
+  .section-title {
+    font-size: 18px;
+  }
+  
+  .section-content {
+    gap: 20px;
+  }
+  
+  .form-textarea {
+    min-height: 528px;
+    padding: 16px;
+  }
+  
+  .code-header {
+    padding: 8px 12px;
+  }
+  
+  .clear-button,
+  .copy-button {
+    padding: 4px 12px;
+    font-size: 14px;
+  }
+  
+  .tags-container {
+    gap: 8px;
+    margin-top: 8px;
+  }
+  
+  .tag {
+    padding: 4px 8px;
+    font-size: 14px;
+  }
+  
+  .tag-remove {
+    margin-left: 4px;
+    padding: 0 4px;
+    font-size: 16px;
+  }
+}

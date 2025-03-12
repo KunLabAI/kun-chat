@@ -1,0 +1,390 @@
+/* 认证页面样式 */
+/* 基础样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 定义颜色变量，直接使用深色配色方案 */
+:root {
+  /* 深色主题的RGB变量，用于透明度控制 */
+  --bg-color-light-rgb: 39, 39, 42; /* 对应 --gray-800 */
+  --bg-color-rgb: 24, 24, 27; /* 对应 --gray-900 */
+  --bg-color-dark-rgb: 11, 11, 11; /* 对应 --gray-950 */
+  
+  /* 深色主题的颜色变量 */
+  --bg-color: #18181b; /* 深灰色背景 */
+  --bg-color-dark: #0b0b0b; /* 更深的背景色 */
+  --bg-color-light: #27272a; /* 稍浅的背景色 */
+  --text-color: #f4f4f5; /* 主要文本颜色 */
+  --text-color-light: #d4d4d8; /* 次要文本颜色 */
+  --text-color-lighter: #a1a1aa; /* 最浅的文本颜色 */
+  
+  /* 紫色主题色系 */
+  --primary-50: #faf5ff;
+  --primary-100: #f3e8ff;
+  --primary-200: #e9d5ff;
+  --primary-300: #d8b4fe;
+  --primary-400: #c084fc;
+  --primary-500: #a855f7;
+  --primary-600: #9333ea;
+  --primary-700: #7e22ce;
+  --primary-800: #6b21a8;
+  --primary-900: #581c87;
+  
+  /* 其他颜色变量 */
+  --border-color: #3f3f46; /* 边框颜色 */
+  --border-color-light: #52525b; /* 浅色边框 */
+  --link-color: #c084fc; /* 链接颜色 */
+  --link-hover-color: #d8b4fe; /* 链接悬停颜色 */
+  --button-hover-bg: #3f3f46; /* 按钮悬停背景 */
+  --button-hover-border: #52525b; /* 按钮悬停边框 */
+  --success-500: #8bc34a; /* 成功色 */
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-color-dark);
+  color: var(--text-color);
+}
+
+/* 认证页面容器 */
+.auth-container {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  overflow: hidden; /* 防止内容溢出 */
+}
+
+/* 星空背景 */
+.auth-starry-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%; /* 星空背景铺满全屏 */
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  background-color: #000000; /* 星空背景色 */
+}
+
+/* 太阳系动画容器 */
+.auth-solar-system {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 66.67%; /* 2/3 的屏幕宽度 */
+  height: 100%;
+  z-index: 1; /* 太阳系在星空背景上层 */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 内容区域 */
+.auth-content {
+  position: absolute; /* 修改为绝对定位 */
+  right: 0; /* 固定在右侧 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%; /* 1/3 的屏幕宽度 */
+  padding: 1rem;
+  margin-bottom: 2rem;
+  z-index: 2; /* 确保内容在太阳系上方 */
+}
+
+/* 认证卡片 */
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  border-radius: 1rem;
+  background-color: rgba(var(--bg-color-light-rgb), 0.7);
+  backdrop-filter: blur(2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.5s ease-out;
+  border: 1px solid var(--gray-700);
+}
+
+/* 卡片标题 */
+.auth-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.auth-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fafafa;
+  margin-bottom: 0.5rem;
+}
+
+.auth-subtitle {
+  font-size: 0.875rem;
+  color: #a1a1aa;
+}
+
+/* 表单样式 */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  animation: fadeIn 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+.form-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #d4d4d8;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  padding-left: 2.5rem;
+  border: #27272a;
+  border-radius: 0.5rem;
+  background-color: #18181b;
+  color: #faf5ff;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.3);
+}
+
+.form-input::placeholder {
+  color: var(--text-color-lighter);
+  opacity: 0.7;
+}
+
+.input-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--text-color-lighter);
+}
+
+.relative {
+  position: relative;
+}
+
+/* 按钮样式 */
+.auth-button {
+  position: relative;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: var(--primary-600);
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.auth-button:hover {
+  background-color: var(--primary-700);
+}
+
+.auth-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.5);
+}
+
+.auth-button:disabled {
+  background-color: var(--text-color-lighter);
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 分隔线 */
+.auth-divider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex-grow: 1;
+  height: 1px;
+  background-color: var(--gray-700);
+  margin: 0 0.75rem;
+}
+
+.auth-divider-text {
+  position: relative;
+  display: inline-block;
+  padding: 0 0.5rem;
+  color: var(--gray-500);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* 链接样式 */
+.auth-link {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--gray-700);
+  border-radius: 0.5rem;
+  color: var(--link-color);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.auth-link:hover {
+  background-color: var(--button-hover-bg);
+  color: var(--link-hover-color);
+  border-color: var(--button-hover-border);
+}
+
+/* 密码要求提示 */
+.password-requirements {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.password-requirement {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-color-lighter);
+}
+
+.requirement-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.requirement-met {
+  color: var(--success-500);
+}
+
+/* 页脚 */
+.auth-footer {
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-color-lighter);
+  z-index: 2;
+}
+
+.auth-footer a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+/* 动画 */
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.form-group:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.form-group:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.form-group:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* 响应式样式 */
+@media (max-width: 1024px) {
+  .auth-solar-system {
+    width: 50%; /* 平板上减小太阳系区域 */
+  }
+  
+  .auth-content {
+    width: 50%; /* 增加内容区域宽度 */
+  }
+}
+
+@media (max-width: 768px) {
+  .auth-container {
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .auth-solar-system {
+    display: none; /* 在移动设备上隐藏太阳系 */
+  }
+  
+  .auth-content {
+    position: relative;
+    width: 100%;
+    padding: 2rem 1rem;
+  }
+}
+
+@media (max-height: 700px) {
+  .auth-card {
+    padding: 1.5rem;
+  }
+  
+  .auth-header {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group {
+    gap: 0.25rem;
+  }
+}

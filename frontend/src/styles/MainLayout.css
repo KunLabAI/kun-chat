@@ -1,0 +1,194 @@
+/* 全局响应式布局变量 */
+:root {
+  --max-width-4k: 1920px;
+  --max-width-desktop: 1440px;
+  --max-width-laptop: 1024px;
+  --max-width-tablet: 768px;
+  --max-width-mobile: 640px;
+  
+  --sidebar-width: 260px;
+  --sidebar-width-collapsed: 80px;
+  
+  --scale-factor: 0.85; /* 默认缩放因子，全局减小 */
+  --container-padding-x: calc(2rem * var(--scale-factor));
+  --container-padding-y: calc(2rem * var(--scale-factor));
+  --grid-gap: calc(1.5rem * var(--scale-factor));
+  --card-min-width: calc(280px * var(--scale-factor));
+}
+
+/* 主布局容器 */
+.layout-container {
+  display: flex;
+  height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* 主内容区域 */
+.main-content {
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* 响应式容器 */
+.responsive-container {
+  width: 100%;
+  max-width: var(--max-width-4k);
+  margin: 0 auto;
+  min-height: 100%;
+  padding: 0 var(--container-padding-x);
+}
+
+/* 响应式网格 */
+.responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-min-width), 1fr));
+  gap: var(--grid-gap);
+  width: 100%;
+}
+
+/* 响应式卡片 */
+.responsive-card {
+  width: 100%;
+  background: var(--bg-color-light);
+  border-radius: 1rem;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-color-light);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gray-400);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-500);
+}
+
+/* 深色模式下的滚动条样式 */
+.dark ::-webkit-scrollbar-track {
+  background: var(--gray-800);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--gray-600);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-500);
+}
+
+/* 1920px屏幕适配 - 只调整布局比例 */
+@media (min-width: 1441px) and (max-width: 1920px) {
+  :root {
+    --scale-factor: 0.85;
+    --container-padding-x: calc(2rem * var(--scale-factor));
+    --container-padding-y: calc(2rem * var(--scale-factor));
+    --grid-gap: calc(1.5rem * var(--scale-factor));
+    --card-min-width: calc(280px * var(--scale-factor));
+  }
+  
+  .responsive-container {
+    max-width: 1400px;
+  }
+  
+  .responsive-grid {
+    grid-template-columns: repeat(auto-fill, minmax(var(--card-min-width), 1fr));
+  }
+}
+
+/* 超大屏幕适配 (>1920px) - 只调整布局比例 */
+@media (min-width: 1921px) {
+  :root {
+    --scale-factor: 0.9;
+    --container-padding-x: calc(2rem * var(--scale-factor));
+    --container-padding-y: calc(2rem * var(--scale-factor));
+    --grid-gap: calc(1.5rem * var(--scale-factor));
+    --card-min-width: calc(280px * var(--scale-factor));
+  }
+  
+  .responsive-container {
+    max-width: 1200px;
+  }
+  
+  .responsive-grid {
+    grid-template-columns: repeat(auto-fill, minmax(var(--card-min-width), 1fr));
+  }
+}
+
+/* 响应式布局 */
+@media (max-width: 1440px) {
+  :root {
+    --scale-factor: 0.8;
+    --container-padding-x: calc(2rem * var(--scale-factor));
+    --container-padding-y: calc(2rem * var(--scale-factor));
+    --grid-gap: calc(1.5rem * var(--scale-factor));
+  }
+  
+  .responsive-container {
+    max-width: var(--max-width-laptop);
+  }
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --scale-factor: 0.75;
+    --container-padding-x: calc(2rem * var(--scale-factor));
+    --container-padding-y: calc(2rem * var(--scale-factor));
+    --sidebar-width: 240px;
+  }
+  
+  .responsive-container {
+    max-width: var(--max-width-tablet);
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --scale-factor: 0.7;
+    --container-padding-x: calc(2rem * var(--scale-factor));
+    --container-padding-y: calc(2rem * var(--scale-factor));
+    --sidebar-width: 0;
+  }
+  
+  .responsive-container {
+    max-width: var(--max-width-mobile);
+    padding-bottom: 70px; /* 为底部导航栏留出空间 */
+  }
+  
+  .layout-container {
+    flex-direction: column;
+  }
+  
+  .main-content {
+    height: 100vh;
+    padding-bottom: 60px; /* 为底部导航栏留出空间 */
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --scale-factor: 0.65;
+    --container-padding-x: calc(2rem * var(--scale-factor));
+    --container-padding-y: calc(2rem * var(--scale-factor));
+    --sidebar-width: 0;
+  }
+  
+  .responsive-grid {
+    grid-template-columns: 1fr;
+  }
+}

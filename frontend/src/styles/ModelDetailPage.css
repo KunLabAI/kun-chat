@@ -1,0 +1,242 @@
+/* 页面容器 */
+.model-details-page {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* 页面头部 */
+.page-header {
+  margin-top: 72px;
+  margin-bottom: 24px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+}
+
+.title-group {
+  display: flex  ;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 24px;
+}
+
+.main-title {
+  font-size: 40px;
+  font-weight: bold;
+  color: var(--text-color);
+  margin-bottom: 8px;
+}
+
+.sub-title {
+  font-size: 16px;
+  color: var(--text-color-light);
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* 标签页导航 */
+.model-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  justify-content: center;
+  position: relative;
+}
+
+.model-tab-item {
+  padding: 10px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--gray-500);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  outline: none;
+}
+
+.model-tab-item:hover {
+  font-weight: 600;
+}
+
+.model-tab-item:focus {
+  outline: none;
+}
+
+.model-tab-item:focus-visible {
+  box-shadow: 0 0 0 2px var(--primary-200);
+}
+
+.model-tab-item-active {
+  color: white;
+  background: var(--primary-600);
+  box-shadow: 0 2px 4px rgba(147, 51, 234, 0.1);
+}
+
+/* 内容区域 */
+.model-tab-content {
+  min-height: 400px;
+}
+
+.model-section {
+  background: var(--bg-color-light);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 8px 0;
+}
+
+.toggle-btn {
+  padding: 6px 12px;
+  border: 1px solid var(--border-color);
+  background: var(--button-bg);
+  color: var(--text-color-light);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.toggle-btn:hover {
+  background: var(--button-hover-bg);
+  color: var(--link-color);
+  border-color: var(--link-color);
+}
+
+/* 信息网格 */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background: var(--bg-color);
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.info-item:hover {
+  background: var(--button-bg);
+}
+
+.info-label {
+  font-size: 14px;
+  color: var(--text-color-light);
+}
+
+.info-value {
+  font-size: 16px;
+  color: var(--text-color);
+  word-break: break-all;
+}
+
+/* 代码块 */
+.section-content {
+  margin-top: 16px;
+}
+
+.code-block {
+  padding: 16px;
+  background: var(--bg-color);
+  border-radius: 8px;
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+/* 收藏按钮样式 */
+.favorite-container {
+  margin-left: 10px;
+}
+
+.favorite-container input {
+  display: none;
+}
+
+.favorite-container label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 0.375rem;
+  transition: all 0.3s ease;
+}
+
+.favorite-container label:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.favorite-container input:checked + label svg {
+  fill: hsl(0deg 100% 50%);
+  stroke: hsl(0deg 100% 50%);
+  animation: heartButton 1s;
+}
+
+@keyframes heartButton {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.3);
+  }
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* 响应式设计 */
+/* 媒体查询 - 中等屏幕 (1024px) */
+@media screen and (min-width: 1024px) {
+  .model-details-page {
+    max-width: 1024px;
+  }
+}
+
+/* 媒体查询 - 大屏幕 (1920px) */
+@media screen and (min-width: 1920px) {
+  .model-details-page {
+    max-width: 1200px;
+  }
+}

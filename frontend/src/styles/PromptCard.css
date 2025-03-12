@@ -1,0 +1,93 @@
+/* 提示词卡片基础样式 */
+.prompt-card {
+  background: var(--el-bg-color-overlay);
+  border: 1px solid var(--gray-600);
+  border-radius: 8px;
+  height: 100%;
+  transition: all 0.2s ease;
+}
+
+.prompt-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.card-content {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.title-group {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--el-text-color-primary);
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-meta {
+  font-size: 0.875rem;
+  color: var(--gray-500);
+  margin-top: 0.25rem;
+}
+
+.card-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.card-body {
+  flex: 1;
+  margin-bottom: 1rem;
+}
+
+.card-text {
+  font-size: 0.875rem;
+  color: var(--gray-500);
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  min-height: 4.5em; /* 约等于三行文本的高度 */
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: nowrap;  /* 防止换行 */
+  overflow: hidden; /* 隐藏溢出部分 */
+  white-space: nowrap; /* 确保不换行 */
+  margin-top: 8px;
+  gap: 8px;
+  position: relative;
+  width: 100%;
+  mask-image: linear-gradient(to right, black 100%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black 96%, transparent 100%);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  color: #ffffff;
+  border-radius: 4px;
+}

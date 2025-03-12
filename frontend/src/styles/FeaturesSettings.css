@@ -1,0 +1,235 @@
+/* 
+ * 功能设置页面样式
+ * 遵循项目统一的样式规范
+ */
+
+/* 表单组件样式 */
+.features-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 480px;
+  margin-bottom: 20px;
+}
+
+.features-form-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.features-form-input {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: var(--text-color);
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.features-form-input:focus {
+  outline: none;
+  border-color: var(--primary-600);
+  box-shadow: 0 0 0 2px var(--primary-100);
+}
+
+.features-form-input:disabled {
+  background: var(--gray-100);
+  cursor: not-allowed;
+}
+
+.features-input-group {
+  display: flex;
+  gap: 12px;
+}
+
+.features-form-help {
+  font-size: 12px;
+  color: var(--text-color-light);
+  margin: 4px 0 0 0;
+}
+
+/* API密钥相关样式 */
+.features-api-key-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.features-api-key-actions {
+  position: absolute;
+  right: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.features-api-key-action {
+  background: transparent;
+  border: none;
+  color: var(--gray-500);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.features-api-key-action:hover {
+  color: var(--primary-600);
+  background: var(--gray-100);
+}
+
+/* 标签样式 */
+.features-tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.features-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  background: var(--gray-100);
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--text-color);
+}
+
+.features-tag-remove {
+  margin-left: 6px;
+  background: transparent;
+  border: none;
+  color: var(--gray-500);
+  cursor: pointer;
+  padding: 0 2px;
+  font-size: 14px;
+  line-height: 1;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.features-tag-remove:hover {
+  color: var(--red-500);
+}
+
+/* 主题切换样式 */
+.features-theme-switch-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.features-setting-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-color);
+  margin: 0 0 4px 0;
+}
+
+.features-setting-description {
+  font-size: 14px;
+  color: var(--text-color-light);
+  margin: 0;
+}
+
+.features-theme-switch {
+  position: relative;
+  display: inline-flex;
+  width: 48px;
+  height: 24px;
+  flex-shrink: 0;
+  cursor: pointer;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  transition: background-color 0.2s ease;
+  background-color: var(--gray-200);
+}
+
+.features-theme-switch:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--primary-100);
+}
+
+.features-theme-switch-handle {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.features-theme-switch-icon {
+  position: absolute;
+  transition: opacity 0.3s ease;
+}
+
+/* 搜索深度选择器样式 */
+.features-toggle-group {
+  display: flex;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.features-toggle-button {
+  flex: 1;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  background: var(--bg-color);
+  color: var(--text-color);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.features-toggle-button-active {
+  background: var(--primary-600);
+  color: white;
+}
+
+.features-toggle-button:first-child {
+  border-right: 1px solid var(--border-color);
+}
+
+.features-toggle-button:hover:not(.features-toggle-button-active) {
+  background: var(--gray-100);
+}
+
+/* 深色模式适配 */
+.dark {
+  .features-form-input {
+    background: var(--gray-800);
+    border-color: var(--gray-700);
+  }
+
+  .features-form-input:disabled {
+    background: var(--gray-900);
+  }
+
+  .features-tag {
+    background: var(--gray-800);
+    color: var(--gray-300);
+  }
+
+  .features-api-key-action:hover {
+    background: var(--gray-800);
+  }
+
+  .features-toggle-button:hover:not(.features-toggle-button-active) {
+    background: var(--gray-700);
+  }
+}

@@ -1,0 +1,599 @@
+/* 聊天页面容器 */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 消息列表容器 */
+.messages-container {
+  flex: 1;
+  margin: 32px auto;
+  padding-bottom: calc(124px + 2px); /* 为输入框留出空间 */
+  width: 1024px;
+  box-sizing: border-box;
+}
+
+/* 消息组基础样式 */
+.message-group {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+/* 用户消息组 */
+.message-group-user {
+  flex-direction: row-reverse;
+}
+
+/* 头像容器 */
+.avatar-container {
+  display: flex;
+  align-items: flex-start;
+  margin: 0 12px;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+}
+
+/* 用户头像背景 */
+.user-avatar-background {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--chat-user-avatar-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  overflow: hidden; /* 确保头像不会溢出圆形边界 */
+}
+
+/* 用户头像 */
+.user-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 确保图片填充整个容器并保持比例 */
+  border-radius: 50%;
+}
+
+/* AI头像 */
+.ai-avatar {
+  width: 40px;
+  height: 40px;
+}
+
+/* 消息气泡 */
+.message-bubble {
+  max-width: 80%;
+  padding-left: 0.75rem;
+  border-radius: 0.5rem;
+}
+
+/* 用户消息气泡 */
+.message-group-user .message-bubble {
+  background-color: var(--chat-user-bubble-bg);
+  color: var(--chat-user-bubble-text);
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+/* AI消息气泡 */
+.message-group-assistant .message-bubble {
+  background-color: transparent;
+  color: var(--chat-ai-bubble-text);
+  position: relative;
+}
+
+/* 消息底部区域 */
+.message-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  min-height: 24px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* 当鼠标悬停在消息气泡上时显示底部区域 */
+.message-bubble:hover .message-footer {
+  opacity: 1;
+}
+
+/* 时间显示 */
+.message-time {
+  font-size: 12px;
+  color: var(--chat-ai-bubble-text);
+  opacity: 0.7;
+}
+
+/* 消息操作按钮容器 */
+.message-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* 消息操作按钮 */
+.message-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+  color: var(--primary-400);
+  border-radius: 4px;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+}
+
+/* 浅色主题悬停效果 */
+.message-actions button:hover {
+  opacity: 1;
+  background-color: var(--primary-50);
+}
+
+/* 深色主题悬停效果 */
+.dark .message-actions button:hover {
+  opacity: 1;
+  background-color: rgba(168, 85, 247, 0.1); /* --primary-500 with 0.1 opacity */
+}
+
+.message-actions button img {
+  width: 16px;
+  height: 16px;
+  filter: invert(50%) sepia(80%) saturate(1000%) hue-rotate(240deg) brightness(100%) contrast(100%);
+  transition: filter 0.2s ease;
+}
+
+.message-actions button:hover img {
+  filter: invert(50%) sepia(100%) saturate(1000%) hue-rotate(240deg) brightness(100%) contrast(100%);
+}
+
+/* 深色主题下的图标颜色 */
+.dark .message-actions button img {
+  filter: invert(70%) sepia(80%) saturate(1000%) hue-rotate(240deg) brightness(100%) contrast(100%);
+}
+
+.dark .message-actions button:hover img {
+  filter: invert(80%) sepia(100%) saturate(1000%) hue-rotate(240deg) brightness(100%) contrast(100%);
+}
+
+/* 打字动画效果 */
+.typing-dots {
+  display: none; /* 隐藏原来的点点点动画 */
+}
+
+/* 新的加载动画容器 */
+.loading-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 4px 0;
+  margin: 0;
+}
+
+/* From Uiverse.io by bociKond */ 
+.spinner {
+  width: 12px;
+  height: 12px;
+  --clr: rgb(247, 197, 159);
+  --clr-alpha: rgb(247, 197, 159,.1);
+  animation: spinner 1.6s infinite ease;
+  transform-style: preserve-3d;
+}
+
+.spinner > div {
+  background-color: var(--clr-alpha);
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  border: 0.8px solid var(--clr);
+}
+
+.spinner div:nth-of-type(1) {
+  transform: translateZ(-6px) rotateY(180deg);
+}
+
+.spinner div:nth-of-type(2) {
+  transform: rotateY(-270deg) translateX(50%);
+  transform-origin: top right;
+}
+
+.spinner div:nth-of-type(3) {
+  transform: rotateY(270deg) translateX(-50%);
+  transform-origin: center left;
+}
+
+.spinner div:nth-of-type(4) {
+  transform: rotateX(90deg) translateY(-50%);
+  transform-origin: top center;
+}
+
+.spinner div:nth-of-type(5) {
+  transform: rotateX(-90deg) translateY(50%);
+  transform-origin: bottom center;
+}
+
+.spinner div:nth-of-type(6) {
+  transform: translateZ(6px);
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(45deg) rotateX(-25deg) rotateY(25deg);
+  }
+
+  50% {
+    transform: rotate(45deg) rotateX(-385deg) rotateY(25deg);
+  }
+
+  100% {
+    transform: rotate(45deg) rotateX(-385deg) rotateY(385deg);
+  }
+}
+
+/* 深色主题下的加载动画颜色 */
+.dark .spinner {
+  --clr: rgb(168, 85, 247);
+  --clr-alpha: rgba(168, 85, 247, 0.1);
+}
+
+.dark .message-file-preview {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.file-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.file-icon.pdf {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.message-group-user .file-icon.pdf {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.file-icon.pdf svg {
+  color: #ef4444;
+}
+
+.file-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.file-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-color);
+  word-break: break-word;
+}
+
+.message-group-user .file-name {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.file-type {
+  font-size: 0.75rem;
+  color: var(--text-color-light);
+  opacity: 0.8;
+}
+
+.message-group-user .file-type {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* 如果PDF和图片同时存在，添加间距 */
+.message-file-preview + .message-image {
+  margin-top: 12px;
+}
+
+/* 悬浮效果 */
+.message-file-preview:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.dark .message-file-preview:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.message-group-user .message-file-preview:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* 图片显示相关样式 */
+.message-image {
+  padding: 12px;
+}
+
+.message-image img {
+  max-height: 12rem;
+  border-radius: 8px;
+}
+
+/* 文档消息样式 */
+.message-file-preview {
+  display: flex;
+  align-items: center;
+  margin: 8px 8px 8px 0;
+}
+
+.message-file-preview .file-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-right: 12px;
+  color: var(--color-text-secondary);
+}
+
+.message-file-preview .file-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.message-file-preview .file-name {
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.message-file-preview .file-type {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.message-file-preview .file-preview-btn {
+  padding: 6px 12px;
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.message-file-preview .file-preview-btn:hover {
+  background-color: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
+
+.document-content {
+  margin-top: 8px;
+  padding: 12px;
+  background-color: var(--color-bg-secondary);
+  border-radius: 8px;
+}
+
+/* 滚动条样式 */
+.chat-container::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+.chat-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.5);
+  border-radius: 0.25rem;
+}
+
+.chat-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(156, 163, 175, 0.7);
+}
+
+/* 消息内容滚动条 */
+.message-bubble::-webkit-scrollbar {
+  height: 0.375rem;
+}
+
+.message-bubble::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.message-bubble::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.3);
+  border-radius: 0.25rem;
+}
+
+.message-bubble::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(156, 163, 175, 0.5);
+}
+
+/* 全局滚动行为 */
+html {
+  scroll-behavior: smooth;
+  /* 添加自定义滚动动画 */
+  scroll-timeline: --documentScroll block;
+}
+
+/* 自定义滚动动画 */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+    /* 使用更长的持续时间和更柔和的缓动函数 */
+    transition: scroll-behavior 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* 滚动到底部按钮 */
+.scroll-to-bottom {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  z-index: 1000;
+}
+
+.scroll-to-bottom.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-to-bottom:hover {
+  background-color: #f5f5f5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.scroll-to-bottom svg {
+  width: 20px;
+  height: 20px;
+  fill: #6b7280;
+}
+
+.scroll-to-bottom:hover svg {
+  fill: #333;
+}
+
+/* 思考过程样式 */
+.thinking-process {
+  transition: all 0.3s ease;
+}
+
+.thinking-process-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s ease;
+}
+
+.thinking-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  color: var(--text-color-lighter);
+}
+
+.thinking-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color-light);
+}
+
+.thinking-toggle {
+  margin-left: 12px;
+  width: 20px;
+  height: 20px;
+  color: var(--text-color-lighter);
+}
+
+.thinking-toggle svg {
+  transition: transform 0.3s ease;
+}
+
+.thinking-toggle svg.rotate-180 {
+  transform: rotate(180deg);
+}
+
+/* 思考中的动画点 */
+.thinking-dots {
+  display: inline-block;
+  margin-left: 4px;
+  color: #409eff;
+}
+
+.thinking-dots::after {
+  content: '...';
+  display: inline-block;
+  animation: thinking 1.5s infinite;
+  width: 12px;
+  text-align: left;
+}
+
+@keyframes thinking {
+  0% { content: '.'; }
+  33% { content: '..'; }
+  66% { content: '...'; }
+}
+
+/* 思考过程内容样式 */
+.thinking-process-content {
+  padding: 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  border-top: 1px solid var(--border-color);
+  white-space: pre-wrap;
+  background-color: var(--bg-color);
+  white-space: pre-wrap;
+  line-height: 1.6;
+  color: darkgray ;
+}
+
+/* 主题变量 */
+:root {
+  /* 浅色主题 */
+  --chat-thinking-bg: rgba(245, 247, 250, 0.85);
+  --chat-thinking-border: rgba(0, 0, 0, 0.1);
+  --chat-thinking-hover-bg: rgba(0, 0, 0, 0.03);
+  --chat-thinking-icon: rgba(0, 0, 0, 0.6);
+  --chat-thinking-title: rgba(0, 0, 0, 0.8);
+  --chat-thinking-content: rgba(0, 0, 0, 0.7);
+  --chat-thinking-content-bg: rgba(255, 255, 255, 0.5);
+  --chat-thinking-active-border: rgba(59, 130, 246, 0.5);
+  --chat-thinking-active-bg: rgba(59, 130, 246, 0.05);
+}
+
+/* 深色主题 */
+[data-theme="dark"] {
+  --chat-thinking-bg: rgba(30, 41, 59, 0.5);
+  --chat-thinking-border: rgba(255, 255, 255, 0.1);
+  --chat-thinking-hover-bg: rgba(255, 255, 255, 0.05);
+  --chat-thinking-icon: rgba(255, 255, 255, 0.6);
+  --chat-thinking-title: rgba(255, 255, 255, 0.8);
+  --chat-thinking-content: rgba(255, 255, 255, 0.7);
+  --chat-thinking-content-bg: rgba(30, 41, 59, 0.3);
+  --chat-thinking-active-border: rgba(59, 130, 246, 0.5);
+  --chat-thinking-active-bg: rgba(59, 130, 246, 0.1);
+}
+
+/* 媒体查询 - 中等屏幕 (1024px) */
+@media screen and (min-width: 1024px) {
+  .messages-container {
+    max-width: 768px;
+    margin-top: 32px; 
+  }
+}
+
+/* 媒体查询 - 大屏幕 (1920px) */
+@media screen and (min-width: 1920px) {
+  .messages-container {
+    max-width: 1200px;
+    margin-top: 32px; 
+  }
+}

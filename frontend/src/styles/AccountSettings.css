@@ -1,0 +1,554 @@
+/* 页面布局 */
+.account-settings-page {
+  max-width: 768px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* 页面头部 */
+.account-page-header {
+  margin-top: 64px;
+  margin-bottom: 24px;
+}
+
+.account-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.account-title-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.account-main-title {
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 8px;
+}
+
+.account-sub-title {
+  font-size: 16px;
+  color: var(--text-color-light);
+  margin: 0;
+}
+
+/* 标签页导航 */
+.account-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  justify-content: center;
+  position: relative;
+}
+
+.account-tab-item {
+  padding: 10px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--gray-500);
+  background: var(--gray-100);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.account-tab-item:hover {
+  color: var(--primary-600);
+  background: var(--primary-50);
+}
+
+.account-tab-item-active {
+  color: white;
+  background: var(--primary-600);
+  box-shadow: 0 2px 4px rgba(147, 51, 234, 0.1);
+}
+
+.account-tab-item-active::before {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--primary-600);
+}
+
+/* 内容区域 */
+.account-tab-content {
+  background: var(--bg-color-light);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+}
+
+.account-tab-pane {
+  padding: 24px;
+}
+
+.account-settings-section {
+  margin-bottom: 48px;
+}
+
+.account-settings-section:last-child {
+  margin-bottom: 0;
+}
+
+.account-section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 24px;
+}
+
+.account-section-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* 头像上传 */
+.account-avatar-section {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.account-settings-avatar-container {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.account-settings-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.account-settings-avatar-upload {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  background: var(--primary-600);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.account-settings-avatar-upload:hover {
+  background: var(--primary-700);
+}
+
+.account-avatar-info h4 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-color);
+  margin: 0 0 4px 0;
+}
+
+.account-info-text {
+  font-size: 14px;
+  color: var(--text-color-light);
+  margin: 0;
+}
+
+/* 表单元素 */
+.account-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 480px;
+}
+
+.account-form-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.account-form-input {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: var(--text-color);
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.account-form-input:focus {
+  outline: none;
+  border-color: var(--primary-600);
+  box-shadow: 0 0 0 2px var(--primary-100);
+}
+
+.account-form-input:disabled {
+  background: var(--gray-100);
+  cursor: not-allowed;
+}
+
+.account-input-group {
+  display: flex;
+  gap: 12px;
+}
+
+.account-form-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-input);
+  color: var(--text-color);
+  font-size: 14px;
+  line-height: 1.5;
+  transition: all 0.2s ease;
+  resize: vertical;
+  min-height: 120px;
+}
+
+.account-form-textarea:focus {
+  border-color: var(--primary-600);
+  box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
+  outline: none;
+}
+
+.account-form-textarea::placeholder {
+  color: var(--text-color-light);
+  opacity: 0.6;
+}
+
+/* 复选框样式 */
+.account-form-checkbox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.account-checkbox {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.account-checkbox-label {
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* 偏好设置相关样式 */
+.account-preferences-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.account-form-help {
+  font-size: 14px;
+  color: var(--text-color-light);
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.account-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+/* 按钮样式 */
+.account-form-button,
+.account-submit-button {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  background: var(--primary-600);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 80px;
+}
+
+.account-form-button:hover,
+.account-submit-button:hover {
+  background: var(--primary-700);
+}
+
+.account-form-button:disabled,
+.account-submit-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.account-submit-button {
+  padding: 10px 24px;
+  background-color: var(--primary-600);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.account-submit-button:hover {
+  background-color: var(--primary-700);
+}
+
+.account-submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.account-loading-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.account-loading-text::after {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 密码表单 */
+.account-password-form {
+  display: contents;
+  max-width: 400px;
+}
+
+.account-form-actions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* 主题切换 */
+.account-theme-switch-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 480px;
+}
+
+.account-setting-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-color);
+  margin: 0 0 4px 0;
+}
+
+.account-setting-description {
+  font-size: 14px;
+  color: var(--text-color-light);
+  margin: 0;
+}
+
+.account-theme-switch {
+  position: relative;
+  width: 56px;
+  height: 32px;
+  padding: 4px;
+  background: var(--gray-200);
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.account-theme-switch-handle {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 24px;
+  height: 24px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.account-theme-switch-icon {
+  position: absolute;
+  transition: opacity 0.3s ease;
+}
+
+/* 加载动画 */
+.account-loading-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.account-loading-text::after {
+  content: '';
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-right-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 沉浸设置一体化开关样式 */
+.account-immersive-switch {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: var(--bg-color-light);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.switch-label-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.switch-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.switch-status {
+  font-size: 12px;
+  color: var(--text-color-light);
+  display: flex;
+  align-items: center;
+}
+
+/* 状态圆点样式 */
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.status-enabled {
+  background-color: #10b981; /* 绿色 */
+  box-shadow: 0 0 4px rgba(16, 185, 129, 0.6);
+}
+
+.status-disabled {
+  background-color: #ef4444; /* 红色 */
+  box-shadow: 0 0 4px rgba(239, 68, 68, 0.6);
+}
+
+.account-toggle-button {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  background: var(--primary-600);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 100px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.account-toggle-button:hover {
+  background: var(--primary-700);
+}
+
+.account-toggle-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.account-toggle-active {
+  background: var(--gray-500);
+}
+
+.account-toggle-active:hover {
+  background: var(--gray-600);
+}
+
+.account-toggle-loading {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+/* 深色模式适配 */
+.dark {
+  .account-form-input {
+    background: var(--gray-900);
+    border-color: var(--gray-700);
+  }
+
+  .account-form-input:disabled {
+    background: var(--gray-600);
+  }
+
+  .account-theme-switch {
+    background: var(--gray-700);
+  }
+
+  .account-tab-item {
+    color: var(--gray-400);
+    background: var(--gray-800);
+  }
+
+  .account-tab-item:hover {
+    color: var(--primary-300);
+    background: var(--primary-900);
+  }
+
+  .account-tab-item-active {
+    color: white;
+    background: var(--primary-600);
+  }
+}

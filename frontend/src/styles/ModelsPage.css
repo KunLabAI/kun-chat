@@ -1,0 +1,242 @@
+/* ModelsPage.css */
+/* 页面布局 */
+.models-page {
+  position: relative;
+  background: var(--bg-color);
+  max-width: 100%;
+  margin: auto;
+  padding: 0 1rem; /* 添加基础内边距 */
+}
+
+/* 页面头部 */
+.page-header {
+  margin: auto;
+  padding-top: 48px; /* 减小默认上边距 */
+  margin-bottom: 1.5rem;
+  max-width: 768px; /* 小屏幕默认宽度 */
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* 改为顶部对齐，在小屏幕上更合理 */
+  margin: 0 auto;
+  gap: 1rem;
+  flex-direction: column; /* 默认为列布局，适合小屏幕 */
+}
+
+.title-group {
+  flex: 1;
+  width: 100%;
+}
+
+.main-title {
+  font-size: 28px; /* 小屏幕默认字体大小 */
+  font-weight: bold;
+  color: var(--el-text-color-primary);
+  margin-bottom: 6px;
+}
+
+.sub-title {
+  font-size: 14px;
+  color: var(--el-text-color-secondary);
+  font-weight: normal;
+  line-height: 1.5;
+  max-width: 100%; /* 小屏幕占满宽度 */
+  margin: 0.25rem 0 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 1rem; /* 在列布局中添加上边距 */
+}
+
+/* 模型卡片网格布局 */
+.models-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* 减小卡片最小宽度 */
+  gap: 1rem;
+  max-width: 768px; /* 小屏幕默认宽度 */
+  margin: 0 auto;
+  position: relative;
+}
+
+.model-grid-item {
+  position: relative;
+  min-width: 0;
+  overflow: visible; /* 允许提示框溢出 */
+  height: 100%;
+}
+
+/* 对话框样式 */
+.dialog-content {
+  padding: 1.5rem;
+}
+
+.dialog-content input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--el-border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--el-text-color-primary);
+  background: var(--el-bg-color);
+  transition: all 0.3s ease;
+}
+
+.dialog-content input:focus {
+  border-color: var(--el-color-primary);
+  box-shadow: 0 0 0 2px var(--el-color-primary-light-8);
+  outline: none;
+}
+
+.dialog-content input::placeholder {
+  color: var(--el-text-color-placeholder);
+}
+
+/* 加载状态和空状态样式 */
+.loading-indicator,
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px; /* 减小最小高度 */
+  margin: 24px auto;
+  max-width: 768px; /* 小屏幕默认宽度 */
+  text-align: center;
+  color: var(--el-text-color-secondary);
+  font-size: 14px;
+  background: var(--el-bg-color-overlay);
+  border-radius: 8px;
+  border: 1px dashed var(--el-border-color-lighter);
+}
+
+/* 暗色主题适配 */
+:root[data-theme="dark"] .models-page {
+  background: var(--el-bg-color-overlay);
+}
+
+:root[data-theme="dark"] .page-header {
+  background: linear-gradient(135deg, 
+    rgba(var(--el-color-primary-rgb), 0.15) 0%,
+    rgba(var(--el-color-primary-rgb), 0.05) 100%
+  );
+}
+
+:root[data-theme="dark"] .main-title {
+  background: linear-gradient(135deg,
+    var(--el-color-primary-light-3) 0%,
+    var(--el-color-primary-light-5) 100%
+  );
+  -webkit-text-fill-color: transparent;
+}
+
+:root[data-theme="dark"] .sub-title {
+  color: var(--el-text-color-secondary);
+}
+
+:root[data-theme="dark"] .dialog-content input {
+  background: var(--el-bg-color-overlay);
+  border-color: var(--el-border-color-darker);
+}
+
+:root[data-theme="dark"] .dialog-content input:focus {
+  border-color: var(--el-color-primary);
+  box-shadow: 0 0 0 2px rgba(var(--el-color-primary-rgb), 0.2);
+}
+
+/* 媒体查询 - 中等屏幕 (1024px) */
+@media screen and (min-width: 1024px) {
+  .models-page {
+    padding: 0 1.5rem;
+  }
+  
+  .page-header {
+    padding-top: 60px;
+    margin-bottom: 1.75rem;
+    max-width: 1024px;
+  }
+  
+  .header-content {
+    flex-direction: row; /* 中等屏幕改为行布局 */
+    align-items: flex-end;
+    gap: 1.5rem;
+  }
+  
+  .header-actions {
+    margin-top: 0; /* 行布局不需要上边距 */
+  }
+  
+  .main-title {
+    font-size: 34px;
+    margin-bottom: 7px;
+  }
+  
+  .sub-title {
+    font-size: 15px;
+    max-width: 550px;
+    margin: 0.4rem 0 0;
+  }
+  
+  .models-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    max-width: 1024px;
+  }
+  
+  .loading-indicator,
+  .empty-state {
+    min-height: 250px;
+    margin: 28px auto;
+    max-width: 1024px;
+    font-size: 15px;
+  }
+}
+
+/* 媒体查询 - 大屏幕 (1920px) */
+@media screen and (min-width: 1920px) {
+  .models-page {
+    padding: 0 2rem;
+  }
+  
+  .page-header {
+    padding-top: 72px;
+    margin-bottom: 2rem;
+    max-width: 1200px;
+  }
+  
+  .header-content {
+    gap: 2rem;
+  }
+  
+  .main-title {
+    font-size: 40px;
+    margin-bottom: 8px;
+  }
+  
+  .sub-title {
+    font-size: 16px;
+    max-width: 600px;
+    margin: 0.5rem 0 0;
+  }
+  
+  .header-actions {
+    gap: 1rem;
+  }
+  
+  .models-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+  }
+  
+  .loading-indicator,
+  .empty-state {
+    min-height: 300px;
+    margin: 32px auto;
+    max-width: 1200px;
+    font-size: 16px;
+  }
+}
