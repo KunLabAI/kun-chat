@@ -1,3 +1,4 @@
+简体中文 | [English](README-EN.md)
 
 # kun-lab
 
