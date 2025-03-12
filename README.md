@@ -1,3 +1,6 @@
+![项目封面](assets/kun-lab_logo.jpg)
+
+
 # kun-lab
 
 **您的本地化智能对话伙伴**
