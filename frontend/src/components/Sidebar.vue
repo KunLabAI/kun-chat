@@ -2,7 +2,7 @@
   <aside class="sidebar">
     <!-- Logo -->
     <div class="logo-section">
-      <span class="logo-icon" :data-tooltip="t('sidebar.logo_tooltip')" @mouseenter="updateTooltipPosition">K</span>
+      <img src="@/assets/kun-lab_logo.svg" class="logo-icon" :data-tooltip="t('sidebar.logo_tooltip')" @mouseenter="updateTooltipPosition" alt="kun-lab logo" />
     </div>
 
     <!-- Navigation -->

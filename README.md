@@ -245,6 +245,5 @@ Apache 2.0 License
 如果您有任何问题或建议，欢迎通过以下方式与我们联系：
 
 - 提交 Issue：在 GitHub 仓库 issues 页面提交您的问题或建议。
-- 发送邮件：发送邮件至 [your-email@example.com]
 
 > 温馨提示：kun-lab 仍在快速迭代开发中，您的贡献和反馈对我们至关重要！
