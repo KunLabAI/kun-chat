@@ -5,7 +5,7 @@
 # kun-lab
 
 <p align="center">
-  <a href="./README_EN.md">English</a> |
+  <a href="./README-EN.md">English</a> |
   <a href="./README.md">简体中文</a> |
 </p>
 
