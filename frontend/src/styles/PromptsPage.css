@@ -63,6 +63,7 @@
 }
 
 .prompt-delete img {
+  width: 32px;
   filter: brightness(0) saturate(100%) invert(60%) sepia(8%) saturate(382%) hue-rotate(179deg) brightness(94%) contrast(90%);
 }
 
