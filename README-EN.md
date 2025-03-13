@@ -1,4 +1,15 @@
-[简体中文](README.md) | English
+<div align="center">
+
+<a href="https://kunpuai.com/"><img src="/frontend/src/assets/kunlab_bg_logo.svg" width="120" height="120" alt="kun-lab logo"></a>
+
+# kun-lab
+
+<p align="center">
+  <a href="./README_EN.md">English</a> |
+  <a href="./README.md">简体中文</a> |
+</p>
+
+</div>
 
 ## 📚 Detailed Features
 
