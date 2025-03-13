@@ -79,11 +79,12 @@ onMounted(() => {
         
         // 替换为勾选图标
         const iconImg = button.querySelector('img')
-        iconImg.src = '/src/assets/icons/chat_copy.svg'
+        iconImg.src = '/src/assets/icons/sys_check.svg'
         iconImg.classList.add('copied')
         
         setTimeout(() => {
           iconImg.classList.remove('copied')
+          iconImg.src = '/src/assets/icons/chat_copy.svg'
         }, 2000)
       } catch (err) {
         console.error('Failed to copy code:', err)
@@ -94,8 +95,7 @@ onMounted(() => {
 </script>
 
 <style>
-@import '@/styles/Markdown.css';
-@import '@/styles/CodeBlock.css';
+@import '@/styles/MarkdownStyles.css';
 
 .markdown-renderer {
   width: 100%;
@@ -106,6 +106,4 @@ onMounted(() => {
   background: transparent !important;
   padding: 0 !important;
 }
-
-
 </style>
