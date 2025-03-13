@@ -1,0 +1,557 @@
+/* Markdown 和代码块样式合并文件 */
+
+/* ================= Markdown 基础变量 ================= */
+:root {
+  --md-text-primary: #24292f;
+  --md-text-secondary: #57606a;
+  --md-heading-color: #24292f;
+  --md-link-color: #0969da;
+  --md-link-hover-color: #1a7f37;
+  --md-blockquote-border: #d0d7de;
+  --md-blockquote-bg: #f6f8fa;
+  --md-blockquote-text: #57606a;
+  --md-inline-code-bg: rgba(175, 184, 193, 0.2);
+  --md-inline-code-text: #24292f;
+  --md-border-color: #d0d7de;
+  --md-table-header-bg: #f6f8fa;
+  --md-table-border: #d0d7de;
+  --md-table-row-hover: #f6f8fa;
+  --md-list-item-marker: #57606a;
+  --md-task-list-bg: #ffffff;
+  --md-task-list-border: #d0d7de;
+  --md-task-list-checked-bg: #0969da;
+  --md-task-list-checked-border: #0969da;
+  --md-kbd-bg: #f6f8fa;
+  --md-kbd-border: #d0d7de;
+  --md-kbd-text: #57606a;
+  --md-mark-bg: #fff8c5;
+  --md-mark-text: #24292f;
+}
+
+/* ================= Markdown 基础样式 ================= */
+.markdown-content {
+  color: var(--text-color);
+  line-height: 1.6;
+  font-size: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  word-wrap: break-word;
+}
+
+/* 标题样式 */
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--text-color);
+  letter-spacing: -0.025em;
+}
+
+.markdown-content h1 {
+  font-size: 2em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.markdown-content h2 {
+  font-size: 1.5em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.markdown-content h3 { font-size: 1.25em; }
+.markdown-content h4 { font-size: 1em; }
+.markdown-content h5 { font-size: 0.875em; }
+.markdown-content h6 { 
+  font-size: 0.85em; 
+  color: var(--text-color-light);
+}
+
+/* 段落和文本样式 */
+.markdown-content p {
+  margin: 8px 0;
+  line-height: 1.75;
+  color: var(--text-color);
+}
+
+.markdown-content strong {
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.markdown-content em {
+  font-style: italic;
+}
+
+.markdown-content del {
+  text-decoration: line-through;
+  color: var(--text-color-lighter);
+}
+
+/* 链接样式 */
+.markdown-content a {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.markdown-content a:hover {
+  color: var(--link-hover-color);
+  text-decoration: underline;
+}
+
+/* 列表样式 */
+.markdown-content ul,
+.markdown-content ol {
+  margin: 16px 0;
+  padding-left: 2em;
+  color: var(--text-color);
+}
+
+/* 有序列表样式 */
+.markdown-content ol {
+  list-style-type: decimal;
+  counter-reset: item;
+}
+
+.markdown-content ol ol {
+  list-style-type: lower-alpha;
+}
+
+.markdown-content ol ol ol {
+  list-style-type: lower-roman;
+}
+
+/* 无序列表样式 */
+.markdown-content ul {
+  list-style: none;
+}
+
+.markdown-content ul li {
+  position: relative;
+}
+
+.markdown-content ul li::before {
+  content: "";
+  position: absolute;
+  left: -1.25em;
+  top: 0.75em;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 5px;
+  background-color: var(--text-color-lighter);
+  border-radius: 50%;
+}
+
+.markdown-content ul ul li::before {
+  width: 4px;
+  height: 4px;
+  border: 1px solid var(--text-color-lighter);
+  background-color: transparent;
+}
+
+.markdown-content ul ul ul li::before {
+  width: 5px;
+  height: 5px;
+  border: none;
+  background-color: transparent;
+  border: 1px solid var(--text-color-lighter);
+  transform: translateY(-50%) rotate(45deg);
+  border-radius: 1px;
+}
+
+/* 列表项通用样式 */
+.markdown-content li {
+  margin: 0.5em 0;
+  padding-left: 0.5em;
+}
+
+.markdown-content li > p {
+  margin: 0.5em 0;
+}
+
+.markdown-content li + li {
+  margin-top: 0.25em;
+}
+
+/* 任务列表样式 */
+.markdown-content .task-list-item {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.markdown-content .task-list-item::before {
+  display: none;
+}
+
+.markdown-content .task-list-item input[type="checkbox"] {
+  margin: 0 0.5em 0 -1.5em;
+  vertical-align: middle;
+}
+
+/* 引用块样式 */
+.markdown-content blockquote {
+  margin: 16px 0;
+  padding: 0.8em 1em;
+  color: var(--text-color-light);
+  border-left: 4px solid var(--border-color);
+  background-color: var(--bg-color-light);
+}
+
+.markdown-content blockquote > :first-child {
+  margin-top: 0;
+}
+
+.markdown-content blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+/* 内联代码样式 */
+.markdown-content code:not(.hljs) {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 0.85em;
+  background-color: var(--inline-code-bg);
+  border-radius: 3px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  color: var(--text-color);
+}
+
+/* 水平线样式 */
+.markdown-content hr {
+  height: 0.25em;
+  padding: 0;
+  margin: 24px 0;
+  background-color: var(--border-color);
+  border: 0;
+}
+
+/* 表格样式 */
+.markdown-content table {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  margin: 16px 0;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.markdown-content table th {
+  font-weight: 600;
+  background-color: var(--bg-color-light);
+}
+
+.markdown-content table th,
+.markdown-content table td {
+  padding: 6px 13px;
+  border: 1px solid var(--border-color);
+}
+
+.markdown-content table tr {
+  background-color: var(--bg-color);
+  border-top: 1px solid var(--border-color);
+}
+
+.markdown-content table tr:nth-child(2n) {
+  background-color: var(--bg-color-light);
+}
+
+.markdown-content table tr:hover {
+  background-color: var(--hover-bg);
+}
+
+.markdown-content table tr:last-child td {
+  border-bottom: none;
+}
+
+.markdown-content tr:nth-child(even) {
+  background-color: var(--bg-color-light);
+}
+
+/* 图片样式 */
+.markdown-content img {
+  max-width: 100%;
+  box-sizing: content-box;
+}
+
+/* 键盘按键样式 */
+.markdown-content kbd {
+  display: inline-block;
+  padding: 0.2em 0.4em;
+  font-size: 0.85em;
+  line-height: 1;
+  color: var(--text-color-light);
+  vertical-align: middle;
+  background-color: var(--bg-color-light);
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 var(--border-color);
+}
+
+/* 标记/高亮样式 */
+.markdown-content mark {
+  background-color: var(--mark-bg);
+  color: var(--text-color);
+  padding: 0.1em 0.2em;
+  border-radius: 2px;
+}
+
+/* ================= 代码块样式 ================= */
+.code-block {
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+  background-color: var(--bg-color-light);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: var(--bg-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.language-label {
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  opacity: 0.7;
+  color: var(--text-color-lighter);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.code-block pre,
+.code-block code {
+  margin: 0;
+  background: transparent;
+}
+
+/* 复制按钮样式 */
+.copy-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 0.5rem;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, opacity 0.2s;
+  padding: 8px;
+  opacity: 0.5;
+}
+
+.copy-button:hover {
+  background-color: var(--hover-bg);
+  opacity: 1;
+}
+
+.copy-icon {
+  width: 16px;
+  height: 16px;
+  filter: invert(70%) sepia(12%) saturate(320%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+/* 复制成功后的样式 */
+.copy-icon.copied {
+  filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(100deg) brightness(118%) contrast(119%) !important;
+}
+
+pre {
+  margin: 0;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  background-color: transparent;
+  tab-size: 2;
+  line-height: 1.6;
+}
+
+code {
+  font-family: inherit;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-color);
+  tab-size: 4;
+  -moz-tab-size: 4;
+}
+
+/* GitHub-style 代码高亮 */
+.hljs {
+  color: var(--text-color);
+  background: transparent;
+}
+
+/* 关键字 */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+  color: #cf222e;
+}
+
+/* 字符串 */
+.hljs-string,
+.hljs-regexp,
+.hljs-attribute,
+.hljs-attr {
+  color: #0a3069;
+}
+
+/* 数字 */
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag .hljs-attr {
+  color: #116329;
+}
+
+/* 类型 */
+.hljs-type,
+.hljs-class .hljs-title,
+.hljs-built_in {
+  color: #953800;
+}
+
+/* 函数 */
+.hljs-function .hljs-title,
+.hljs-title.function_ {
+  color: #8250df;
+}
+
+/* 类名 */
+.hljs-title,
+.hljs-title.class_,
+.hljs-class .hljs-title {
+  color: #0550ae;
+}
+
+/* 注释 */
+.hljs-comment,
+.hljs-quote {
+  color: #6e7781;
+  font-style: italic;
+}
+
+/* 文档标记 */
+.hljs-doctag,
+.hljs-meta,
+.hljs-meta-keyword {
+  color: #0550ae;
+}
+
+/* 标点符号 */
+.hljs-punctuation,
+.hljs-tag,
+.hljs-name {
+  color: #24292f;
+}
+
+/* 特殊关键字 */
+.hljs-section,
+.hljs-property {
+  color: #8250df;
+  font-weight: bold;
+}
+
+/* 模板字符串 */
+.hljs-template-tag,
+.hljs-template-variable {
+  color: #0550ae;
+}
+
+/* 删除的代码 */
+.hljs-deletion {
+  color: #82071e;
+  background-color: #ffebe9;
+}
+
+/* 插入的代码 */
+.hljs-addition {
+  color: #116329;
+  background-color: #dafbe1;
+}
+
+/* 深色模式适配 */
+.dark .hljs-keyword,
+.dark .hljs-selector-tag,
+.dark .hljs-subst {
+  color: #ff7b72;
+}
+
+.dark .hljs-string,
+.dark .hljs-regexp,
+.dark .hljs-attribute,
+.dark .hljs-attr {
+  color: #a5d6ff;
+}
+
+.dark .hljs-number,
+.dark .hljs-literal,
+.dark .hljs-variable,
+.dark .hljs-template-variable,
+.dark .hljs-tag .hljs-attr {
+  color: #79c0ff;
+}
+
+.dark .hljs-type,
+.dark .hljs-class .hljs-title,
+.dark .hljs-built_in {
+  color: #ffa657;
+}
+
+.dark .hljs-function .hljs-title,
+.dark .hljs-title.function_ {
+  color: #d2a8ff;
+}
+
+.dark .hljs-title,
+.dark .hljs-title.class_,
+.dark .hljs-class .hljs-title {
+  color: #79c0ff;
+}
+
+.dark .hljs-comment,
+.dark .hljs-quote {
+  color: #8b949e;
+}
+
+.dark .hljs-doctag,
+.dark .hljs-meta,
+.dark .hljs-meta-keyword {
+  color: #79c0ff;
+}
+
+.dark .hljs-punctuation,
+.dark .hljs-tag,
+.dark .hljs-name {
+  color: #c9d1d9;
+}
+
+.dark .hljs-section,
+.dark .hljs-property {
+  color: #d2a8ff;
+}
+
+.dark .hljs-template-tag,
+.dark .hljs-template-variable {
+  color: #79c0ff;
+}
+
+.dark .hljs-deletion {
+  color: #ffdcd7;
+  background-color: #67060c;
+}
+
+.dark .hljs-addition {
+  color: #aff5b4;
+  background-color: #033a16;
+}
