@@ -216,7 +216,7 @@
   padding: 0.2em 0.4em;
   margin: 0;
   font-size: 0.85em;
-  background-color: var(--inline-code-bg);
+  background-color: var(--md-inline-code-bg);
   border-radius: 3px;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   color: var(--text-color);
