@@ -11,55 +11,127 @@
 
 </div>
 
+# kun-lab
+
+**Your Local Intelligent Conversation Partner**
+
+kun-lab is a lightweight AI conversation application based on Ollama, designed to provide you with a simple, efficient, and feature-rich local AI conversation experience. Without complicated configuration, you can easily enjoy powerful AI capabilities, with all data under your local control, ensuring your privacy and security.
+
+## ✨ Core Highlights
+
+- **🚀 Flexible Multi-model Switching**: Easily manage and select various models supported by Ollama to meet your different conversation needs.
+- **💬 Ultra-fast Streaming Dialogue**: Experience smooth real-time conversations with instant AI responses.
+- **📄 Intelligent Document Parsing**: Support for PDF, DOC, PPT, TXT and other document formats, quickly understanding document content and answering your questions.
+- **🖼️ Multimodal Image Understanding**: Support for multimodal models that not only recognize images but also understand the scenes and intentions behind them, supporting multi-turn conversations based on images.
+- **🌐 Web Search Enhancement**: Integrated web search capabilities give AI a broader knowledge base, with deep search available for more complex questions as needed.
+- **💻 Code Rendering**: Automatic code block rendering supports multiple programming languages, making code display clearer and easier to understand.
+- **🗂️ Model Library Extension**: Support for pulling open-source models from Hugging Face and Ollama, GGUF and safetensors model formats, for more flexible model management.
+- **📝 Prompt Templates**: Built-in rich prompt templates, with support for custom and categorized management, easily inspiring AI creativity.
+- **🔒 Local Data Storage**: All data is stored locally, focusing on user privacy, secure and reliable.
+- **🌍 Multilingual Support**: Support for Chinese, English and other language interfaces to meet the needs of different users.
+- **👥 Multi-user Concurrent Support**: Support for multiple users to log in independently and be online simultaneously, with each user having their own conversation space and personalized settings, meeting the needs of families, small teams or organizations for shared use, improving resource utilization efficiency.
+
+## 🚀 Quick Start
+
+### Installation Guide
+
+1. **Get the code**:
+
+   ```bash
+   git clone [repository-url]
+   cd kun-lab
+   ```
+
+2. **Virtual environment installation**:
+
+   ```bash
+   python -m venv venv
+   .\venv\Scripts\activate  # Windows
+   # source venv/bin/activate  # macOS/Linux
+   ```
+
+3. **Configure backend environment**:
+
+   ```bash
+   cd backend
+   python setup.py or pip install -r requirements.txt
+   ```
+
+4. **Configure frontend environment**:
+
+   ```bash
+   cd frontend
+   npm install
+   ```
+
+5. **Environment variable configuration**:
+
+   ```bash
+   # Copy .env.example to .env
+   cp .env.example .env
+   # Modify the configuration items in the .env file according to your actual situation
+   ```
+
+6. **Start kun-lab**:
+
+   ```bash
+   # Run in the project root directory (after installing backend dependencies)
+   python run_dev.py
+   ```
+
+7. Open your browser and visit http://localhost:5173 to start experiencing kun-lab!
+
+
 ## 📚 Detailed Features
 
 ### 🤖 Intelligent AI Conversation
 
 - **Multi-turn Interaction**: Natural and smooth multi-turn conversation experience for deeper communication and exploration.
-- **Real-time Streaming Response**: Say goodbye to long waits with real-time AI responses for more efficient conversations.
-- **History Management**: Convenient viewing and management of conversation history, review brilliant dialogues anytime.
-- **Web Search**: Integrated web search functionality allows AI to access internet information for more comprehensive and timely answers.
-- **Code Rendering**: Intelligent recognition and rendering of code blocks for an enhanced code reading experience.
+- **Real-time Streaming Response**: Say goodbye to long waits, AI responses appear in real-time for more efficient conversations.
+- **History Management**: Convenient viewing and management of conversation history, review brilliant conversations anytime.
+- **Web Search**: Integrated web search functionality allows AI to access internet information, providing more comprehensive and timely answers.
+- **Code Rendering**: Intelligent recognition and rendering of code blocks, enhancing code reading experience.
 
 ### 📄 Intelligent Document Conversation
 
-- **Multi-format Document Support**: Support for uploading and parsing PDF, DOC, PPT, TXT, and other document formats.
+- **Multi-format Document Support**: Support for uploading and parsing PDF, DOC, PPT, TXT and other document formats.
 - **Deep Document Understanding**: AI can understand document content and structure for deeper interactive conversations.
-- **Contextual Relevance**: Context-related conversations based on document content to answer your specific questions.
-- **Document Content Retrieval**: Quickly retrieve key information within documents to improve information acquisition efficiency.
+- **Context Association**: Context-relevant conversations based on document content to answer your specific questions.
+- **Document Content Retrieval**: Quickly retrieve key information within documents, improving information acquisition efficiency.
 
 ### 🖼️ Multimodal Image Recognition
 
-- **Multiple Image Formats**: Support for common image formats such as JPG, PNG, JPEG.
+- **Multi-format Images**: Support for common image formats such as JPG, PNG, JPEG.
 - **Intelligent Scene Recognition**: Using multimodal models to accurately identify scenes and objects in images.
 - **OCR Text Extraction**: Powerful OCR functionality to quickly extract text information from images.
-- **Multi-turn Image-based Dialogue**: Engage in multi-turn in-depth conversations about image content to explore the stories behind the images.
+- **Multi-turn Conversations Based on Images**: Engage in deep multi-turn conversations about image content, exploring the stories behind the images.
 
 ### 📝 Flexible Prompt Management
 
-- **Built-in Prompt Templates**: Curated common prompt templates for quick start and inspiration.
+- **Built-in Prompt Templates**: Carefully selected common prompt templates for quick start and inspiration.
 - **Custom Prompts**: Freely create and edit prompts to meet your personalized needs.
 - **Category Management**: Categorize prompts for easy finding and use.
-- **One-click Application**: Quickly apply prompts to simplify operation processes.
+- **One-click Application**: Quickly apply prompts, simplifying the operation process.
 
 ### 🗂️ Powerful Model Library
 
 - **Multi-model Management**: Centrally manage various models installed in Ollama.
-- **Model Information Display**: Clearly display model names, sizes, and other information.
+- **Model Information Display**: Clearly display model name, size and other information.
 - **Quick Model Switching**: Switch the current model with one click to experience different model characteristics.
-- **Model Library Expansion**: Support for pulling GGUF and safetensors models from Hugging Face and Ollama to expand your model library.
+- **Model Library Extension**: Support for pulling GGUF and safetensors models from Hugging Face and Ollama to expand your model library.
 
 ### 🌍 Multilingual Support
 
-- **Interface Language Switching**: Support for Chinese, English, and other language interfaces to meet the needs of different users.
+- **Interface Language Switching**: Support for Chinese, English and other language interfaces to meet the needs of different users.
 - **Language Setting Persistence**: Language preferences are saved and automatically applied on your next visit.
 - **Global Translation**: All text elements in the application support multilingual display, including buttons, prompts, labels, etc.
 
+
 ## 🔮 Future Plans (Roadmap)
 
-- **Agent Functionality**: Implement a more intelligent Agent system to handle complex tasks.
-- **Tool Calling**: Support for calling external tools and services to extend AI capabilities.
-- **Voice Conversation**: Add speech recognition and synthesis for voice interaction.
+- **Agent Functionality**: Implement a smarter Agent system to handle complex tasks.
+- **Tool Calling Functionality**: Support for calling external tools and services to extend AI capabilities.
+- **Voice Conversation Functionality**: Add speech recognition and synthesis for voice interaction.
 
 ## 🛠️ Technology Stack
 
@@ -133,20 +205,21 @@ npm run dev
    - Click "New Conversation" in the side navigation bar
    - Click the "Start New Conversation" button on the home page
    - Select a specific model and click "Start New Conversation"
-3. Begin chatting happily with your model!
+3. Start chatting happily with your model!
 
-## 3. Custom Models (Modelfile)
+## 3. Custom Model (Modelfile)
 
 ### Steps:
 1. Go to the "Model Library" page
 2. Click the "Custom" button
 3. Enter a model name (Chinese supported)
 4. Select a base model
-5. Enter system prompts (to define roles or behaviors)
+5. Enter system prompts (used to define roles or behaviors)
 6. Click create to complete customization
 
 ### Tips:
-- If the prompt defines a role, the new model will converse with you in that role
+- If the prompt defines a role, the new model will converse with you as that role
+
 
 ## 🤝 Contributing
 
@@ -180,4 +253,5 @@ If you have any questions or suggestions, please feel free to contact us through
 
 - Submit an Issue: Submit your questions or suggestions on the GitHub repository issues page.
 
-> Note: kun-lab is still in rapid iterative development, your contributions and feedback are crucial to us!
+> Friendly reminder: kun-lab is still in rapid iterative development, your contributions and feedback are crucial to us!
+

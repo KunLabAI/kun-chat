@@ -64,14 +64,14 @@ kun-lab 是一款基于 Ollama 的轻量级 AI 对话应用，旨在为您提供
    python setup.py or pip install -r requirements.txt
    ```
 
-3. **配置前端环境**：
+4. **配置前端环境**：
 
    ```bash
    cd frontend
    npm install
    ```
 
-4. **环境变量配置**：
+5. **环境变量配置**：
 
    ```bash
    # 复制 .env.example 为 .env
@@ -79,14 +79,14 @@ kun-lab 是一款基于 Ollama 的轻量级 AI 对话应用，旨在为您提供
    # 根据您的实际情况修改 .env 文件中的配置项
    ```
 
-5. **启动 kun-lab**：
+6. **启动 kun-lab**：
 
    ```bash
    # 在项目根目录下运行（后端依赖安装后启动该脚本）
    python run_dev.py
    ```
 
-6. 打开浏览器，访问 http://localhost:5173 即可开始体验 kun-lab！
+7. 打开浏览器，访问 http://localhost:5173 即可开始体验 kun-lab！
 
 ## 📚 主要功能详解
 
