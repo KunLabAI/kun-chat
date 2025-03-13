@@ -87,4 +87,4 @@ jspm_packages/
 .env.test.local
 .env.production.local
 backend/data/kun-lab.db
-frontend/.gitignore
+.gitignore
