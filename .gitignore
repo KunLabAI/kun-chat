@@ -87,5 +87,6 @@ jspm_packages/
 .env.test.local
 .env.production.local
 backend/data/kun-lab.db
-backend/static/avatar/
-.gitignore
+backend/static/avatars/*.png
+backend/static/avatars/*.jpg
+backend/static/avatars/*.jpeg

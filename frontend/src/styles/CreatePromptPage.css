@@ -48,6 +48,25 @@
   margin-top: 0.5rem;
 }
 
+.header-right {
+  display: flex;
+  gap: 6px;
+}
+
+.language-info {
+  display: flex;
+  align-items: center;
+}
+
+.language-label {
+  font-size: 12px;
+  color: var(--text-color-light);
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+}
+
 /* 主要内容区域 */
 .content-card {
   background: var(--bg-color-light);
@@ -106,7 +125,7 @@
 }
 
 .required {
-  color: var(--el-color-danger);
+  color: #ef4444;
   margin-left: 4px;
 }
 
@@ -130,71 +149,52 @@
   color: var(--text-color-lighter);
 }
 
-/* 代码块样式 */
-.code-block {
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
+/* 图标按钮样式 */
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
   border-radius: 8px;
-  overflow: hidden;
-}
-
-.code-header {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 6px 10px; /* 减小内边距 */
-  background: var(--bg-color-light);
-  border-bottom: 1px solid var(--border-color);
-}
-
-.header-right {
-  display: flex;
-  gap: 6px;
-}
-
-.clear-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 10px;
-  font-size: 13px; /* 减小字体大小 */
-  color: var(--text-color-light);
   background-color: transparent;
   border: 1px solid var(--border-color);
-  border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s ease;
+  padding: 0;
 }
 
-.clear-button:hover {
-  color: var(--text-color);
+.icon-button:hover {
   background-color: var(--bg-color);
   border-color: var(--text-color-light);
 }
 
-.clear-button svg {
-  opacity: 0.7;
-}
-
-.clear-button:hover svg {
+.icon-button:hover svg {
+  color: var(--text-color);
   opacity: 1;
 }
 
-.copy-button {
-  padding: 3px 10px;
-  font-size: 13px; /* 减小字体大小 */
-  color: var(--text-color-light);
-  background-color: transparent;
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  cursor: pointer;
+/* 按钮图标样式 */
+.button-icon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.5;
   transition: all 0.2s ease;
+  filter: invert(70%) sepia(12%) saturate(320%) hue-rotate(180deg) brightness(95%) contrast(90%);
 }
 
-.copy-button:hover {
-  color: var(--text-color);
-  background-color: var(--bg-color);
-  border-color: var(--text-color-light);
+.icon-button:hover .button-icon {
+  opacity: 1;
+}
+
+/* 图标样式 */
+.check-icon {
+  filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(100deg) brightness(118%) contrast(119%) !important;
+  opacity: 1 !important;
+}
+
+.copy-button {
+  background-color: transparent;
 }
 
 .form-textarea {
@@ -260,6 +260,23 @@
 
 .tag-remove:hover {
   color: #ffffff;
+}
+
+/* 代码块样式 */
+.code-block {
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px; /* 减小内边距 */
+  background: var(--bg-color-light);
+  border-bottom: 1px solid var(--border-color);
 }
 
 /* 媒体查询 - 中等屏幕 (1024px) */
@@ -328,16 +345,6 @@
     min-height: 420px;
     padding: 14px;
   }
-  
-  .code-header {
-    padding: 7px 11px;
-  }
-  
-  .clear-button,
-  .copy-button {
-    padding: 4px 11px;
-    font-size: 13.5px;
-  }
 }
 
 /* 媒体查询 - 大屏幕 (1920px) */
@@ -396,16 +403,6 @@
   .form-textarea {
     min-height: 528px;
     padding: 16px;
-  }
-  
-  .code-header {
-    padding: 8px 12px;
-  }
-  
-  .clear-button,
-  .copy-button {
-    padding: 4px 12px;
-    font-size: 14px;
   }
   
   .tags-container {

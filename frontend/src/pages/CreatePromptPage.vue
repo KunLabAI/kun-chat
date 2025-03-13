@@ -29,9 +29,6 @@
       <div class="content-card">
         <div class="create-form">
           <div class="form-section">
-            <div class="section-header">
-              <h3 class="section-title">{{ t('prompt.form.title_label') }}</h3>
-            </div>
             <div class="section-content">
               <div class="form-group">
                 <label class="form-label" for="title">
@@ -81,14 +78,18 @@
                 </label>
                 <div class="code-block">
                   <div class="code-header">
+                    <div class="language-info">
+                      <span class="language-label" v-if="detectedLanguage">{{ detectedLanguage }}</span>
+                    </div>
                     <div class="header-right">
-                      <button class="clear-button" @click="clearContent">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3-3h8M9 3v3M15 3v3M4 6h16"/>
-                        </svg>
-                        {{ t('common.actions.clear') }}
+                      <button class="icon-button clear-button" @click="clearContent" :title="t('common.actions.clear')">
+                        <img v-if="!clearSuccess" src="@/assets/icons/model_delete.svg" alt="clear" class="button-icon" />
+                        <img v-else src="@/assets/icons/sys_check.svg" alt="success" class="button-icon check-icon" />
                       </button>
-                      <button class="copy-button" @click="copyContent">{{ t('prompt.card.copy') }}</button>
+                      <button class="icon-button copy-button" @click="copyContent" :title="t('prompt.card.copy')">
+                        <img v-if="!copySuccess" src="@/assets/icons/chat_copy.svg" alt="copy" class="button-icon" />
+                        <img v-else src="@/assets/icons/sys_check.svg" alt="success" class="button-icon check-icon" />
+                      </button>
                     </div>
                   </div>
                   <textarea
@@ -97,6 +98,7 @@
                     class="form-textarea"
                     :class="{ error: errors.content }"
                     :placeholder="t('prompt.form.content_placeholder')"
+                    @input="detectLanguage"
                     required
                   ></textarea>
                 </div>
@@ -130,6 +132,9 @@ const isSubmitting = ref(false)
 const tagsInput = ref('')
 const currentTags = ref<{ text: string; color: string }[]>([])
 const loadedPrompt = ref<Prompt | null>(null)
+const detectedLanguage = ref<string | null>(null)
+const clearSuccess = ref(false)
+const copySuccess = ref(false)
 
 const form = reactive({
   title: '',
@@ -236,18 +241,27 @@ async function handleSubmit() {
 }
 
 // 复制提示词内容
-function copyContent() {
+async function copyContent() {
   if (!form.content) return
-  navigator.clipboard.writeText(form.content).then(() => {
-    notification.success(t('prompt.notifications.copied'))
-  }).catch(() => {
-    notification.error(t('common.status.error'))
-  })
+  
+  try {
+    await navigator.clipboard.writeText(form.content)
+    copySuccess.value = true
+    setTimeout(() => {
+      copySuccess.value = false
+    }, 2000)
+  } catch (error) {
+    console.error('复制失败:', error)
+  }
 }
 
 // 清空提示词内容
 function clearContent() {
   form.content = ''
+  clearSuccess.value = true
+  setTimeout(() => {
+    clearSuccess.value = false
+  }, 2000)
 }
 
 // 处理标签输入
@@ -274,6 +288,29 @@ function handleTagInput(event: KeyboardEvent) {
 function removeTag(tagText: string) {
   currentTags.value = currentTags.value.filter(tag => tag.text !== tagText)
   form.tags = currentTags.value
+}
+
+// 语言检测
+function detectLanguage() {
+  const content = form.content.trim()
+  
+  // 检测代码块语言
+  const codeBlockRegex = /```(\w+)[\s\S]*?```/g
+  const matches = [...content.matchAll(codeBlockRegex)]
+  
+  if (matches.length > 0) {
+    // 获取最后一个代码块的语言
+    const lastMatch = matches[matches.length - 1]
+    const lang = lastMatch[1]
+    
+    if (lang && lang !== 'undefined') {
+      detectedLanguage.value = lang
+    } else {
+      detectedLanguage.value = null
+    }
+  } else {
+    detectedLanguage.value = null
+  }
 }
 </script>
 
