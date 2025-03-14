@@ -258,6 +258,6 @@ Apache 2.0 License
 
 - 提交 Issue：在 GitHub 仓库 issues 页面提交您的问题或建议。
 
-- 邮件：发送至 [info@kunpuai.com](info@kunpuai.com)
+- 邮件：发送至 [service@kunpuai.com](service@kunpuai.com)
 
 > 温馨提示：kun-lab 仍在快速迭代开发中，您的贡献和反馈对我们至关重要！
