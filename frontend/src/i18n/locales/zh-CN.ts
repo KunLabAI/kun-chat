@@ -114,7 +114,8 @@ const messages: Messages = {
           title: '深色模式',
           description: '切换深色和浅色主题',
           light: '浅色',
-          dark: '深色'
+          dark: '深色',
+          system: '跟随系统'
         }
       },
       security: {

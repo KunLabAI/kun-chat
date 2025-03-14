@@ -114,7 +114,8 @@ const messages: Messages = {
           title: 'Dark Mode',
           description: 'Toggle between dark and light themes',
           light: 'Light',
-          dark: 'Dark'
+          dark: 'Dark',
+          system: 'System'
         }
       },
       security: {
