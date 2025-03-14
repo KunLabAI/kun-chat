@@ -51,9 +51,19 @@
                   </p>
                   <div class="features-toggle-group">
                     <button 
+                      @click="themeStore.setTheme('system')"
+                      class="features-toggle-button"
+                      :class="{ 'features-toggle-button-active': themeStore.themeSource === 'system' }"
+                    >
+                      <span class="flex items-center justify-center">
+                        <ComputerDesktopIcon class="h-5 w-5 mr-2" />
+                        {{ $t('settings.account.theme.switch.system') }}
+                      </span>
+                    </button>
+                    <button 
                       @click="themeStore.setTheme('light')"
                       class="features-toggle-button"
-                      :class="{ 'features-toggle-button-active': !themeStore.isDark }"
+                      :class="{ 'features-toggle-button-active': themeStore.themeSource === 'light' }"
                     >
                       <span class="flex items-center justify-center">
                         <SunIcon class="h-5 w-5 mr-2" />
@@ -63,7 +73,7 @@
                     <button 
                       @click="themeStore.setTheme('dark')"
                       class="features-toggle-button"
-                      :class="{ 'features-toggle-button-active': themeStore.isDark }"
+                      :class="{ 'features-toggle-button-active': themeStore.themeSource === 'dark' }"
                     >
                       <span class="flex items-center justify-center">
                         <MoonIcon class="h-5 w-5 mr-2" />
@@ -266,7 +276,7 @@ import { toolsApi } from '@/api/tools'
 import { useRoute, useRouter } from 'vue-router'
 import Button from '@/components/common/Button.vue'
 import { useLocalization } from '@/i18n/composables'
-import { SunIcon, MoonIcon } from '@heroicons/vue/24/solid'
+import { SunIcon, MoonIcon, ComputerDesktopIcon } from '@heroicons/vue/24/solid'
 
 const { t } = useI18n()
 const { language } = useLocalization()
