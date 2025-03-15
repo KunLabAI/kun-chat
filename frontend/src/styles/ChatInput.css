@@ -4,7 +4,7 @@
   bottom: 24px;
   left: 0px;
   right: 0;
-  max-width: 40%;
+  max-width: 100%;
   margin: auto;
   background: var(--bg-color);
   transition: all 0.3s ease;
@@ -15,9 +15,7 @@
 }
 
 .dark .input-container {
-  background: var(--bg-color-dark);
   border-color: var(--border-color-dark);
-  box-shadow: 0 2px 8px var(--shadow-color-dark);
 }
 
 .input-area {
@@ -730,6 +728,15 @@
 .dark .remove-pdf:hover {
   color: rgba(255, 255, 255, 0.9);
 }
+
+/* 媒体查询 - 中等屏幕 (768px) */
+@media screen and (min-width: 512px) {
+  .input-container {
+    max-width: 512px;
+    margin-top: 32px; 
+  }
+}
+
 
 /* 媒体查询 - 中等屏幕 (1024px) */
 @media screen and (min-width: 1024px) {

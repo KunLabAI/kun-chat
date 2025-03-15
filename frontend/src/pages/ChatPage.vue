@@ -12,7 +12,7 @@
           <!-- 用户头像 -->
           <div v-if="message.role === 'user'" class="avatar-container">
             <div class="user-avatar-background">
-              <img :src="authStore.userAvatar" alt="User" class="user-avatar" />
+              <img :src="userAvatarUrl" alt="User" class="user-avatar" />
             </div>
           </div>
           <!-- AI头像 -->
@@ -71,7 +71,7 @@
                 class="thinking-process"
                 :class="{ 'thinking-process-active': isActiveThinking(message) }"
               >
-                <div class="thinking-process-header" @click="toggleThinkingProcess(message)">
+                <div class="thinking-process-header">
                   <span class="thinking-title">
                     {{ isActiveThinking(message) ? t('chat.thinking_process.title') : t('chat.thinking_process.title') }}
                     <span class="thinking-time">
@@ -79,7 +79,7 @@
                     </span>
                   </span>
                   <span v-if="isActiveThinking(message)" class="thinking-dots"></span>
-                  <div class="thinking-toggle">
+                  <div class="thinking-toggle" @click="toggleThinkingProcess(message)">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" :class="{ 'rotate-180': message.showThinking }">
                       <path d="M19 9l-7 7-7-7"/>
                     </svg>
@@ -176,7 +176,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, nextTick, onUnmounted } from 'vue'
+import { ref, onMounted, watch, nextTick, onUnmounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useChatStore } from '@/stores/chat'
@@ -190,6 +190,7 @@ import { BubbleAvatar } from '@/components/AIavatar.ts'
 import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue'
 import PlainTextRenderer from '@/components/common/PlainTextRenderer.vue'
 import Dialog from '@/components/common/Dialog.vue'
+import { API_BASE_URL } from '@/api/config'
 
 const route = useRoute()
 const chatStore = useChatStore()
@@ -197,6 +198,23 @@ const modelsStore = useModelsStore()
 const notificationStore = useNotificationStore()
 const authStore = useAuthStore()
 const { t } = useLocalization()
+
+// 计算用户头像URL
+const userAvatarUrl = computed(() => {
+  if (authStore.user?.avatar) {
+    // 检查是否是完整URL或相对路径
+    if (authStore.user.avatar.startsWith('http')) {
+      return authStore.user.avatar
+    } else if (authStore.user.avatar.startsWith('/static/')) {
+      // 直接使用API_BASE_URL，不需要再添加/api
+      return `${API_BASE_URL}${authStore.user.avatar}`
+    } else {
+      // 添加API基础URL
+      return `${API_BASE_URL}${authStore.user.avatar}`
+    }
+  }
+  return `${API_BASE_URL}/static/default-avatar.jpg`
+})
 
 // 使用 storeToRefs 获取响应式状态
 const { messages, isGenerating, currentModel } = storeToRefs(chatStore)
@@ -253,6 +271,18 @@ onMounted(() => {
   // 初始滚动到底部
   scrollToBottom(true, false);
   
+  // 加载当前对话
+  loadCurrentConversation().then(() => {
+    // 加载所有消息的思考时间数据
+    if (chatStore.messages && chatStore.messages.length > 0) {
+      chatStore.messages.forEach(message => {
+        if (message.role === 'assistant') {
+          loadThinkingTimesFromLocalStorage(message);
+        }
+      });
+    }
+  });
+  
   const handleScroll = () => {
     const { scrollTop, scrollHeight, clientHeight } = container;
     const currentScroll = scrollTop + clientHeight;
@@ -286,9 +316,18 @@ const scrollToBottom = (force = false, smooth = true) => {
 };
 
 // 监听消息变化
-watch(() => chatStore.messages, () => {
+watch(() => chatStore.messages, (newMessages) => {
   nextTick(() => {
     scrollToBottom();
+    
+    // 保存所有AI消息的思考时间数据
+    if (newMessages && newMessages.length > 0) {
+      newMessages.forEach(message => {
+        if (message.role === 'assistant') {
+          saveThinkingTimesToLocalStorage(message);
+        }
+      });
+    }
   });
 }, { deep: true });
 
@@ -447,6 +486,12 @@ const isActiveThinking = (message) => {
       message.metadata.thinkTimes.push({
         startTime: message.currentThinkStartTime
       });
+      
+      // 保存更新后的消息到store
+      chatStore.updateMessage(message);
+      
+      // 保存思考时间到localStorage
+      saveThinkingTimesToLocalStorage(message);
     }
     return true;
   }
@@ -462,6 +507,9 @@ const isActiveThinking = (message) => {
         currentThink.duration = message.currentThinkEndTime - currentThink.startTime;
         // 保存更新后的消息到store
         chatStore.updateMessage(message);
+        
+        // 保存思考时间到localStorage
+        saveThinkingTimesToLocalStorage(message);
       }
     }
     // 重置当前思考时间，为下一次思考做准备
@@ -475,6 +523,9 @@ const isActiveThinking = (message) => {
 // 计算思考时间
 const getThinkingTime = (message) => {
   if (!message.content) return '';
+  
+  // 尝试从localStorage加载思考时间
+  loadThinkingTimesFromLocalStorage(message);
   
   // 如果正在思考中
   if (isActiveThinking(message)) {
@@ -502,6 +553,64 @@ const getThinkingTime = (message) => {
   }
   
   return '';
+};
+
+// 保存思考时间到localStorage
+const saveThinkingTimesToLocalStorage = (message) => {
+  try {
+    if (!message.metadata?.thinkTimes) return;
+    
+    // 获取当前对话ID
+    const conversationId = route.params.conversationId?.toString();
+    if (!conversationId) return;
+    
+    // 使用消息内容的前100个字符作为标识符
+    const contentIdentifier = message.content ? message.content.substring(0, 100) : '';
+    
+    // 构建存储键
+    const storageKey = `thinkTimes_${conversationId}_${contentIdentifier}`;
+    
+    // 保存思考时间数据
+    localStorage.setItem(storageKey, JSON.stringify(message.metadata.thinkTimes));
+    console.log('已保存思考时间数据:', storageKey);
+  } catch (error) {
+    console.error('保存思考时间到localStorage失败:', error);
+  }
+};
+
+// 从localStorage加载思考时间
+const loadThinkingTimesFromLocalStorage = (message) => {
+  try {
+    // 获取当前对话ID
+    const conversationId = route.params.conversationId?.toString();
+    if (!conversationId) return;
+    
+    // 使用消息内容的前100个字符作为标识符
+    const contentIdentifier = message.content ? message.content.substring(0, 100) : '';
+    
+    // 构建存储键
+    const storageKey = `thinkTimes_${conversationId}_${contentIdentifier}`;
+    
+    // 从localStorage获取数据
+    const storedData = localStorage.getItem(storageKey);
+    if (!storedData) return;
+    
+    console.log('已加载思考时间数据:', storageKey);
+    
+    // 解析数据并更新消息
+    const thinkTimes = JSON.parse(storedData);
+    if (Array.isArray(thinkTimes) && thinkTimes.length > 0) {
+      // 只有当消息没有思考时间数据或数据不完整时才更新
+      if (!message.metadata) {
+        message.metadata = {};
+      }
+      if (!message.metadata.thinkTimes || message.metadata.thinkTimes.length < thinkTimes.length) {
+        message.metadata.thinkTimes = thinkTimes;
+      }
+    }
+  } catch (error) {
+    console.error('从localStorage加载思考时间失败:', error);
+  }
 };
 
 // 格式化思考内容，处理换行和缩进

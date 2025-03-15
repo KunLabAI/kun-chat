@@ -65,11 +65,11 @@
             <WrenchScrewdriverIcon class="menu-icon" />
             <span>{{ t('sidebar.features_settings') }}</span>
           </RouterLink>
-          <a href="https://kunpuai.com" target="_blank" class="menu-item" @click="closeUserMenu">
+          <a href="https://lab.kunpuai.com" target="_blank" class="menu-item" @click="closeUserMenu">
             <UsersIcon class="menu-icon" />
             <span>{{ t('sidebar.community') }}</span>
           </a>
-          <a href="https://github.com/kunpuai/kunyuchat" target="_blank" class="menu-item" @click="closeUserMenu">
+          <a href="https://github.com/bahamutww/kun-lab.git" target="_blank" class="menu-item" @click="closeUserMenu">
             <QuestionMarkCircleIcon class="menu-icon" />
             <span>{{ t('sidebar.help_docs') }}</span>
           </a>

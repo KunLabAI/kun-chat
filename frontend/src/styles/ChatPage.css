@@ -478,7 +478,7 @@ html {
   display: flex;
   align-items: center;
   margin-bottom: 12px;
-  cursor: pointer;
+  cursor: default;
   user-select: none;
   transition: background-color 0.2s ease;
 }
@@ -501,6 +501,7 @@ html {
   width: 20px;
   height: 20px;
   color: var(--chat-thinking-icon);
+  cursor: pointer;
 }
 
 .thinking-toggle svg {
@@ -543,6 +544,15 @@ html {
   white-space: pre-wrap;
   line-height: 1.6;
   color: var(--chat-thinking-content);
+  border-radius: 8px;
+}
+
+/* 媒体查询 - 中等屏幕 (768px) */
+@media screen and (min-width: 512px) {
+  .messages-container {
+    max-width: 512px;
+    margin-top: 32px; 
+  }
 }
 
 /* 媒体查询 - 中等屏幕 (1024px) */
@@ -556,7 +566,7 @@ html {
 /* 媒体查询 - 大屏幕 (1920px) */
 @media screen and (min-width: 1920px) {
   .messages-container {
-    max-width: 1200px;
+    max-width: 1024px;
     margin-top: 32px; 
   }
 }
