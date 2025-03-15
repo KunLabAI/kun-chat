@@ -94,18 +94,6 @@
   --yellow-800: #854d0e;
   --yellow-900: #713f12;
   
-  /* 绿色系 */
-  --green-50: #f0fdf4;
-  --green-100: #dcfce7;
-  --green-200: #bbf7d0;
-  --green-300: #86efac;
-  --green-400: #4ade80;
-  --green-500: #22c55e;
-  --green-600: #16a34a;
-  --green-700: #15803d;
-  --green-800: #166534;
-  --green-900: #14532d;
-  
   /* ===== 特殊效果色彩 ===== */
   
   /* 渐变色 */
@@ -124,6 +112,11 @@
   
   /* 加载动画色彩 */
   --loading-spinner-color: var(--primary-500);
+  
+  /* 透明度颜色 */
+  --primary-100-alpha: rgba(168, 85, 247, 0.1);
+  --primary-200-alpha: rgba(168, 85, 247, 0.2);
+  --primary-300-alpha: rgba(168, 85, 247, 0.3);
   
   /* 聊天思考过程色彩 */
   --chat-thinking-bg: rgba(245, 247, 250, 0.85);
@@ -212,6 +205,7 @@
   --bg-color: var(--gray-50);
   --bg-color-light: white;
   --bg-color-dark: var(--gray-100);
+  --bg-color-darker: var(--gray-900);
   --text-color: var(--gray-900);
   --text-color-light: var(--gray-700);
   --text-color-lighter: var(--gray-500);
@@ -229,10 +223,22 @@
   --chat-ai-bubble-bg: var(--bg-color);     /* AI消息气泡背景色 */
   --chat-ai-bubble-text: var(--text-color); /* AI消息文字颜色 */
   --chat-ai-bubble-border: var(--border-color); /* AI消息气泡边框颜色 */
+  --message-bubble-bg: transparent;         /* 默认消息气泡背景色 */
+  --message-bubble-text: var(--text-color); /* 默认消息文字颜色 */
   
   /* 滚动条颜色 */
   --scrollbar-thumb: var(--gray-300);
   --scrollbar-thumb-dark: var(--gray-600);
+  
+  /* 阴影颜色 */
+  --shadow-color: rgba(0, 0, 0, 0.05);
+  --shadow-color-dark: rgba(0, 0, 0, 0.2);
+  
+  /* 提示框颜色 */
+  --tooltip-bg: var(--gray-100);
+  --tooltip-text: var(--text-color);
+  --tooltip-bg-dark: var(--gray-700);
+  --tooltip-text-dark: var(--gray-100);
   
   /* 全局过渡效果 */
   --transition-duration: 200ms;
@@ -251,23 +257,39 @@
   --bg-color: var(--gray-900);
   --bg-color-light: var(--gray-800);
   --bg-color-dark: var(--gray-950);
+  --bg-color-darker: var(--gray-1000);
   --text-color: var(--gray-50);
   --text-color-light: var(--gray-300);
   --text-color-lighter: var(--gray-400);
   --border-color: var(--gray-800);
   --border-color-light: var(--gray-700);
+  --border-color-dark: var(--gray-700);
   --link-color: var(--primary-400);
   --link-hover-color: var(--primary-300);
   --button-bg: var(--gray-800);
   --button-hover-bg: var(--gray-700);
+  --button-hover-bg-dark: var(--gray-600);
   --button-border: var(--gray-600);
   --button-hover-border: var(--gray-500);
+  --button-hover-border-dark: var(--gray-500);
   --chat-user-avatar-bg: var(--gray-700);
   --chat-user-bubble-bg: var(--gray-600);   /* 用户消息气泡背景色 */
   --chat-user-bubble-text: var(--gray-50);   /* 用户消息文字颜色 */
   --chat-ai-bubble-bg: var(--bg-color);      /* AI消息气泡背景色 */
   --chat-ai-bubble-text: var(--text-color);  /* AI消息文字颜色 */
   --chat-ai-bubble-border: var(--border-color); /* AI消息气泡边框颜色 */
+  --message-bubble-bg: var(--gray-800);      /* 默认消息气泡背景色 */
+  --message-bubble-text: var(--gray-50);     /* 默认消息文字颜色 */
+  
+  /* 阴影颜色 - 深色模式 */
+  --shadow-color: rgba(0, 0, 0, 0.2);
+  --shadow-color-dark: rgba(0, 0, 0, 0.4);
+  
+  /* 提示框颜色 - 深色模式 */
+  --tooltip-bg: var(--gray-800);
+  --tooltip-text: var(--gray-100);
+  --tooltip-bg-dark: var(--gray-700);
+  --tooltip-text-dark: var(--gray-50);
   
   /* 聊天思考过程深色主题色彩 */
   --chat-thinking-bg: rgba(30, 41, 59, 0.5);

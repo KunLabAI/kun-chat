@@ -6,18 +6,18 @@
   right: 0;
   max-width: 40%;
   margin: auto;
-  background: var(--gray-50);
+  background: var(--bg-color);
   transition: all 0.3s ease;
   border-radius: 8px;
   padding: 12px;
-  border: 1px solid var(--gray-200);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px var(--shadow-color);
 }
 
 .dark .input-container {
-  background: var(--gray-800);
-  border-color: var(--gray-700);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  background: var(--bg-color-dark);
+  border-color: var(--border-color-dark);
+  box-shadow: 0 2px 8px var(--shadow-color-dark);
 }
 
 .input-area {
@@ -32,18 +32,17 @@
   align-items: center;
   gap: 8px;
   width: 100%;
-  background: var(--gray-0);
-  border: 1px solid var(--gray-200);
+  background: var(--bg-color-light);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 4px 8px;
   transition: all 0.2s ease;
 }
 
 .dark .input-controls {
-  background: var(--gray-900);
-  border-color: var(--gray-700);
+  background: var(--bg-color-darker);
+  border-color: var(--border-color-dark);
 }
-
 
 /* 消息输入框 */
 .input-controls .message-input {
@@ -74,7 +73,7 @@
   color: var(--gray-0);
   border: none;
   cursor: pointer;
-  transition: all 2s ease;
+  transition: all 0.2s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 0;
 }
@@ -82,7 +81,6 @@
 .send-button:hover:not(:disabled) {
   background: linear-gradient(35deg, var(--primary-800) 0%, var(--primary-600) 100%);
 }
-
 
 .send-button:active:not(:disabled) {
   background: var(--primary-700);
@@ -135,12 +133,11 @@
   height: 16px;
   opacity: 0.5;
   transition: all 0.3s ease;
-  filter: var(--svg-filter);
+  filter: var(--filter-gray);
 }
 
 .web-search-btn:hover {
   background: var(--button-hover-bg);
-  border-color: var(--button-hover-border);
 }
 
 .web-search-btn:hover img {
@@ -166,14 +163,14 @@
   font-size: 12px;
   font-weight: 500;
   color: var(--text-color);
-  background-color: var(--bg-color-dark);
+  background-color: var(--tooltip-bg);
   white-space: nowrap;
   border-radius: 4px;
   visibility: hidden;
   opacity: 0;
   transition: all 0.2s ease;
   z-index: 1100;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px var(--shadow-color);
   pointer-events: none;
 }
 
@@ -184,12 +181,12 @@
 }
 
 .dark .web-search-btn[data-tooltip]::before {
-  background-color: var(--gray-700);
-  color: var(--gray-100);
+  background-color: var(--tooltip-bg-dark);
+  color: var(--tooltip-text-dark);
 }
 
 .dark .web-search-btn[data-tooltip]::after {
-  border-right-color: var(--gray-700);
+  border-right-color: var(--tooltip-bg-dark);
 }
 
 /* 模型选择按钮和清空按钮提示框样式 */
@@ -203,14 +200,14 @@
   font-size: 12px;
   font-weight: 500;
   color: var(--text-color);
-  background-color: var(--bg-color-dark);
+  background-color: var(--tooltip-bg);
   white-space: nowrap;
   border-radius: 4px;
   visibility: hidden;
   opacity: 0;
   transition: all 0.2s ease;
   z-index: 1100;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px var(--shadow-color);
   pointer-events: none;
 }
 
@@ -230,47 +227,25 @@
   font-size: 12px;
   font-weight: 500;
   color: var(--text-color);
-  background-color: var(--bg-color-dark);
+  background-color: var(--tooltip-bg);
   white-space: nowrap;
   border-radius: 4px;
   visibility: hidden;
   opacity: 0;
   transition: all 0.2s ease;
   z-index: 1100;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   pointer-events: none;
 }
 
-.clear-btn[data-tooltip]::after {
-  content: '';
-  position: absolute;
-  left: calc(100% + 5px);
-  top: 50%;
-  transform: translateY(-50%);
-  border: 5px solid transparent;
-  border-right-color: var(--bg-color-dark);
-  visibility: hidden;
-  opacity: 0;
-  transition: all 0.2s ease;
-  z-index: 1100;
-  pointer-events: none;
-}
-
-.clear-btn[data-tooltip]:hover::before,
-.clear-btn[data-tooltip]:hover::after {
+.clear-btn[data-tooltip]:hover::before {
   visibility: visible;
   opacity: 1;
 }
 
 .dark .model-select-btn[data-tooltip]::before,
 .dark .clear-btn[data-tooltip]::before {
-  background-color: var(--gray-700);
-  color: var(--gray-100);
-}
-
-.dark .model-select-btn[data-tooltip]::after,
-.dark .clear-btn[data-tooltip]::after {
-  border-right-color: var(--gray-700);
+  background-color: var(--tooltip-bg-dark);
+  color: var(--tooltip-text-dark);
 }
 
 /* 模型选择按钮 */
@@ -280,25 +255,25 @@
   gap: 8px;
   padding: 6px 12px;
   border-radius: 6px;
-  color: var(--gray-700);
+  color: var(--text-color);
   font-size: 14px;
   transition: all 0.2s ease;
   cursor: pointer;
 }
 
 .dark .model-select-btn {
-  background: var(--gray-800);
-  color: var(--gray-300);
+  background: var(--bg-color-dark);
+  color: var(--text-color-dark);
 }
 
 .model-select-btn:hover {
-  background: var(--gray-200);
-  border-color: var(--gray-300);
+  background: var(--button-hover-bg);
+  border-color: var(--button-hover-border);
 }
 
 .dark .model-select-btn:hover {
-  background: var(--gray-700);
-  border-color: var(--gray-600);
+  background: var(--button-hover-bg-dark);
+  border-color: var(--button-hover-border-dark);
 }
 
 .model-select-btn.active {
@@ -316,7 +291,7 @@
 .model-select-btn svg {
   opacity: 0.7;
   transition: all 0.3s ease;
-  color: var(--text-color-lighter);
+  color: var(--text-color-light);
 }
 
 .model-select-btn .chevron-icon {
@@ -355,17 +330,16 @@
   transition: all 0.3s ease;
 }
 
-.clear-btn svg {
+.clear-btn img {
   width: 16px;
   height: 16px;
   opacity: 0.7;
   transition: all 0.3s ease;
-  filter: var(--svg-filter);
+  filter: var(--filter-gray);
 }
 
 .clear-btn:hover {
   background: var(--button-hover-bg);
-  border-color: var(--button-hover-border);
 }
 
 .clear-btn:hover svg {
@@ -389,7 +363,7 @@
   height: 16px;
   opacity: 0.7;
   transition: all 0.3s ease;
-  filter: var(--svg-filter);
+  filter: var(--filter-gray);
 }
 
 .upload-btn:hover {
@@ -421,14 +395,14 @@
   font-size: 12px;
   font-weight: 500;
   color: var(--text-color);
-  background-color: var(--bg-color-dark);
+  background-color: var(--tooltip-bg);
   white-space: nowrap;
   border-radius: 4px;
   visibility: hidden;
   opacity: 0;
   transition: all 0.2s ease;
   z-index: 1100;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px var(--shadow-color);
   pointer-events: none;
 }
 
@@ -439,7 +413,7 @@
   top: 50%;
   transform: translateY(-50%);
   border: 5px solid transparent;
-  border-left-color: var(--bg-color-dark);
+  border-left-color: var(--tooltip-bg);
   visibility: hidden;
   opacity: 0;
   transition: all 0.2s ease;
@@ -454,12 +428,12 @@
 }
 
 .dark .upload-btn[data-tooltip]::before {
-  background-color: var(--gray-700);
-  color: var(--gray-100);
+  background-color: var(--tooltip-bg-dark);
+  color: var(--tooltip-text-dark);
 }
 
 .dark .upload-btn[data-tooltip]::after {
-  border-left-color: var(--gray-700);
+  border-left-color: var(--tooltip-bg-dark);
 }
 
 /* 上传选项提示框样式 */
@@ -473,14 +447,14 @@
   font-size: 12px;
   font-weight: 500;
   color: var(--text-color);
-  background-color: var(--bg-color-dark);
+  background-color: var(--tooltip-bg);
   white-space: nowrap;
   border-radius: 4px;
   visibility: hidden;
   opacity: 0;
   transition: all 0.2s ease;
   z-index: 1100;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px var(--shadow-color);
   pointer-events: none;
 }
 
@@ -491,7 +465,7 @@
   top: 50%;
   transform: translateY(-50%);
   border: 5px solid transparent;
-  border-right-color: var(--bg-color-dark);
+  border-right-color: var(--tooltip-bg);
   visibility: hidden;
   opacity: 0;
   transition: all 0.2s ease;
@@ -506,12 +480,12 @@
 }
 
 .dark .upload-option[data-tooltip]::before {
-  background-color: var(--gray-700);
-  color: var(--gray-100);
+  background-color: var(--tooltip-bg-dark);
+  color: var(--tooltip-text-dark);
 }
 
 .dark .upload-option[data-tooltip]::after {
-  border-right-color: var(--gray-700);
+  border-right-color: var(--tooltip-bg-dark);
 }
 
 /* 上传弹出层位置调整 */
@@ -520,12 +494,12 @@
   bottom: calc(100% + 8px);
   right: 0;
   left: auto;
-  background: var(--bg-color-dark);
+  background: var(--bg-color);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 8px;
   min-width: 180px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px var(--shadow-color);
   z-index: 1000;
   backdrop-filter: blur(16px);
 }
@@ -548,7 +522,7 @@
   height: 16px;
   opacity: 0.8;
   transition: all 0.2s ease;
-  filter: var(--svg-filter);
+  filter: var(--filter-gray);
 }
 
 .upload-option:hover {
@@ -650,7 +624,7 @@
   background: var(--bg-color);
   border-radius: 8px;
   border: 1px solid var(--border-color);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .model-item {
@@ -721,6 +695,15 @@
 
 .dark .web-search-btn:hover:not(:disabled) img,
 .dark .web-search-btn.active img {
+  filter: brightness(0) saturate(100%) invert(98%) sepia(3%) saturate(595%) hue-rotate(180deg) brightness(121%) contrast(100%);
+}
+
+.dark .clear-btn img {
+  filter: brightness(0) saturate(100%) invert(90%) sepia(5%) saturate(159%) hue-rotate(191deg) brightness(88%) contrast(85%);
+}
+
+.dark .clear-btn:hover img,
+.dark .clear-btn.active img {
   filter: brightness(0) saturate(100%) invert(98%) sepia(3%) saturate(595%) hue-rotate(180deg) brightness(121%) contrast(100%);
 }
 

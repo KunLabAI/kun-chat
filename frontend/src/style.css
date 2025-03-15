@@ -16,7 +16,7 @@
   /* 浅色主题下的文字选中样式 */
   *::selection {
     background-color: rgba(0, 0, 0, 0.2) !important;
-    color: #1e293b !important;
+    color: #4f80cf !important;
   }
   *::-moz-selection {
     background-color: rgba(37, 99, 235, 0.2);
@@ -25,27 +25,12 @@
 
   /* 深色主题下的文字选中样式 */
   .dark *::selection {
-    background-color: rgba(49, 113, 250, 0.918);
+    background-color: rgba(195, 214, 255, 0.918);
     color: #ffffff !important;
   }
   .dark *::-moz-selection {
-    background-color: rgba(37, 99, 235, 0.4) !important;
+    background-color: rgba(210, 224, 255, 0.4) !important;
     color: #ffffff !important;
-  }
-}
-
-@layer components {
-  .btn {
-    @apply px-4 py-2 rounded-lg font-medium transition-colors duration-200;
-  }
-  .btn-primary {
-    @apply bg-primary-600 text-white hover:bg-primary-700;
-  }
-  .btn-secondary {
-    @apply bg-gray-200 text-gray-800 hover:bg-gray-300;
-  }
-  .input {
-    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
   }
 }
 
@@ -55,9 +40,6 @@
   line-height: 1.5;
   font-weight: 400;
   font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 /* 基础链接样式 */
@@ -75,13 +57,6 @@ h1 {
 /* 基础按钮样式 */
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  cursor: pointer;
-  transition: border-color 0.25s;
 }
 
 /* 卡片基础样式 */
