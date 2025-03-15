@@ -188,17 +188,17 @@
   /* 浅色模式滤镜 */
   --filter-gray: invert(60%) sepia(14%) saturate(346%) hue-rotate(202deg) brightness(94%) contrast(92%);
   --filter-primary: invert(35%) sepia(34%) saturate(3200%) hue-rotate(254deg) brightness(93%) contrast(93%);
+  --filter-dark: invert(10%) sepia(10%) saturate(200%) hue-rotate(180deg) brightness(90%) contrast(95%); /* 深色图标滤镜，用于浅色主题下的 logo */
   
   /* 深色模式滤镜 */
   --filter-gray-dark: invert(50%) sepia(9%) saturate(324%) hue-rotate(175deg) brightness(94%) contrast(87%);
   --filter-primary-dark: invert(83%) sepia(33%) saturate(7153%) hue-rotate(218deg) brightness(103%) contrast(96%);
-  
-  /* 消息操作按钮滤镜 */
+  --filter-light: invert(95%) sepia(5%) saturate(100%) hue-rotate(180deg) brightness(100%) contrast(100%); /* 浅色图标滤镜，用于深色主题下的 logo */
   --filter-message-action: invert(50%) sepia(80%) saturate(1000%) hue-rotate(240deg) brightness(100%) contrast(100%);
   --filter-message-action-hover: invert(50%) sepia(100%) saturate(1000%) hue-rotate(240deg) brightness(100%) contrast(100%);
   --filter-message-action-dark: invert(70%) sepia(80%) saturate(1000%) hue-rotate(240deg) brightness(100%) contrast(100%);
   --filter-message-action-dark-hover: invert(80%) sepia(100%) saturate(1000%) hue-rotate(240deg) brightness(100%) contrast(100%);
-
+  
   /* ===== 语义化变量 ===== */
   
   /* 浅色主题默认值 */
