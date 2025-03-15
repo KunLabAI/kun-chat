@@ -34,11 +34,11 @@
 .logo-icon {
   width: 32px;
   height: 32px;
-  filter: invert(35%) sepia(34%) saturate(3200%) hue-rotate(254deg) brightness(93%) contrast(93%);
+  filter: var(--filter-primary);
 }
 
 .dark .logo-icon {
-  filter: invert(83%) sepia(33%) saturate(7153%) hue-rotate(218deg) brightness(103%) contrast(96%);
+  filter: var(--filter-primary-dark);
 }
 
 /* Navigation */
@@ -104,12 +104,12 @@
 
 /* 为 SVG 图标设置颜色 */
 .nav-item img.icon {
-  filter: invert(60%) sepia(14%) saturate(346%) hue-rotate(202deg) brightness(94%) contrast(92%);
+  filter: var(--filter-gray);
   transition: all 0.2s ease;
 }
 
 .nav-item:hover img.icon {
-  filter: invert(35%) sepia(34%) saturate(3200%) hue-rotate(254deg) brightness(93%) contrast(93%);
+  filter: var(--filter-primary);
 }
 
 .nav-item .icon.active {
@@ -117,7 +117,7 @@
 }
 
 .nav-item img.icon.active {
-  filter: invert(35%) sepia(34%) saturate(3200%) hue-rotate(254deg) brightness(93%) contrast(93%);
+  filter: var(--filter-primary);
 }
 
 .nav-item.active {
@@ -136,11 +136,11 @@
 }
 
 .dark .nav-item img.icon {
-  filter: invert(50%) sepia(9%) saturate(324%) hue-rotate(175deg) brightness(94%) contrast(87%);
+  filter: var(--filter-gray-dark);
 }
 
 .dark .nav-item:hover img.icon {
-  filter: invert(83%) sepia(33%) saturate(7153%) hue-rotate(218deg) brightness(103%) contrast(96%);
+  filter: var(--filter-primary-dark);
 }
 
 .dark .nav-item .icon.active {
@@ -148,7 +148,7 @@
 }
 
 .dark .nav-item img.icon.active {
-  filter: invert(83%) sepia(33%) saturate(7153%) hue-rotate(218deg) brightness(103%) contrast(96%);
+  filter: var(--filter-primary-dark);
 }
 
 .dark .nav-item.active {
