@@ -183,14 +183,16 @@ def convert_model_name(display_name: str) -> str:
     # 移除不支持的字符，只保留字母、数字、连字符和下划线
     safe_name = re.sub(r'[^\w\-]', '_', display_name)
     
-    # 如果包含非ASCII字符（比如中文），添加哈希值作为后缀
-    if any(ord(c) > 127 for c in display_name):
-        # 使用 MD5 哈希，取前8位作为后缀
-        name_hash = md5(display_name.encode('utf-8')).hexdigest()[:8]
-        safe_name = f"model_{name_hash}"
+    # 对所有自定义模型名称添加哈希值，避免与基础模型冲突
+    # 使用 MD5 哈希，取前8位作为后缀
+    name_hash = md5(display_name.encode('utf-8')).hexdigest()[:8]
+    safe_name = f"custom_{name_hash}"
     
-    # 确保名称以字母开头
-    if not safe_name[0].isalpha():
-        safe_name = 'model_' + safe_name
+    # 如果需要在名称中包含原始名称的部分信息，可以使用下面的代码
+    # 获取原始名称的安全版本（只保留合法字符）
+    # original_safe = re.sub(r'[^\w\-]', '_', display_name)
+    # 截取前10个字符，避免名称过长
+    # original_safe = original_safe[:10].lower()
+    # safe_name = f"custom_{original_safe}_{name_hash}"
     
     return safe_name.lower()
