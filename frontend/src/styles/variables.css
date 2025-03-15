@@ -9,6 +9,10 @@
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   
+  /* 代码字体 */
+  --font-family-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Monaco, Consolas, 
+    'Liberation Mono', 'Courier New', monospace;
+  
   /* 字体渲染优化 */
   --font-smoothing: antialiased;
   --font-smoothing-firefox: grayscale;
@@ -66,6 +70,42 @@
   --red-800: #991b1b;   /* 非常深的红色 */
   --red-900: #7f1d1d;   /* 最深的红色 */
   
+  /* 蓝色系 */
+  --blue-50: #eff6ff;
+  --blue-100: #dbeafe;
+  --blue-200: #bfdbfe;
+  --blue-300: #93c5fd;
+  --blue-400: #60a5fa;
+  --blue-500: #3b82f6;
+  --blue-600: #2563eb;
+  --blue-700: #1d4ed8;
+  --blue-800: #1e40af;
+  --blue-900: #1e3a8a;
+  
+  /* 黄色系 */
+  --yellow-50: #fefce8;
+  --yellow-100: #fef9c3;
+  --yellow-200: #fef08a;
+  --yellow-300: #fde047;
+  --yellow-400: #facc15;
+  --yellow-500: #eab308;
+  --yellow-600: #ca8a04;
+  --yellow-700: #a16207;
+  --yellow-800: #854d0e;
+  --yellow-900: #713f12;
+  
+  /* 绿色系 */
+  --green-50: #f0fdf4;
+  --green-100: #dcfce7;
+  --green-200: #bbf7d0;
+  --green-300: #86efac;
+  --green-400: #4ade80;
+  --green-500: #22c55e;
+  --green-600: #16a34a;
+  --green-700: #15803d;
+  --green-800: #166534;
+  --green-900: #14532d;
+  
   /* ===== 特殊效果色彩 ===== */
   
   /* 渐变色 */
@@ -84,6 +124,71 @@
   
   /* 加载动画色彩 */
   --loading-spinner-color: var(--primary-500);
+  
+  /* 聊天思考过程色彩 */
+  --chat-thinking-bg: rgba(245, 247, 250, 0.85);
+  --chat-thinking-border: rgba(0, 0, 0, 0.1);
+  --chat-thinking-hover-bg: rgba(0, 0, 0, 0.03);
+  --chat-thinking-icon: rgba(0, 0, 0, 0.6);
+  --chat-thinking-title: rgba(0, 0, 0, 0.8);
+  --chat-thinking-content: rgba(0, 0, 0, 0.7);
+  --chat-thinking-content-bg: rgba(255, 255, 255, 0.5);
+  --chat-thinking-active-border: rgba(59, 130, 246, 0.5);
+  --chat-thinking-active-bg: rgba(59, 130, 246, 0.05);
+  
+  /* 聊天加载动画颜色 */
+  --chat-spinner-color: rgb(247, 197, 159);
+  --chat-spinner-color-alpha: rgba(247, 197, 159, 0.1);
+  
+  /* 滚动条颜色 */
+  --scrollbar-thumb: rgba(156, 163, 175, 0.5);
+  --scrollbar-thumb-hover: rgba(156, 163, 175, 0.7);
+  --scrollbar-thumb-light: rgba(156, 163, 175, 0.3);
+  --scrollbar-thumb-light-hover: rgba(156, 163, 175, 0.5);
+  
+  /* Markdown 样式变量 */
+  --md-text-primary: var(--gray-900);
+  --md-text-secondary: var(--gray-600);
+  --md-heading-color: var(--gray-900);
+  --md-link-color: var(--blue-600);
+  --md-link-hover-color: var(--green-600);
+  --md-blockquote-border: var(--gray-300);
+  --md-blockquote-bg: var(--gray-100);
+  --md-blockquote-text: var(--gray-600);
+  --md-inline-code-bg: rgba(175, 184, 193, 0.2);
+  --md-inline-code-text: var(--gray-900);
+  --md-border-color: var(--gray-300);
+  --md-table-header-bg: var(--gray-100);
+  --md-table-border: var(--gray-300);
+  --md-table-row-hover: var(--gray-100);
+  --md-list-item-marker: var(--gray-600);
+  --md-task-list-bg: var(--gray-0);
+  --md-task-list-border: var(--gray-300);
+  --md-task-list-checked-bg: var(--blue-600);
+  --md-task-list-checked-border: var(--blue-600);
+  --md-kbd-bg: var(--gray-100);
+  --md-kbd-border: var(--gray-300);
+  --md-kbd-text: var(--gray-600);
+  --md-mark-bg: var(--yellow-100);
+  --md-mark-text: var(--gray-900);
+  
+  /* 代码高亮变量 - 浅色主题 */
+  --code-keyword: var(--red-600);
+  --code-string: var(--blue-800);
+  --code-number: var(--green-700);
+  --code-type: #953800;
+  --code-function: var(--primary-700);
+  --code-class: var(--blue-700);
+  --code-comment: var(--gray-500);
+  --code-meta: var(--blue-700);
+  --code-punctuation: var(--gray-900);
+  --code-section: var(--primary-700);
+  --code-deletion-text: var(--red-800);
+  --code-deletion-bg: var(--red-50);
+  --code-addition-text: var(--green-700);
+  --code-addition-bg: var(--green-50);
+  --code-copy-icon-filter: invert(70%) sepia(12%) saturate(320%) hue-rotate(180deg) brightness(95%) contrast(90%);
+  --code-copy-icon-copied-filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(100deg) brightness(118%) contrast(119%);
 
   /* ===== 图标滤镜 ===== */
   
@@ -94,6 +199,12 @@
   /* 深色模式滤镜 */
   --filter-gray-dark: invert(50%) sepia(9%) saturate(324%) hue-rotate(175deg) brightness(94%) contrast(87%);
   --filter-primary-dark: invert(83%) sepia(33%) saturate(7153%) hue-rotate(218deg) brightness(103%) contrast(96%);
+  
+  /* 消息操作按钮滤镜 */
+  --filter-message-action: invert(50%) sepia(80%) saturate(1000%) hue-rotate(240deg) brightness(100%) contrast(100%);
+  --filter-message-action-hover: invert(50%) sepia(100%) saturate(1000%) hue-rotate(240deg) brightness(100%) contrast(100%);
+  --filter-message-action-dark: invert(70%) sepia(80%) saturate(1000%) hue-rotate(240deg) brightness(100%) contrast(100%);
+  --filter-message-action-dark-hover: invert(80%) sepia(100%) saturate(1000%) hue-rotate(240deg) brightness(100%) contrast(100%);
 
   /* ===== 语义化变量 ===== */
   
@@ -126,6 +237,10 @@
   /* 全局过渡效果 */
   --transition-duration: 200ms;
   --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* 悬停背景色 */
+  --hover-bg: rgba(0, 0, 0, 0.05);
+  --hover-bg-dark: rgba(255, 255, 255, 0.05);
 }
 
 /* 深色主题样式 */
@@ -153,6 +268,66 @@
   --chat-ai-bubble-bg: var(--bg-color);      /* AI消息气泡背景色 */
   --chat-ai-bubble-text: var(--text-color);  /* AI消息文字颜色 */
   --chat-ai-bubble-border: var(--border-color); /* AI消息气泡边框颜色 */
+  
+  /* 聊天思考过程深色主题色彩 */
+  --chat-thinking-bg: rgba(30, 41, 59, 0.5);
+  --chat-thinking-border: rgba(255, 255, 255, 0.1);
+  --chat-thinking-hover-bg: rgba(255, 255, 255, 0.05);
+  --chat-thinking-icon: rgba(255, 255, 255, 0.6);
+  --chat-thinking-title: rgba(255, 255, 255, 0.8);
+  --chat-thinking-content: rgba(255, 255, 255, 0.7);
+  --chat-thinking-content-bg: rgba(30, 41, 59, 0.3);
+  --chat-thinking-active-border: rgba(59, 130, 246, 0.5);
+  --chat-thinking-active-bg: rgba(59, 130, 246, 0.1);
+  
+  /* 聊天加载动画深色主题颜色 */
+  --chat-spinner-color: rgb(168, 85, 247);
+  --chat-spinner-color-alpha: rgba(168, 85, 247, 0.1);
+  
+  /* Markdown 深色主题变量 */
+  --md-text-primary: var(--gray-50);
+  --md-text-secondary: var(--gray-300);
+  --md-heading-color: var(--gray-50);
+  --md-link-color: var(--blue-400);
+  --md-link-hover-color: var(--green-400);
+  --md-blockquote-border: var(--gray-700);
+  --md-blockquote-bg: var(--gray-800);
+  --md-blockquote-text: var(--gray-300);
+  --md-inline-code-bg: rgba(99, 110, 123, 0.4);
+  --md-inline-code-text: var(--gray-50);
+  --md-border-color: var(--gray-700);
+  --md-table-header-bg: var(--gray-800);
+  --md-table-border: var(--gray-700);
+  --md-table-row-hover: var(--gray-800);
+  --md-list-item-marker: var(--gray-300);
+  --md-task-list-bg: var(--gray-800);
+  --md-task-list-border: var(--gray-700);
+  --md-task-list-checked-bg: var(--blue-500);
+  --md-task-list-checked-border: var(--blue-500);
+  --md-kbd-bg: var(--gray-800);
+  --md-kbd-border: var(--gray-700);
+  --md-kbd-text: var(--gray-300);
+  --md-mark-bg: rgba(255, 248, 197, 0.2);
+  --md-mark-text: var(--gray-50);
+  
+  /* 代码高亮变量 - 深色主题 */
+  --code-keyword: #ff7b72;
+  --code-string: #a5d6ff;
+  --code-number: #79c0ff;
+  --code-type: #ffa657;
+  --code-function: #d2a8ff;
+  --code-class: #79c0ff;
+  --code-comment: #8b949e;
+  --code-meta: #79c0ff;
+  --code-punctuation: #c9d1d9;
+  --code-section: #d2a8ff;
+  --code-deletion-text: #ffdcd7;
+  --code-deletion-bg: #67060c;
+  --code-addition-text: #aff5b4;
+  --code-addition-bg: #033a16;
+  
+  /* 悬停背景色 */
+  --hover-bg: var(--hover-bg-dark);
 }
 
 /* 全局字体应用 */

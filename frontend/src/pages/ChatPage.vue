@@ -90,7 +90,10 @@
                 </div>
               </div>
               <div v-if="!hasThinkingContent(message.content) || extractFinalContent(message.content)">
-                <MarkdownRenderer :content="extractFinalContent(message.content) || message.content" />
+                <!-- 用户消息使用纯文本渲染器 -->
+                <PlainTextRenderer v-if="message.role === 'user'" :content="message.content" />
+                <!-- AI消息使用Markdown渲染器 -->
+                <MarkdownRenderer v-else :content="extractFinalContent(message.content) || message.content" />
               </div>
             </template>
             <div 
@@ -185,6 +188,7 @@ import MainLayout from '@/layouts/MainLayout.vue'
 import ChatInput from '@/components/chat/InputArea/ChatInput.vue'
 import { BubbleAvatar } from '@/components/AIavatar.ts'
 import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue'
+import PlainTextRenderer from '@/components/common/PlainTextRenderer.vue'
 import Dialog from '@/components/common/Dialog.vue'
 
 const route = useRoute()
