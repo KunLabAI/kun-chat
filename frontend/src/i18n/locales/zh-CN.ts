@@ -664,10 +664,13 @@ const messages: Messages = {
         pdf: 'PDF 文档',
         word: 'Word 文档',
         text: '文本文档',
-        html: 'HTML 文档',
         markdown: 'Markdown 文档',
-        document: '文档'
-      }
+        document: '文档',
+        excel: 'Excel 表格',
+        csv: 'CSV 表格',
+        ppt: 'PPT 演示文稿',
+      },
+      file_size: '文件大小'
     },
     input: {
       placeholder: '请输入对话内容...',

@@ -111,7 +111,7 @@
 .right-functions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 
 /* 网页搜索按钮 */
@@ -121,7 +121,6 @@
   justify-content: center;
   padding: 6px;
   border-radius: 8px;
-  color: var(--text-color-light);
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -129,9 +128,8 @@
 .web-search-btn img {
   width: 16px;
   height: 16px;
-  opacity: 0.5;
+  opacity: 0.4;
   transition: all 0.3s ease;
-  filter: var(--filter-gray);
 }
 
 .web-search-btn:hover {
@@ -144,7 +142,6 @@
 
 .web-search-btn.active {
   background: var(--button-hover-bg);
-  border-color: var(--button-hover-border);
 }
 
 .web-search-btn.active img {
@@ -323,7 +320,6 @@
   justify-content: center;
   padding: 6px;
   border-radius: 8px;
-  color: var(--text-color-light);
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -331,9 +327,8 @@
 .clear-btn img {
   width: 16px;
   height: 16px;
-  opacity: 0.7;
+  opacity: 0.5;
   transition: all 0.3s ease;
-  filter: var(--filter-gray);
 }
 
 .clear-btn:hover {
@@ -351,7 +346,6 @@
   justify-content: center;
   padding: 6px;
   border-radius: 8px;
-  color: var(--text-color-light);
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -359,9 +353,8 @@
 .upload-btn img {
   width: 16px;
   height: 16px;
-  opacity: 0.7;
+  opacity: 0.5;
   transition: all 0.3s ease;
-  filter: var(--filter-gray);
 }
 
 .upload-btn:hover {
@@ -564,8 +557,9 @@
 .remove-image {
   position: absolute;
   top: 0px;
-  right: -8px;
+  right: 0;
   border-radius: 8px;
+  filter: invert(11%) sepia(100%) saturate(5699%) hue-rotate(0deg) brightness(90%) contrast(115%);
 }
 
 .remove-image:hover {
@@ -577,38 +571,114 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 12px;
-  margin-bottom: 8px;
-  background-color: var(--color-bg-tertiary);
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
+  padding: 10px 0px;
+  margin-bottom: 10px;
 }
 
 .document-preview .file-info {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   color: var(--color-text-primary);
+  max-width: calc(100% - 40px);
 }
 
-.document-preview .file-info svg {
+.document-preview .file-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  background-color: var(--color-bg-secondary);
+}
+
+.document-preview .file-icon svg {
   color: var(--color-text-secondary);
+}
+
+.document-preview .file-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.document-preview .file-name {
+  font-size: 16px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.document-preview .file-meta {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.document-preview .file-type {
+  opacity: 0.5;
+}
+
+.document-preview .file-size {
+  opacity: 0.5;
+}
+
+/* 文件类型图标颜色 */
+.document-preview .pdf-icon {
+  background-color: rgba(233, 66, 53, 0.1);
+}
+.document-preview .pdf-icon svg {
+  color: #e94235;
+}
+
+.document-preview .word-icon {
+  background-color: rgba(33, 85, 168, 0.1);
+}
+.document-preview .word-icon svg {
+  color: #2155a8;
+}
+
+.document-preview .excel-icon {
+  background-color: rgba(33, 168, 84, 0.1);
+}
+.document-preview .excel-icon svg {
+  color: #21a854;
+}
+
+.document-preview .ppt-icon {
+  background-color: rgba(242, 147, 13, 0.1);
+}
+.document-preview .ppt-icon svg {
+  color: #f2930d;
+}
+
+.document-preview .txt-icon {
+  background-color: rgba(103, 58, 183, 0.1);
+}
+.document-preview .txt-icon svg {
+  color: #673ab7;
 }
 
 .document-preview .remove-document {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px;
+  padding: 6px;
   background: none;
   border: none;
   color: var(--color-text-secondary);
   cursor: pointer;
   transition: color 0.2s;
+  border-radius: 50%;
 }
 
 .document-preview .remove-document:hover {
   color: var(--color-danger);
+  background-color: rgba(var(--color-danger-rgb), 0.1);
 }
 
 /* 模型选择弹出层 */

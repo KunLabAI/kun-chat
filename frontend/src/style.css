@@ -16,11 +16,11 @@
   /* 浅色主题下的文字选中样式 */
   *::selection {
     background-color: rgba(0, 0, 0, 0.2) !important;
-    color: #4f80cf !important;
+    color: #2c2c2c !important;
   }
   *::-moz-selection {
     background-color: rgba(37, 99, 235, 0.2);
-    color: #1e293b !important;
+    color: #ffffff !important;
   }
 
   /* 深色主题下的文字选中样式 */
