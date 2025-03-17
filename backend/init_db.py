@@ -79,6 +79,7 @@ def migrate_messages_table(cursor):
             role TEXT NOT NULL,
             content TEXT NOT NULL,
             images TEXT,
+            document TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE
         )
@@ -243,6 +244,7 @@ def init_db():
             role TEXT NOT NULL,
             content TEXT NOT NULL,
             images TEXT,
+            document TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE
         )

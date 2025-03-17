@@ -20,8 +20,9 @@ export interface PDFData {
 } 
 
 export interface DocumentData {
-  original_filename: string
-  markdown_content: string
+  name: string
+  content: string
+  type: string
 }
 
 export interface Chat {

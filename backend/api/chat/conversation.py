@@ -2,9 +2,14 @@ from fastapi import APIRouter, Depends, HTTPException
 from typing import List, Dict, Any
 from datetime import datetime
 import uuid
+import re
 from database import Database, get_db
 from api.auth import get_current_user
 from .schemas import ConversationCreate, ConversationUpdate, ModelUpdate
+import os
+import json
+import logging
+from api.tools.doc_format import get_mime_type_from_filename
 
 router = APIRouter()
 
@@ -46,16 +51,13 @@ async def get_conversation_with_messages(
     # 获取对话的消息历史
     messages = await db.fetch_all(
         """
-        SELECT role, content, images, created_at
+        SELECT role, content, images, document, created_at
         FROM messages
         WHERE conversation_id = ?
         ORDER BY created_at ASC
         """,
         (conversation_id,)
     )
-    
-    import json
-    import logging
     
     # 转换消息格式
     formatted_messages = []
@@ -79,6 +81,30 @@ async def get_conversation_with_messages(
                 logging.error(f"解析图片数据时出错: {str(e)}")
                 # 如果解析失败，保留原始数据
                 message_dict["images"] = msg["images"]
+        
+        # 处理文档数据
+        if msg["document"]:
+            # 文档内容是 Markdown 文本
+            document_content = msg["document"]
+            
+            # 尝试从文档内容中提取文件名
+            file_name = "document.md"
+            file_type = "text/markdown"
+            
+            # 从 Markdown 内容中提取文件名
+            match = re.search(r"# 文件: (.+?)\n", document_content)
+            if match:
+                file_name = match.group(1)
+                # 根据文件名获取 MIME 类型
+                file_type = get_mime_type_from_filename(file_name)
+            
+            # 构建文档对象，用于前端显示
+            message_dict["document"] = {
+                "name": file_name,
+                "content": document_content,
+                "type": file_type
+            }
+            logging.debug(f"处理历史消息文档数据: {file_name}, 类型: {file_type}")
         
         formatted_messages.append(message_dict)
     

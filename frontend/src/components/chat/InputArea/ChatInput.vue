@@ -407,7 +407,7 @@ const handleDocumentUpload = async (event: Event) => {
     }
     const result = await chatApi.convertDocument(file, props.conversationId)
     uploadedDocument.value = file
-    documentContent.value = result.markdown_content
+    documentContent.value = result.content
     input.value = '' // 清空input以允许上传相同文件
     notificationStore.success(t('chat.notifications.document_upload_success'))
   } catch (error) {
