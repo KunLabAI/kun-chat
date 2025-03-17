@@ -34,11 +34,7 @@
 .logo-icon {
   width: 32px;
   height: 32px;
-  filter: invert(35%) sepia(34%) saturate(3200%) hue-rotate(254deg) brightness(93%) contrast(93%);
-}
-
-.dark .logo-icon {
-  filter: invert(83%) sepia(33%) saturate(7153%) hue-rotate(218deg) brightness(103%) contrast(96%);
+  filter: brightness(0) saturate(100%) invert(50%) 
 }
 
 /* Navigation */

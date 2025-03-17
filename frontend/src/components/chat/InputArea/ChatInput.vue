@@ -4,22 +4,27 @@
       <div v-if="uploadedImage" class="image-preview">
         <img :src="uploadedImage" :alt="t('chat.input.upload_options.image')" />
         <button class="remove-image" @click="removeImage" :title="t('chat.input.remove_file')">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"/>
-            <line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
+          <img src="@/assets/icons/chat_delmessage.svg" alt="remove-image" />
         </button>
       </div>
 
       <!-- 文档预览区域 -->
       <div v-if="documentContent" class="document-preview">
         <div class="file-info">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="9" y1="15" x2="15" y2="15"/>
-          </svg>
-          <span>{{ uploadedDocument?.name }}</span>
+          <div class="file-icon" :class="getDocumentTypeClass">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="9" y1="15" x2="15" y2="15"/>
+            </svg>
+          </div>
+          <div class="file-details">
+            <div class="file-name">{{ uploadedDocument?.name }}</div>
+            <div class="file-meta">
+              <span class="file-type">{{ getDocumentTypeLabel }}</span>
+              <span class="file-size">{{ formatFileSize(uploadedDocument?.size || 0) }}</span>
+            </div>
+          </div>
         </div>
         <button class="remove-document" @click="removeDocument" :title="t('chat.input.remove_file')">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -71,9 +76,8 @@
               :data-tooltip="t('chat.input.model_select')"
               @mouseenter="updateTooltipPosition"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7L12 16.8 5.7 21l2.3-7-6-4.6h7.6z"/>
-              </svg>
+            <img src="@/assets/icons/chat_models.svg" alt="model-select" />
+
               <span>{{ getCurrentModelDisplayName }}</span>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-icon">
                 <polyline points="6 9 12 15 18 9"></polyline>
@@ -91,11 +95,11 @@
               <img src="@/assets/icons/chat_websearch.svg" alt="Web Search" />
             </button>
             <div class="upload-group">
-              <input type="file" ref="fileInput" accept="image/*" style="display: none" @change="handleImageUpload" />
+              <input type="file" ref="fileInput" accept=".jpg,.jpeg,.png,image/jpeg,image/jpg,image/png" style="display: none" @change="handleImageUpload" />
               <input 
                 type="file" 
                 ref="documentInput" 
-                accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.html,.htm,.csv,.json,.xml,.txt" 
+                accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.csv,.txt,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv,text/plain" 
                 style="display: none" 
                 @change="handleDocumentUpload" 
               />
@@ -110,13 +114,7 @@
               </button>
             </div>
             <button @click="clearConversation" class="clear-btn" :data-tooltip="t('chat.input.clear_conversation')">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 6h18"/>
-                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
-                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
-                <line x1="10" y1="11" x2="10" y2="17"/>
-                <line x1="14" y1="11" x2="14" y2="17"/>
-              </svg>
+              <img src="@/assets/icons/model_delete.svg" alt="clear message" />
             </button>
           </div>
         </div>
@@ -409,7 +407,7 @@ const handleDocumentUpload = async (event: Event) => {
     }
     const result = await chatApi.convertDocument(file, props.conversationId)
     uploadedDocument.value = file
-    documentContent.value = result.markdown_content
+    documentContent.value = result.content
     input.value = '' // 清空input以允许上传相同文件
     notificationStore.success(t('chat.notifications.document_upload_success'))
   } catch (error) {
@@ -587,6 +585,37 @@ const toggleWebSearch = () => {
   } else {
     notificationStore.info(t('chat.notifications.web_search_disabled'))
   }
+}
+
+const getDocumentTypeClass = computed(() => {
+  if (!uploadedDocument.value) return ''
+  const type = uploadedDocument.value.type
+  if (type.startsWith('image/')) return 'image-icon'
+  if (type.startsWith('application/pdf')) return 'pdf-icon'
+  if (type.startsWith('application/msword') || type.startsWith('application/vnd.openxmlformats-officedocument.wordprocessingml.document')) return 'word-icon'
+  if (type.startsWith('application/vnd.ms-powerpoint') || type.startsWith('application/vnd.openxmlformats-officedocument.presentationml.presentation')) return 'ppt-icon'
+  if (type.startsWith('application/vnd.ms-excel') || type.startsWith('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) return 'excel-icon'
+  if (type.startsWith('text/plain') || type.startsWith('text/txt')) return 'txt-icon'
+  return 'file-icon'
+})
+
+const getDocumentTypeLabel = computed(() => {
+  if (!uploadedDocument.value) return ''
+  const type = uploadedDocument.value.type
+  if (type.startsWith('application/pdf')) return t('chat.file_preview.file_types.pdf')
+  if (type.startsWith('application/msword') || type.startsWith('application/vnd.openxmlformats-officedocument.wordprocessingml.document')) return t('chat.file_preview.file_types.word')
+  if (type.startsWith('application/vnd.ms-powerpoint') || type.startsWith('application/vnd.openxmlformats-officedocument.presentationml.presentation')) return t('chat.file_preview.file_types.ppt')
+  if (type.startsWith('application/vnd.ms-excel') || type.startsWith('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) return t('chat.file_preview.file_types.excel')
+  if (type.startsWith('text/csv')) return t('chat.file_preview.file_types.csv')
+  if (type.startsWith('text/plain')) return t('chat.file_preview.file_types.text')
+  return t('chat.file_preview.file_types.document')
+})
+
+const formatFileSize = (size: number) => {
+  if (size < 1024) return `${size} B`
+  if (size < 1024 * 1024) return `${(size / 1024).toFixed(2)} KB`
+  if (size < 1024 * 1024 * 1024) return `${(size / (1024 * 1024)).toFixed(2)} MB`
+  return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`
 }
 </script>
 

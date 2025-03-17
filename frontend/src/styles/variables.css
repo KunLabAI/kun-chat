@@ -1,0 +1,412 @@
+/* 
+ * KunyuAI 色彩系统
+ * 这个文件集中管理应用的所有色彩变量和字体变量
+ */
+
+:root {
+  /* ===== 字体定义 ===== */
+  --font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  
+  /* 代码字体 */
+  --font-family-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Monaco, Consolas, 
+    'Liberation Mono', 'Courier New', monospace;
+  
+  /* 字体渲染优化 */
+  --font-smoothing: antialiased;
+  --font-smoothing-firefox: grayscale;
+  --text-rendering: optimizeLegibility;
+  
+  /* ===== 基础色彩 ===== */
+  
+  /* 主题色系 - 紫色 */
+  --primary-50: #faf5ff;
+  --primary-100: #f3e8ff;
+  --primary-200: #e9d5ff;
+  --primary-300: #d8b4fe;
+  --primary-400: #c084fc;
+  --primary-500: #a855f7;
+  --primary-600: #9333ea;
+  --primary-700: #7e22ce;
+  --primary-800: #6b21a8;
+  --primary-900: #581c87;
+
+  /* 成功色系 - 绿色 */
+  --success-50: #f0fdf4;
+  --success-100: #dcfce7;
+  --success-200: #bbf7d0;
+  --success-300: #86efac;
+  --success-400: #4ade80;
+  --success-500: #22c55e;
+  --success-600: #16a34a;
+  --success-700: #15803d;
+  --success-800: #166534;
+  --success-900: #14532d;
+
+  /* 灰度色系 */
+  --gray-0: #ffffff;    /* 纯白 */
+  --gray-50: #fafafa;   /* 最浅的灰，几乎是白色 */
+  --gray-100: #f4f4f5;  /* 非常浅的灰，适合背景 */
+  --gray-200: #e4e4e7;  /* 浅灰，适合边框和分割线 */
+  --gray-300: #d4d4d8;  /* 中浅灰，适合不活跃的文本 */
+  --gray-400: #a1a1aa;  /* 中灰，适合次要文本 */
+  --gray-500: #71717a;  /* 标准灰，适合普通文本 */
+  --gray-600: #52525b;  /* 中深灰，适合重要文本 */
+  --gray-700: #3f3f46;  /* 深灰，适合标题 */
+  --gray-800: #27272a;  /* 非常深的灰，适合深色背景 */
+  --gray-900: #18181b;  /* 最深的灰，几乎是黑色 */
+  --gray-1000: #0b0b0b; /* 几乎黑 */
+
+  /* 红色系 - 用于警告和危险操作 */
+  --red-50: #fef2f2;    /* 最浅的红色 */
+  --red-100: #fee2e2;   /* 非常浅的红色 */
+  --red-200: #fecaca;   /* 浅红色 */
+  --red-300: #fca5a5;   /* 中浅红色 */
+  --red-400: #f87171;   /* 中红色 */
+  --red-500: #ef4444;   /* 标准红色 */
+  --red-600: #dc2626;   /* 中深红色，主要用于按钮 */
+  --red-700: #b91c1c;   /* 深红色，用于悬停状态 */
+  --red-800: #991b1b;   /* 非常深的红色 */
+  --red-900: #7f1d1d;   /* 最深的红色 */
+  
+  /* 蓝色系 */
+  --blue-50: #eff6ff;
+  --blue-100: #dbeafe;
+  --blue-200: #bfdbfe;
+  --blue-300: #93c5fd;
+  --blue-400: #60a5fa;
+  --blue-500: #3b82f6;
+  --blue-600: #2563eb;
+  --blue-700: #1d4ed8;
+  --blue-800: #1e40af;
+  --blue-900: #1e3a8a;
+  
+  /* 黄色系 */
+  --yellow-50: #fefce8;
+  --yellow-100: #fef9c3;
+  --yellow-200: #fef08a;
+  --yellow-300: #fde047;
+  --yellow-400: #facc15;
+  --yellow-500: #eab308;
+  --yellow-600: #ca8a04;
+  --yellow-700: #a16207;
+  --yellow-800: #854d0e;
+  --yellow-900: #713f12;
+  
+  /* ===== 特殊效果色彩 ===== */
+  
+  /* 渐变色 */
+  --gradient-color-1: #ff6b6b;
+  --gradient-color-2: #feca57;
+  --gradient-color-3: #48dbfb;
+  --gradient-color-4: #ff9ff3;
+  --gradient-color-5: #54a0ff;
+  --gradient-color-6: #c084fc;
+  
+  /* 按钮特效色彩 */
+  --button-special-text: #AAAAAA;
+  --button-special-gradient-1: #A47CF3;
+  --button-special-gradient-2: #683FEA;
+  --button-special-shadow: #9917FF;
+  
+  /* 加载动画色彩 */
+  --loading-spinner-color: var(--primary-500);
+  
+  /* 透明度颜色 */
+  --primary-100-alpha: rgba(168, 85, 247, 0.1);
+  --primary-200-alpha: rgba(168, 85, 247, 0.2);
+  --primary-300-alpha: rgba(168, 85, 247, 0.3);
+  
+  /* 聊天思考过程色彩 */
+  --chat-thinking-bg: rgba(245, 247, 250, 0.85);
+  --chat-thinking-border: rgba(0, 0, 0, 0.1);
+  --chat-thinking-hover-bg: rgba(0, 0, 0, 0.03);
+  --chat-thinking-icon: rgba(0, 0, 0, 0.6);
+  --chat-thinking-title: rgba(0, 0, 0, 0.8);
+  --chat-thinking-content: rgba(0, 0, 0, 0.7);
+  --chat-thinking-content-bg: rgba(255, 255, 255, 0.5);
+  --chat-thinking-active-border: rgba(59, 130, 246, 0.5);
+  --chat-thinking-active-bg: rgba(59, 130, 246, 0.05);
+  
+  /* 聊天加载动画颜色 */
+  --chat-spinner-color: rgb(247, 197, 159);
+  --chat-spinner-color-alpha: rgba(247, 197, 159, 0.1);
+  
+  /* 滚动条颜色 */
+  --scrollbar-thumb: rgba(156, 163, 175, 0.5);
+  --scrollbar-thumb-hover: rgba(156, 163, 175, 0.7);
+  --scrollbar-thumb-light: rgba(156, 163, 175, 0.3);
+  --scrollbar-thumb-light-hover: rgba(156, 163, 175, 0.5);
+  
+  /* Markdown 样式变量 */
+  --md-text-primary: var(--gray-900);
+  --md-text-secondary: var(--gray-600);
+  --md-heading-color: var(--gray-900);
+  --md-link-color: var(--blue-600);
+  --md-link-hover-color: var(--green-600);
+  --md-blockquote-border: var(--gray-300);
+  --md-blockquote-bg: var(--gray-100);
+  --md-blockquote-text: var(--gray-600);
+  --md-inline-code-bg: rgba(175, 184, 193, 0.2);
+  --md-inline-code-text: var(--gray-900);
+  --md-border-color: var(--gray-300);
+  --md-table-header-bg: var(--gray-100);
+  --md-table-border: var(--gray-300);
+  --md-table-row-hover: var(--gray-100);
+  --md-list-item-marker: var(--gray-600);
+  --md-task-list-bg: var(--gray-0);
+  --md-task-list-border: var(--gray-300);
+  --md-task-list-checked-bg: var(--blue-600);
+  --md-task-list-checked-border: var(--blue-600);
+  --md-kbd-bg: var(--gray-100);
+  --md-kbd-border: var(--gray-300);
+  --md-kbd-text: var(--gray-600);
+  --md-mark-bg: var(--yellow-100);
+  --md-mark-text: var(--gray-900);
+  
+  /* 代码高亮变量 - 浅色主题 */
+  --code-keyword: var(--red-600);
+  --code-string: var(--blue-800);
+  --code-number: var(--green-700);
+  --code-type: #953800;
+  --code-function: var(--primary-700);
+  --code-class: var(--blue-700);
+  --code-comment: var(--gray-500);
+  --code-meta: var(--blue-700);
+  --code-punctuation: var(--gray-900);
+  --code-section: var(--primary-700);
+  --code-deletion-text: var(--red-800);
+  --code-deletion-bg: var(--red-50);
+  --code-addition-text: var(--green-700);
+  --code-addition-bg: var(--green-50);
+  --code-copy-icon-filter: invert(70%) sepia(12%) saturate(320%) hue-rotate(180deg) brightness(95%) contrast(90%);
+  --code-copy-icon-copied-filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(100deg) brightness(118%) contrast(119%);
+
+  /* ===== 图标滤镜 ===== */
+  
+  /* 浅色模式滤镜 */
+  --filter-gray: invert(60%) sepia(14%) saturate(346%) hue-rotate(202deg) brightness(94%) contrast(92%);
+  --filter-primary: invert(35%) sepia(34%) saturate(3200%) hue-rotate(254deg) brightness(93%) contrast(93%);
+  --filter-dark: invert(10%) sepia(10%) saturate(200%) hue-rotate(180deg) brightness(90%) contrast(95%); /* 深色图标滤镜，用于浅色主题下的 logo */
+  
+  /* 灰度滤镜系列 - 浅色模式 */
+  --filter-gray-100: invert(98%) sepia(3%) saturate(106%) hue-rotate(197deg) brightness(118%) contrast(96%); /* 最浅的灰 */
+  --filter-gray-200: invert(94%) sepia(6%) saturate(95%) hue-rotate(202deg) brightness(106%) contrast(91%);
+  --filter-gray-300: invert(89%) sepia(3%) saturate(159%) hue-rotate(201deg) brightness(94%) contrast(92%);
+  --filter-gray-400: invert(77%) sepia(10%) saturate(146%) hue-rotate(201deg) brightness(88%) contrast(87%);
+  --filter-gray-500: invert(60%) sepia(14%) saturate(346%) hue-rotate(202deg) brightness(94%) contrast(92%); /* 中灰 - 同 --filter-gray */
+  --filter-gray-600: invert(38%) sepia(11%) saturate(473%) hue-rotate(202deg) brightness(94%) contrast(86%);
+  --filter-gray-700: invert(27%) sepia(11%) saturate(427%) hue-rotate(202deg) brightness(94%) contrast(88%);
+  --filter-gray-800: invert(15%) sepia(9%) saturate(680%) hue-rotate(202deg) brightness(97%) contrast(91%);
+  --filter-gray-900: invert(8%) sepia(9%) saturate(1071%) hue-rotate(202deg) brightness(95%) contrast(93%); /* 最深的灰 */
+  
+  /* 深色模式滤镜 */
+  --filter-gray-dark: invert(50%) sepia(9%) saturate(324%) hue-rotate(175deg) brightness(94%) contrast(87%);
+  --filter-primary-dark: invert(83%) sepia(33%) saturate(7153%) hue-rotate(218deg) brightness(103%) contrast(96%);
+  --filter-light: invert(95%) sepia(5%) saturate(100%) hue-rotate(180deg) brightness(100%) contrast(100%); /* 浅色图标滤镜，用于深色主题下的 logo */
+  
+  /* 灰度滤镜系列 - 深色模式 */
+  --filter-gray-dark-100: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%); /* 最浅的灰 */
+  --filter-gray-dark-200: invert(93%) sepia(6%) saturate(91%) hue-rotate(185deg) brightness(99%) contrast(87%);
+  --filter-gray-dark-300: invert(85%) sepia(9%) saturate(124%) hue-rotate(179deg) brightness(90%) contrast(84%);
+  --filter-gray-dark-400: invert(70%) sepia(10%) saturate(210%) hue-rotate(179deg) brightness(87%) contrast(85%);
+  --filter-gray-dark-500: invert(50%) sepia(9%) saturate(324%) hue-rotate(175deg) brightness(94%) contrast(87%); /* 中灰 - 同 --filter-gray-dark */
+  --filter-gray-dark-600: invert(40%) sepia(9%) saturate(341%) hue-rotate(179deg) brightness(92%) contrast(84%);
+  --filter-gray-dark-700: invert(30%) sepia(9%) saturate(341%) hue-rotate(179deg) brightness(92%) contrast(84%);
+  --filter-gray-dark-800: invert(20%) sepia(9%) saturate(341%) hue-rotate(179deg) brightness(92%) contrast(84%);
+  --filter-gray-dark-900: invert(10%) sepia(9%) saturate(341%) hue-rotate(179deg) brightness(92%) contrast(84%); /* 最深的灰 */
+  
+  --filter-message-action: invert(50%) sepia(80%) saturate(1000%) hue-rotate(240deg) brightness(100%) contrast(100%);
+  --filter-message-action-hover: invert(50%) sepia(100%) saturate(1000%) hue-rotate(240deg) brightness(100%) contrast(100%);
+  --filter-message-action-dark: invert(70%) sepia(80%) saturate(1000%) hue-rotate(240deg) brightness(100%) contrast(100%);
+  --filter-message-action-dark-hover: invert(80%) sepia(100%) saturate(1000%) hue-rotate(240deg) brightness(100%) contrast(100%);
+  
+  /* ===== 语义化变量 ===== */
+  
+  /* 浅色主题默认值 */
+  --bg-color: var(--gray-50);
+  --bg-color-light: white;
+  --bg-color-dark: var(--gray-100);
+  --bg-color-darker: var(--gray-900);
+  --text-color: var(--gray-900);
+  --text-color-light: var(--gray-700);
+  --text-color-lighter: var(--gray-500);
+  --border-color: var(--gray-200);
+  --border-color-light: var(--gray-100);
+  --link-color: var(--primary-600);
+  --link-hover-color: var(--primary-700);
+  --button-bg: var(--gray-100);
+  --button-hover-bg: var(--gray-200);
+  --button-border: var(--gray-300);
+  --button-hover-border: var(--gray-400);
+  --chat-user-avatar-bg: var(--gray-200);
+  --chat-user-bubble-bg: var(--gray-200);  /* 用户消息气泡背景色 */
+  --chat-user-bubble-text: var(--gray-900);  /* 用户消息文字颜色 */
+  --chat-ai-bubble-bg: var(--bg-color);     /* AI消息气泡背景色 */
+  --chat-ai-bubble-text: var(--text-color); /* AI消息文字颜色 */
+  --chat-ai-bubble-border: var(--border-color); /* AI消息气泡边框颜色 */
+  --message-bubble-bg: transparent;         /* 默认消息气泡背景色 */
+  --message-bubble-text: var(--text-color); /* 默认消息文字颜色 */
+  
+  /* 滚动条颜色 */
+  --scrollbar-thumb: var(--gray-300);
+  --scrollbar-thumb-dark: var(--gray-600);
+  
+  /* 阴影颜色 */
+  --shadow-color: rgba(0, 0, 0, 0.05);
+  --shadow-color-dark: rgba(0, 0, 0, 0.2);
+  
+  /* 提示框颜色 */
+  --tooltip-bg: var(--gray-100);
+  --tooltip-text: var(--text-color);
+  --tooltip-bg-dark: var(--gray-700);
+  --tooltip-text-dark: var(--gray-100);
+  
+  /* 全局过渡效果 */
+  --transition-duration: 200ms;
+  --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* 悬停背景色 */
+  --hover-bg: rgba(0, 0, 0, 0.05);
+  --hover-bg-dark: rgba(255, 255, 255, 0.05);
+}
+
+/* 深色主题样式 */
+.dark {
+  color-scheme: dark;
+  
+  /* 深色主题变量覆盖 */
+  --bg-color: var(--gray-900);
+  --bg-color-light: var(--gray-800);
+  --bg-color-dark: var(--gray-950);
+  --bg-color-darker: var(--gray-1000);
+  --text-color: var(--gray-50);
+  --text-color-light: var(--gray-300);
+  --text-color-lighter: var(--gray-400);
+  --border-color: var(--gray-800);
+  --border-color-light: var(--gray-700);
+  --border-color-dark: var(--gray-700);
+  --link-color: var(--primary-400);
+  --link-hover-color: var(--primary-300);
+  --button-bg: var(--gray-800);
+  --button-hover-bg: var(--gray-700);
+  --button-hover-bg-dark: var(--gray-600);
+  --button-border: var(--gray-600);
+  --button-hover-border: var(--gray-500);
+  --button-hover-border-dark: var(--gray-500);
+  --chat-user-avatar-bg: var(--gray-700);
+  --chat-user-bubble-bg: var(--gray-600);   /* 用户消息气泡背景色 */
+  --chat-user-bubble-text: var(--gray-50);   /* 用户消息文字颜色 */
+  --chat-ai-bubble-bg: var(--bg-color);      /* AI消息气泡背景色 */
+  --chat-ai-bubble-text: var(--text-color);  /* AI消息文字颜色 */
+  --chat-ai-bubble-border: var(--border-color); /* AI消息气泡边框颜色 */
+  --message-bubble-bg: var(--gray-800);      /* 默认消息气泡背景色 */
+  --message-bubble-text: var(--gray-50);     /* 默认消息文字颜色 */
+  
+  /* 阴影颜色 - 深色模式 */
+  --shadow-color: rgba(0, 0, 0, 0.2);
+  --shadow-color-dark: rgba(0, 0, 0, 0.4);
+  
+  /* 提示框颜色 - 深色模式 */
+  --tooltip-bg: var(--gray-800);
+  --tooltip-text: var(--gray-100);
+  --tooltip-bg-dark: var(--gray-700);
+  --tooltip-text-dark: var(--gray-50);
+  
+  /* 聊天思考过程深色主题色彩 */
+  --chat-thinking-bg: rgba(30, 41, 59, 0.5);
+  --chat-thinking-border: rgba(255, 255, 255, 0.1);
+  --chat-thinking-hover-bg: rgba(255, 255, 255, 0.05);
+  --chat-thinking-icon: rgba(255, 255, 255, 0.6);
+  --chat-thinking-title: rgba(255, 255, 255, 0.8);
+  --chat-thinking-content: rgba(255, 255, 255, 0.7);
+  --chat-thinking-content-bg: rgba(30, 41, 59, 0.3);
+  --chat-thinking-active-border: rgba(59, 130, 246, 0.5);
+  --chat-thinking-active-bg: rgba(59, 130, 246, 0.1);
+  
+  /* 聊天加载动画深色主题颜色 */
+  --chat-spinner-color: rgb(168, 85, 247);
+  --chat-spinner-color-alpha: rgba(168, 85, 247, 0.1);
+  
+  /* Markdown 深色主题变量 */
+  --md-text-primary: var(--gray-50);
+  --md-text-secondary: var(--gray-300);
+  --md-heading-color: var(--gray-50);
+  --md-link-color: var(--blue-400);
+  --md-link-hover-color: var(--green-400);
+  --md-blockquote-border: var(--gray-700);
+  --md-blockquote-bg: var(--gray-800);
+  --md-blockquote-text: var(--gray-300);
+  --md-inline-code-bg: rgba(99, 110, 123, 0.4);
+  --md-inline-code-text: var(--gray-50);
+  --md-border-color: var(--gray-700);
+  --md-table-header-bg: var(--gray-800);
+  --md-table-border: var(--gray-700);
+  --md-table-row-hover: var(--gray-800);
+  --md-list-item-marker: var(--gray-300);
+  --md-task-list-bg: var(--gray-800);
+  --md-task-list-border: var(--gray-700);
+  --md-task-list-checked-bg: var(--blue-500);
+  --md-task-list-checked-border: var(--blue-500);
+  --md-kbd-bg: var(--gray-800);
+  --md-kbd-border: var(--gray-700);
+  --md-kbd-text: var(--gray-300);
+  --md-mark-bg: rgba(255, 248, 197, 0.2);
+  --md-mark-text: var(--gray-50);
+  
+  /* 代码高亮变量 - 深色主题 */
+  --code-keyword: #ff7b72;
+  --code-string: #a5d6ff;
+  --code-number: #79c0ff;
+  --code-type: #ffa657;
+  --code-function: #d2a8ff;
+  --code-class: #79c0ff;
+  --code-comment: #8b949e;
+  --code-meta: #79c0ff;
+  --code-punctuation: #c9d1d9;
+  --code-section: #d2a8ff;
+  --code-deletion-text: #ffdcd7;
+  --code-deletion-bg: #67060c;
+  --code-addition-text: #aff5b4;
+  --code-addition-bg: #033a16;
+  
+  /* 悬停背景色 */
+  --hover-bg: var(--hover-bg-dark);
+}
+
+/* 全局字体应用 */
+body {
+  font-family: var(--font-family);
+  -webkit-font-smoothing: var(--font-smoothing);
+  -moz-osx-font-smoothing: var(--font-smoothing-firefox);
+  text-rendering: var(--text-rendering);
+}
+
+/* 全局过渡效果 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.transition-colors {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: var(--transition-timing);
+  transition-duration: var(--transition-duration);
+}
+
+/* 全局文本选择样式 */
+::selection {
+  background-color: var(--gray-100);
+  color: var(--gray-900);
+}
+
+.dark ::selection {
+  background-color: var(--gray-900);
+  color: var(--gray-100);
+}

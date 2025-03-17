@@ -1,39 +1,11 @@
 /* Markdown 和代码块样式合并文件 */
 
-/* ================= Markdown 基础变量 ================= */
-:root {
-  --md-text-primary: #24292f;
-  --md-text-secondary: #57606a;
-  --md-heading-color: #24292f;
-  --md-link-color: #0969da;
-  --md-link-hover-color: #1a7f37;
-  --md-blockquote-border: #d0d7de;
-  --md-blockquote-bg: #f6f8fa;
-  --md-blockquote-text: #57606a;
-  --md-inline-code-bg: rgba(175, 184, 193, 0.2);
-  --md-inline-code-text: #24292f;
-  --md-border-color: #d0d7de;
-  --md-table-header-bg: #f6f8fa;
-  --md-table-border: #d0d7de;
-  --md-table-row-hover: #f6f8fa;
-  --md-list-item-marker: #57606a;
-  --md-task-list-bg: #ffffff;
-  --md-task-list-border: #d0d7de;
-  --md-task-list-checked-bg: #0969da;
-  --md-task-list-checked-border: #0969da;
-  --md-kbd-bg: #f6f8fa;
-  --md-kbd-border: #d0d7de;
-  --md-kbd-text: #57606a;
-  --md-mark-bg: #fff8c5;
-  --md-mark-text: #24292f;
-}
-
 /* ================= Markdown 基础样式 ================= */
 .markdown-content {
-  color: var(--text-color);
+  color: var(--md-text-primary);
   line-height: 1.6;
   font-size: 1rem;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-family: var(--font-family);
   word-wrap: break-word;
 }
 
@@ -48,20 +20,20 @@
   margin-bottom: 16px;
   font-weight: 600;
   line-height: 1.25;
-  color: var(--text-color);
+  color: var(--md-heading-color);
   letter-spacing: -0.025em;
 }
 
 .markdown-content h1 {
   font-size: 2em;
   padding-bottom: 0.3em;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--md-border-color);
 }
 
 .markdown-content h2 {
   font-size: 1.5em;
   padding-bottom: 0.3em;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--md-border-color);
 }
 
 .markdown-content h3 { font-size: 1.25em; }
@@ -69,19 +41,19 @@
 .markdown-content h5 { font-size: 0.875em; }
 .markdown-content h6 { 
   font-size: 0.85em; 
-  color: var(--text-color-light);
+  color: var(--md-text-secondary);
 }
 
 /* 段落和文本样式 */
 .markdown-content p {
   margin: 8px 0;
   line-height: 1.75;
-  color: var(--text-color);
+  color: var(--md-text-primary);
 }
 
 .markdown-content strong {
   font-weight: 600;
-  color: var(--text-color);
+  color: var(--md-text-primary);
 }
 
 .markdown-content em {
@@ -90,18 +62,18 @@
 
 .markdown-content del {
   text-decoration: line-through;
-  color: var(--text-color-lighter);
+  color: var(--md-text-secondary);
 }
 
 /* 链接样式 */
 .markdown-content a {
-  color: var(--link-color);
+  color: var(--md-link-color);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .markdown-content a:hover {
-  color: var(--link-hover-color);
+  color: var(--md-link-hover-color);
   text-decoration: underline;
 }
 
@@ -110,7 +82,7 @@
 .markdown-content ol {
   margin: 16px 0;
   padding-left: 2em;
-  color: var(--text-color);
+  color: var(--md-text-primary);
 }
 
 /* 有序列表样式 */
@@ -140,18 +112,18 @@
   content: "";
   position: absolute;
   left: -1.25em;
-  top: 0.75em;
+  top: 0.9em;
   transform: translateY(-50%);
   width: 5px;
   height: 5px;
-  background-color: var(--text-color-lighter);
+  background-color: var(--md-list-item-marker);
   border-radius: 50%;
 }
 
 .markdown-content ul ul li::before {
   width: 4px;
   height: 4px;
-  border: 1px solid var(--text-color-lighter);
+  border: 1px solid var(--md-list-item-marker);
   background-color: transparent;
 }
 
@@ -160,7 +132,7 @@
   height: 5px;
   border: none;
   background-color: transparent;
-  border: 1px solid var(--text-color-lighter);
+  border: 1px solid var(--md-list-item-marker);
   transform: translateY(-50%) rotate(45deg);
   border-radius: 1px;
 }
@@ -198,9 +170,9 @@
 .markdown-content blockquote {
   margin: 16px 0;
   padding: 0.8em 1em;
-  color: var(--text-color-light);
-  border-left: 4px solid var(--border-color);
-  background-color: var(--bg-color-light);
+  color: var(--md-blockquote-text);
+  border-left: 4px solid var(--md-blockquote-border);
+  background-color: var(--md-blockquote-bg);
 }
 
 .markdown-content blockquote > :first-child {
@@ -218,8 +190,8 @@
   font-size: 0.85em;
   background-color: var(--md-inline-code-bg);
   border-radius: 3px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  color: var(--text-color);
+  font-family: var(--font-family-mono);
+  color: var(--md-inline-code-text);
 }
 
 /* 水平线样式 */
@@ -227,7 +199,7 @@
   height: 0.25em;
   padding: 0;
   margin: 24px 0;
-  background-color: var(--border-color);
+  background-color: var(--md-border-color);
   border: 0;
 }
 
@@ -243,22 +215,22 @@
 
 .markdown-content table th {
   font-weight: 600;
-  background-color: var(--bg-color-light);
+  background-color: var(--md-table-header-bg);
 }
 
 .markdown-content table th,
 .markdown-content table td {
   padding: 6px 13px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--md-table-border);
 }
 
 .markdown-content table tr {
   background-color: var(--bg-color);
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--md-table-border);
 }
 
 .markdown-content table tr:nth-child(2n) {
-  background-color: var(--bg-color-light);
+  background-color: var(--md-table-header-bg);
 }
 
 .markdown-content table tr:hover {
@@ -270,7 +242,7 @@
 }
 
 .markdown-content tr:nth-child(even) {
-  background-color: var(--bg-color-light);
+  background-color: var(--md-table-header-bg);
 }
 
 /* 图片样式 */
@@ -285,18 +257,18 @@
   padding: 0.2em 0.4em;
   font-size: 0.85em;
   line-height: 1;
-  color: var(--text-color-light);
+  color: var(--md-kbd-text);
   vertical-align: middle;
-  background-color: var(--bg-color-light);
-  border: 1px solid var(--border-color);
+  background-color: var(--md-kbd-bg);
+  border: 1px solid var(--md-kbd-border);
   border-radius: 3px;
-  box-shadow: inset 0 -1px 0 var(--border-color);
+  box-shadow: inset 0 -1px 0 var(--md-kbd-border);
 }
 
 /* 标记/高亮样式 */
 .markdown-content mark {
-  background-color: var(--mark-bg);
-  color: var(--text-color);
+  background-color: var(--md-mark-bg);
+  color: var(--md-mark-text);
   padding: 0.1em 0.2em;
   border-radius: 2px;
 }
@@ -308,7 +280,7 @@
   background-color: var(--bg-color-light);
   border: 1px solid var(--border-color);
   overflow: hidden;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-family: var(--font-family-mono);
 }
 
 .code-header {
@@ -318,6 +290,7 @@
   padding: 0.5rem 1rem;
   background-color: var(--bg-color);
   border-bottom: 1px solid var(--border-color);
+  flex-direction: row;
 }
 
 .language-label {
@@ -327,10 +300,12 @@
   color: var(--text-color-lighter);
   text-transform: uppercase;
   font-weight: 500;
+  flex: 1;
 }
 
 .code-block pre,
 .code-block code {
+  font-size: 0.8rem;
   margin: 0;
   background: transparent;
 }
@@ -348,6 +323,7 @@
   transition: background-color 0.2s, border-color 0.2s, opacity 0.2s;
   padding: 8px;
   opacity: 0.5;
+  margin-left: auto; /* 确保按钮始终在右侧 */
 }
 
 .copy-button:hover {
@@ -358,12 +334,12 @@
 .copy-icon {
   width: 16px;
   height: 16px;
-  filter: invert(70%) sepia(12%) saturate(320%) hue-rotate(180deg) brightness(95%) contrast(90%);
+  filter: var(--code-copy-icon-filter);
 }
 
 /* 复制成功后的样式 */
 .copy-icon.copied {
-  filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(100deg) brightness(118%) contrast(119%) !important;
+  filter: var(--code-copy-icon-copied-filter) !important;
 }
 
 pre {
@@ -376,7 +352,7 @@ pre {
 }
 
 code {
-  font-family: inherit;
+  font-family: var(--font-family-mono);
   font-size: 0.9rem;
   line-height: 1.5;
   color: var(--text-color);
@@ -394,7 +370,7 @@ code {
 .hljs-keyword,
 .hljs-selector-tag,
 .hljs-subst {
-  color: #cf222e;
+  color: var(--code-keyword);
 }
 
 /* 字符串 */
@@ -402,7 +378,7 @@ code {
 .hljs-regexp,
 .hljs-attribute,
 .hljs-attr {
-  color: #0a3069;
+  color: var(--code-string);
 }
 
 /* 数字 */
@@ -411,33 +387,33 @@ code {
 .hljs-variable,
 .hljs-template-variable,
 .hljs-tag .hljs-attr {
-  color: #116329;
+  color: var(--code-number);
 }
 
 /* 类型 */
 .hljs-type,
 .hljs-class .hljs-title,
 .hljs-built_in {
-  color: #953800;
+  color: var(--code-type);
 }
 
 /* 函数 */
 .hljs-function .hljs-title,
 .hljs-title.function_ {
-  color: #8250df;
+  color: var(--code-function);
 }
 
 /* 类名 */
 .hljs-title,
 .hljs-title.class_,
 .hljs-class .hljs-title {
-  color: #0550ae;
+  color: var(--code-class);
 }
 
 /* 注释 */
 .hljs-comment,
 .hljs-quote {
-  color: #6e7781;
+  color: var(--code-comment);
   font-style: italic;
 }
 
@@ -445,113 +421,37 @@ code {
 .hljs-doctag,
 .hljs-meta,
 .hljs-meta-keyword {
-  color: #0550ae;
+  color: var(--code-meta);
 }
 
 /* 标点符号 */
 .hljs-punctuation,
 .hljs-tag,
 .hljs-name {
-  color: #24292f;
+  color: var(--code-punctuation);
 }
 
 /* 特殊关键字 */
 .hljs-section,
 .hljs-property {
-  color: #8250df;
+  color: var(--code-section);
   font-weight: bold;
 }
 
 /* 模板字符串 */
 .hljs-template-tag,
 .hljs-template-variable {
-  color: #0550ae;
+  color: var(--code-meta);
 }
 
 /* 删除的代码 */
 .hljs-deletion {
-  color: #82071e;
-  background-color: #ffebe9;
+  color: var(--code-deletion-text);
+  background-color: var(--code-deletion-bg);
 }
 
 /* 插入的代码 */
 .hljs-addition {
-  color: #116329;
-  background-color: #dafbe1;
-}
-
-/* 深色模式适配 */
-.dark .hljs-keyword,
-.dark .hljs-selector-tag,
-.dark .hljs-subst {
-  color: #ff7b72;
-}
-
-.dark .hljs-string,
-.dark .hljs-regexp,
-.dark .hljs-attribute,
-.dark .hljs-attr {
-  color: #a5d6ff;
-}
-
-.dark .hljs-number,
-.dark .hljs-literal,
-.dark .hljs-variable,
-.dark .hljs-template-variable,
-.dark .hljs-tag .hljs-attr {
-  color: #79c0ff;
-}
-
-.dark .hljs-type,
-.dark .hljs-class .hljs-title,
-.dark .hljs-built_in {
-  color: #ffa657;
-}
-
-.dark .hljs-function .hljs-title,
-.dark .hljs-title.function_ {
-  color: #d2a8ff;
-}
-
-.dark .hljs-title,
-.dark .hljs-title.class_,
-.dark .hljs-class .hljs-title {
-  color: #79c0ff;
-}
-
-.dark .hljs-comment,
-.dark .hljs-quote {
-  color: #8b949e;
-}
-
-.dark .hljs-doctag,
-.dark .hljs-meta,
-.dark .hljs-meta-keyword {
-  color: #79c0ff;
-}
-
-.dark .hljs-punctuation,
-.dark .hljs-tag,
-.dark .hljs-name {
-  color: #c9d1d9;
-}
-
-.dark .hljs-section,
-.dark .hljs-property {
-  color: #d2a8ff;
-}
-
-.dark .hljs-template-tag,
-.dark .hljs-template-variable {
-  color: #79c0ff;
-}
-
-.dark .hljs-deletion {
-  color: #ffdcd7;
-  background-color: #67060c;
-}
-
-.dark .hljs-addition {
-  color: #aff5b4;
-  background-color: #033a16;
+  color: var(--code-addition-text);
+  background-color: var(--code-addition-bg);
 }

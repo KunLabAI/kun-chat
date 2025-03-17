@@ -145,10 +145,24 @@ class Database:
                         role TEXT NOT NULL,
                         content TEXT NOT NULL,
                         images TEXT,                          -- JSON数组格式存储图片路径
+                        document TEXT,                        -- 文档数据，包含名称、内容和类型
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE
                     )
                 """)
+                
+                # 检查 document 字段是否存在，如果不存在则添加
+                try:
+                    await self._connection.execute("""
+                        ALTER TABLE messages ADD COLUMN document TEXT
+                    """)
+                    await self._connection.commit()
+                    logger.info("Added document column to messages table")
+                except Exception as e:
+                    if "duplicate column name" not in str(e).lower():
+                        logger.warning(f"Error adding document column: {str(e)}")
+                    else:
+                        logger.info("Document column already exists")
                 
                 # 创建models表
                 await self._connection.execute("""

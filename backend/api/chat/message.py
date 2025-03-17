@@ -14,6 +14,7 @@ from api.auth import get_current_user, decode_token
 from config import API_CONFIG
 from ollama.client import OllamaClient
 from .schemas import ChatCompletionRequest
+from api.tools.doc_format import get_mime_type_from_filename
 
 router = APIRouter()
 
@@ -79,9 +80,27 @@ async def process_chat_messages(
                 
                 # 如果有文档数据，将文档内容添加到消息中
                 if "document" in msg and msg["document"]:
-                    doc_content = f"\n文档内容：\n{msg['document']['content']}"
-                    formatted_msg["content"] = formatted_msg["content"] + doc_content
-
+                    # 文档内容是 Markdown 文本
+                    doc_content = msg["document"]
+                    
+                    # 提取文件名（如果有）
+                    file_name = "文档"
+                    import re
+                    match = re.search(r"# 文件: (.+?)\n", doc_content)
+                    if match:
+                        file_name = match.group(1)
+                    
+                    # 如果文档内容太长，可能需要截断
+                    max_doc_length = 10000  # 设置一个合理的最大长度
+                    if len(doc_content) > max_doc_length:
+                        doc_content = doc_content[:max_doc_length] + "...\n[文档内容过长，已截断]"
+                    
+                    # 添加文档内容到消息中
+                    formatted_msg["content"] = formatted_msg["content"] + f"\n\n以下是《{file_name}》的内容：\n" + doc_content
+                    
+                    # 打印调试信息
+                    logging.debug(f"添加文档内容到消息中，文档名称: {file_name}，文档长度: {len(doc_content)}")
+                
                 formatted_messages.append(formatted_msg)
 
             # 如果启用了网页搜索，调用 Tavily 搜索工具
@@ -159,12 +178,48 @@ async def process_chat_messages(
                 }
             })
 
+def get_limited_history(messages, max_messages=10):
+    """限制历史消息数量，保留最近的消息"""
+    if len(messages) <= max_messages:
+        return messages
+    
+    # 保留最后 max_messages 条消息
+    limited_messages = messages[-max_messages:]
+    
+    # 确保每条消息都有正确的格式
+    for msg in limited_messages:
+        # 确保文档字段格式正确
+        if "document" in msg and msg["document"]:
+            # 文档内容是 Markdown 文本
+            document_content = msg["document"]
+            
+            # 尝试从文档内容中提取文件名
+            file_name = "document.md"
+            file_type = get_mime_type_from_filename(file_name)
+            
+            # 从 Markdown 内容中提取文件名
+            import re
+            match = re.search(r"# 文件: (.+?)\n", document_content)
+            if match:
+                file_name = match.group(1)
+                file_type = get_mime_type_from_filename(file_name)
+            
+            # 构建文档对象，用于前端显示
+            msg["document"] = {
+                "name": file_name,
+                "content": document_content,
+                "type": file_type
+            }
+    
+    return limited_messages
+
 async def save_message(
     db: Database,
     conversation_id: str,
     role: str,
     content: str,
-    images: str = None
+    images: str = None,
+    document: str = None
 ):
     """保存消息到数据库
     
@@ -174,19 +229,37 @@ async def save_message(
         role: 消息角色
         content: 消息内容
         images: 图片数据，JSON数组格式存储图片路径
+        document: 文档数据，Markdown 格式
     """
     timestamp = datetime.utcnow().isoformat()
     
     # 记录调试信息
     if images:
         logging.debug(f"Saving message with image data for conversation {conversation_id}")
+        # 确保 images 是字符串类型
+        if not isinstance(images, str):
+            images = json.dumps(images) if images is not None else None
+            
+    if document:
+        logging.debug(f"Saving message with document data for conversation {conversation_id}")
+        # 确保 document 是字符串类型
+        if not isinstance(document, str):
+            try:
+                document = json.dumps(document) if document is not None else None
+            except:
+                document = str(document) if document is not None else None
+    
+    # 打印参数类型，用于调试
+    logging.debug(f"Parameter types: conversation_id={type(conversation_id)}, role={type(role)}, "
+                  f"content={type(content)}, images={type(images)}, document={type(document)}, "
+                  f"timestamp={type(timestamp)}")
     
     await db.execute(
         """
-        INSERT INTO messages (conversation_id, role, content, images, created_at)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO messages (conversation_id, role, content, images, document, created_at)
+        VALUES (?, ?, ?, ?, ?, ?)
         """,
-        (conversation_id, role, content, images, timestamp)
+        (conversation_id, role, content, images, document, timestamp)
     )
     
     # 更新对话的更新时间
@@ -228,19 +301,6 @@ async def get_conversation_messages(
         (conversation_id,)
     )
     return messages
-
-def get_limited_history(messages: List[Dict[str, Any]], max_messages: int = 10) -> List[Dict[str, Any]]:
-    """获取有限的历史消息，避免发送过多历史消息给模型"""
-    # 分离系统消息和其他消息
-    system_messages = [msg for msg in messages if msg["role"] == "system"]
-    other_messages = [msg for msg in messages if msg["role"] != "system"]
-    
-    # 如果其他消息数量超过限制，只保留最近的消息
-    if len(other_messages) > max_messages:
-        other_messages = other_messages[-max_messages:]
-    
-    # 返回系统消息加上限制后的其他消息
-    return system_messages + other_messages
 
 @router.post("/conversations/{conversation_id}/abort")
 async def abort_generation(
@@ -334,7 +394,7 @@ async def websocket_endpoint(
                 # 获取历史消息
                 history_messages = await db.fetch_all(
                     """
-                    SELECT role, content, images
+                    SELECT role, content, images, document
                     FROM messages
                     WHERE conversation_id = ?
                     ORDER BY created_at ASC
@@ -363,6 +423,8 @@ async def websocket_endpoint(
                     }
                     if msg["images"]:
                         message_dict["image"] = msg["images"]
+                    if msg["document"]:
+                        message_dict["document"] = msg["document"]
                     
                     if msg["role"] == "system":
                         system_messages.append(message_dict)
@@ -393,15 +455,54 @@ async def websocket_endpoint(
                 # 添加当前用户消息
                 current_message = data.get("messages", [])[-1]
                 if current_message["role"] == "user":
-                    # 保存用户消息
+                    # 获取文档数据
+                    document_data = current_message.get("document")
+                    
+                    # 确保 document_data 是字符串类型
+                    if document_data and not isinstance(document_data, str):
+                        try:
+                            # 如果是字典类型，尝试将其转换为 Markdown 格式
+                            if isinstance(document_data, dict):
+                                if "content" in document_data:
+                                    document_content = document_data["content"]
+                                    # 如果有文件名，添加到内容开头（仅当内容中不包含文件名时）
+                                    if "name" in document_data and not document_content.startswith(f"# 文件: {document_data['name']}"):
+                                        file_name = document_data["name"]
+                                        document_content = f"# 文件: {file_name}\n\n{document_content}"
+                                    document_data = document_content
+                                else:
+                                    # 如果没有 content 字段，转换为字符串
+                                    document_data = json.dumps(document_data)
+                            else:
+                                # 其他类型转换为字符串
+                                document_data = str(document_data)
+                        except Exception as e:
+                            logging.error(f"处理文档数据时出错: {str(e)}")
+                            document_data = str(document_data) if document_data is not None else None
+                    
+                    # 获取图片数据
+                    image_data = current_message.get("image")
+                    # 确保 image_data 是字符串类型
+                    if image_data and not isinstance(image_data, str):
+                        try:
+                            image_data = json.dumps(image_data)
+                        except:
+                            image_data = str(image_data)
+                    
                     await save_message(
                         db,
                         conversation_id,
                         current_message["role"],
                         current_message["content"],
-                        current_message.get("image")
+                        image_data,
+                        document_data
                     )
-                    all_messages.append(current_message)
+                    all_messages.append({
+                        "role": current_message["role"],
+                        "content": current_message["content"],
+                        "image": image_data,
+                        "document": document_data
+                    })
                 
                 # 限制发送给模型的历史消息数量
                 limited_messages = get_limited_history(all_messages)
@@ -427,7 +528,9 @@ async def websocket_endpoint(
                                 db,
                                 conversation_id,
                                 "assistant",
-                                full_response
+                                full_response,
+                                None,  # AI 回复没有图片
+                                None   # AI 回复没有文档
                             )
                 except websockets.exceptions.ConnectionClosedOK:
                     # 用户主动关闭连接，记录信息日志
@@ -438,7 +541,9 @@ async def websocket_endpoint(
                             db,
                             conversation_id,
                             "assistant",
-                            full_response
+                            full_response,
+                            None,  # AI 回复没有图片
+                            None   # AI 回复没有文档
                         )
                     break
                 
@@ -505,7 +610,7 @@ async def chat(
         # 获取历史消息
         history_messages = await db.fetch_all(
             """
-            SELECT role, content, images
+            SELECT role, content, images, document
             FROM messages
             WHERE conversation_id = ?
             ORDER BY created_at ASC
@@ -528,6 +633,8 @@ async def chat(
             }
             if msg["images"]:
                 message_dict["image"] = msg["images"]
+            if msg["document"]:
+                message_dict["document"] = msg["document"]
             
             if msg["role"] == "system":
                 system_messages.append(message_dict)
@@ -559,17 +666,58 @@ async def chat(
         # 添加当前用户消息
         if request.messages and request.messages[-1].role == "user":
             message = request.messages[-1]
+            # 获取文档数据
+            document_data = None
+            if hasattr(message, "document"):
+                document_data = message.document
+                # 如果 document_data 是 Document 对象，将其转换为字典
+                if hasattr(document_data, "model_dump"):
+                    document_data = document_data.model_dump()
+                
+                # 确保 document_data 是字符串类型
+                if document_data and not isinstance(document_data, str):
+                    try:
+                        # 如果是字典类型，尝试将其转换为 Markdown 格式
+                        if isinstance(document_data, dict):
+                            if "content" in document_data:
+                                document_content = document_data["content"]
+                                # 如果有文件名，添加到内容开头（仅当内容中不包含文件名时）
+                                if "name" in document_data and not document_content.startswith(f"# 文件: {document_data['name']}"):
+                                    file_name = document_data["name"]
+                                    document_content = f"# 文件: {file_name}\n\n{document_content}"
+                                document_data = document_content
+                            else:
+                                # 如果没有 content 字段，转换为字符串
+                                document_data = json.dumps(document_data)
+                        else:
+                            # 其他类型转换为字符串
+                            document_data = str(document_data)
+                    except Exception as e:
+                        logging.error(f"处理文档数据时出错: {str(e)}")
+                        document_data = str(document_data) if document_data is not None else None
+            
+            # 获取图片数据
+            image_data = message.image if hasattr(message, "image") else None
+            # 确保 image_data 是字符串类型
+            if image_data and not isinstance(image_data, str):
+                try:
+                    image_data = json.dumps(image_data)
+                except:
+                    image_data = str(image_data)
+            
             await save_message(
                 db,
                 conversation_id,
                 "user",
                 message.content,
-                message.image if hasattr(message, "image") else None
+                image_data,
+                document_data
             )
             all_messages.append({
                 "role": message.role,
                 "content": message.content,
-                "image": message.image if hasattr(message, "image") else None
+                "image": image_data,
+                "document": document_data  # 直接传递完整的文档数据
             })
         
         # 限制发送给模型的历史消息数量
@@ -602,7 +750,9 @@ async def chat(
                     db,
                     conversation_id,
                     "assistant",
-                    full_response
+                    full_response,
+                    None,  # AI 回复没有图片
+                    None   # AI 回复没有文档
                 )
             
             return {

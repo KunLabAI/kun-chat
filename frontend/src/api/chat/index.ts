@@ -215,32 +215,39 @@ export const chatApi = {
     return handleApiResponse<{ success: boolean; data?: { url: string; content?: string } }>(response)
   },
 
- // 文档上传接口
- convertDocument: async (file: File, conversationId: string): Promise<{ original_filename: string, markdown_content: string }> => {
+  // 文档上传接口
+  convertDocument: async (file: File, conversationId: string): Promise<{ name: string, content: string, type: string }> => {
     const formData = new FormData()
     formData.append('file', file)
-  formData.append('conversation_id', conversationId)
+    formData.append('conversation_id', conversationId)
 
-  // 获取认证头信息
-  const headers: Record<string, string> = {}
-  const authHeaders = getAuthHeaders()
-  
-  // 如果有Authorization头，添加到请求中
-  if ('Authorization' in authHeaders) {
-    headers['Authorization'] = authHeaders['Authorization']
-  }
+    // 获取认证头信息
+    const headers: Record<string, string> = {}
+    const authHeaders = getAuthHeaders()
+    
+    // 如果有Authorization头，添加到请求中
+    if ('Authorization' in authHeaders) {
+      headers['Authorization'] = authHeaders['Authorization']
+    }
 
-  const response = await fetch(`${API_BASE_URL}/api/doc/convert`, {
-        method: 'POST',
-    headers,
-        body: formData
-  })
+    const response = await fetch(`${API_BASE_URL}/api/doc/convert`, {
+      method: 'POST',
+      headers,
+      body: formData
+    })
 
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => null)
-    throw new Error(errorData?.detail || '文档转换失败')
-  }
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => null)
+      throw new Error(errorData?.detail || '文档转换失败')
+    }
 
-  return response.json()
+    const data = await response.json()
+    
+    // 返回统一格式的数据
+    return {
+      name: data.name || file.name,
+      content: data.content || '',
+      type: data.type || file.type || 'text/markdown'
+    }
   }
 }

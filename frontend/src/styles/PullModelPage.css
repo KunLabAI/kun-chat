@@ -362,6 +362,23 @@
   color: #16a34a;
 }
 
+/* 空状态图标样式 */
+.pull-model-page .empty-state-icon {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 24px;
+  object-fit: contain;
+}
+
+.pull-model-page .congratulation-icon {
+  filter: var(--filter-primary);
+}
+
+/* 深色模式下的祝贺图标 */
+.dark .pull-model-page .congratulation-icon {
+  filter: var(--filter-primary-dark);
+}
+
 .pull-model-page .completed-state h3 {
   font-size: 16px;
   font-weight: 500;

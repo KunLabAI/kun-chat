@@ -151,21 +151,21 @@
 .message-actions button img {
   width: 16px;
   height: 16px;
-  filter: invert(50%) sepia(80%) saturate(1000%) hue-rotate(240deg) brightness(100%) contrast(100%);
+  filter: var(--filter-message-action);
   transition: filter 0.2s ease;
 }
 
 .message-actions button:hover img {
-  filter: invert(50%) sepia(100%) saturate(1000%) hue-rotate(240deg) brightness(100%) contrast(100%);
+  filter: var(--filter-message-action-hover);
 }
 
 /* 深色主题下的图标颜色 */
 .dark .message-actions button img {
-  filter: invert(70%) sepia(80%) saturate(1000%) hue-rotate(240deg) brightness(100%) contrast(100%);
+  filter: var(--filter-message-action-dark);
 }
 
 .dark .message-actions button:hover img {
-  filter: invert(80%) sepia(100%) saturate(1000%) hue-rotate(240deg) brightness(100%) contrast(100%);
+  filter: var(--filter-message-action-dark-hover);
 }
 
 /* 打字动画效果 */
@@ -187,8 +187,8 @@
 .spinner {
   width: 12px;
   height: 12px;
-  --clr: rgb(247, 197, 159);
-  --clr-alpha: rgb(247, 197, 159,.1);
+  --clr: var(--chat-spinner-color);
+  --clr-alpha: var(--chat-spinner-color-alpha);
   animation: spinner 1.6s infinite ease;
   transform-style: preserve-3d;
 }
@@ -243,16 +243,6 @@
   }
 }
 
-/* 深色主题下的加载动画颜色 */
-.dark .spinner {
-  --clr: rgb(168, 85, 247);
-  --clr-alpha: rgba(168, 85, 247, 0.1);
-}
-
-.dark .message-file-preview {
-  background: rgba(255, 255, 255, 0.04);
-}
-
 .file-icon {
   display: flex;
   align-items: center;
@@ -288,36 +278,15 @@
   word-break: break-word;
 }
 
-.message-group-user .file-name {
-  color: rgba(255, 255, 255, 0.95);
-}
-
 .file-type {
   font-size: 0.75rem;
   color: var(--text-color-light);
   opacity: 0.8;
 }
 
-.message-group-user .file-type {
-  color: rgba(255, 255, 255, 0.7);
-}
-
 /* 如果PDF和图片同时存在，添加间距 */
 .message-file-preview + .message-image {
   margin-top: 12px;
-}
-
-/* 悬浮效果 */
-.message-file-preview:hover {
-  background: rgba(0, 0, 0, 0.06);
-}
-
-.dark .message-file-preview:hover {
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.message-group-user .message-file-preview:hover {
-  background: rgba(255, 255, 255, 0.15);
 }
 
 /* 图片显示相关样式 */
@@ -334,56 +303,136 @@
 .message-file-preview {
   display: flex;
   align-items: center;
-  margin: 8px 8px 8px 0;
-}
-
-.message-file-preview .file-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  margin-right: 12px;
-  color: var(--color-text-secondary);
+  justify-content: space-between;
+  margin-top: 12px;
 }
 
 .message-file-preview .file-info {
-  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 8px;
+  flex-direction: row;
+  background-color: var(--bg-color-light);
+}
+
+.message-file-preview .file-icon svg {
+  color: var(--color-text-secondary);
+}
+
+.message-file-preview .file-details {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  overflow: hidden;
 }
 
 .message-file-preview .file-name {
+  font-size: 16px;
   font-weight: 500;
-  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.message-file-preview .file-meta {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
 }
 
 .message-file-preview .file-type {
-  font-size: 0.875rem;
-  color: var(--color-text-secondary);
+  opacity: 0.5;
 }
 
-.message-file-preview .file-preview-btn {
-  padding: 6px 12px;
-  background: none;
-  border: 1px solid var(--color-border);
-  border-radius: 4px;
-  color: var(--color-text-secondary);
-  cursor: pointer;
-  transition: all 0.2s;
+.message-file-preview .file-size {
+  opacity: 0.5;
 }
 
-.message-file-preview .file-preview-btn:hover {
-  background-color: var(--color-bg-hover);
-  color: var(--color-text-primary);
+.message-group-user .message-file-preview {
+  color: rgba(255, 255, 255, 0.95);
 }
 
-.document-content {
-  margin-top: 8px;
-  padding: 12px;
-  background-color: var(--color-bg-secondary);
-  border-radius: 8px;
+.message-group-user .message-file-preview .file-icon svg {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.message-group-user .message-file-preview .file-meta {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* 文件类型图标颜色 */
+.message-file-preview .pdf-icon {
+  background-color: rgba(233, 66, 53, 0.1);
+}
+.message-file-preview .pdf-icon svg {
+  color: #e94235;
+}
+
+.message-file-preview .word-icon {
+  background-color: rgba(33, 85, 168, 0.1);
+}
+.message-file-preview .word-icon svg {
+  color: #2155a8;
+}
+
+.message-file-preview .excel-icon {
+  background-color: rgba(33, 168, 84, 0.1);
+}
+.message-file-preview .excel-icon svg {
+  color: #21a854;
+}
+
+.message-file-preview .ppt-icon {
+  background-color: rgba(242, 147, 13, 0.1);
+}
+.message-file-preview .ppt-icon svg {
+  color: #f2930d;
+}
+
+.message-file-preview .txt-icon {
+  background-color: rgba(103, 58, 183, 0.1);
+}
+.message-file-preview .txt-icon svg {
+  color: #673ab7;
+}
+
+/* 用户消息区域的文件类型图标颜色 */
+.message-group-user .message-file-preview .pdf-icon {
+  background-color: rgba(233, 66, 53, 0.2);
+}
+.message-group-user .message-file-preview .pdf-icon svg {
+  color: #f87171;
+}
+
+.message-group-user .message-file-preview .word-icon {
+  background-color: rgba(33, 85, 168, 0.2);
+}
+.message-group-user .message-file-preview .word-icon svg {
+  color: #60a5fa;
+}
+
+.message-group-user .message-file-preview .excel-icon {
+  background-color: rgba(33, 168, 84, 0.2);
+}
+.message-group-user .message-file-preview .excel-icon svg {
+  color: #4ade80;
+}
+
+.message-group-user .message-file-preview .ppt-icon {
+  background-color: rgba(242, 147, 13, 0.2);
+}
+.message-group-user .message-file-preview .ppt-icon svg {
+  color: #facc15;
+}
+
+.message-group-user .message-file-preview .txt-icon {
+  background-color: rgba(103, 58, 183, 0.2);
+}
+.message-group-user .message-file-preview .txt-icon svg {
+  color: #c084fc;
 }
 
 /* 滚动条样式 */
@@ -396,12 +445,12 @@
 }
 
 .chat-container::-webkit-scrollbar-thumb {
-  background-color: rgba(156, 163, 175, 0.5);
+  background-color: var(--scrollbar-thumb);
   border-radius: 0.25rem;
 }
 
 .chat-container::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(156, 163, 175, 0.7);
+  background-color: var(--scrollbar-thumb-hover);
 }
 
 /* 消息内容滚动条 */
@@ -414,12 +463,12 @@
 }
 
 .message-bubble::-webkit-scrollbar-thumb {
-  background-color: rgba(156, 163, 175, 0.3);
+  background-color: var(--scrollbar-thumb-light);
   border-radius: 0.25rem;
 }
 
 .message-bubble::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(156, 163, 175, 0.5);
+  background-color: var(--scrollbar-thumb-light-hover);
 }
 
 /* 全局滚动行为 */
@@ -446,7 +495,7 @@ html {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #ffffff;
+  background-color: var(--bg-color-light);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
@@ -464,7 +513,7 @@ html {
 }
 
 .scroll-to-bottom:hover {
-  background-color: #f5f5f5;
+  background-color: var(--button-hover-bg);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transform: translateY(-2px);
 }
@@ -472,11 +521,11 @@ html {
 .scroll-to-bottom svg {
   width: 20px;
   height: 20px;
-  fill: #6b7280;
+  fill: var(--text-color-light);
 }
 
 .scroll-to-bottom:hover svg {
-  fill: #333;
+  fill: var(--text-color);
 }
 
 /* 思考过程样式 */
@@ -488,7 +537,7 @@ html {
   display: flex;
   align-items: center;
   margin-bottom: 12px;
-  cursor: pointer;
+  cursor: default;
   user-select: none;
   transition: background-color 0.2s ease;
 }
@@ -497,20 +546,21 @@ html {
   width: 20px;
   height: 20px;
   margin-right: 8px;
-  color: var(--text-color-lighter);
+  color: var(--chat-thinking-icon);
 }
 
 .thinking-title {
   font-size: 14px;
   font-weight: 500;
-  color: var(--text-color-light);
+  color: var(--chat-thinking-title);
 }
 
 .thinking-toggle {
   margin-left: 12px;
   width: 20px;
   height: 20px;
-  color: var(--text-color-lighter);
+  color: var(--chat-thinking-icon);
+  cursor: pointer;
 }
 
 .thinking-toggle svg {
@@ -525,7 +575,7 @@ html {
 .thinking-dots {
   display: inline-block;
   margin-left: 4px;
-  color: #409eff;
+  color: var(--primary-500);
 }
 
 .thinking-dots::after {
@@ -547,39 +597,21 @@ html {
   padding: 16px;
   font-size: 14px;
   line-height: 1.6;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--chat-thinking-border);
   white-space: pre-wrap;
-  background-color: var(--bg-color);
+  background-color: var(--chat-thinking-content-bg);
   white-space: pre-wrap;
   line-height: 1.6;
-  color: darkgray ;
+  color: var(--chat-thinking-content);
+  border-radius: 8px;
 }
 
-/* 主题变量 */
-:root {
-  /* 浅色主题 */
-  --chat-thinking-bg: rgba(245, 247, 250, 0.85);
-  --chat-thinking-border: rgba(0, 0, 0, 0.1);
-  --chat-thinking-hover-bg: rgba(0, 0, 0, 0.03);
-  --chat-thinking-icon: rgba(0, 0, 0, 0.6);
-  --chat-thinking-title: rgba(0, 0, 0, 0.8);
-  --chat-thinking-content: rgba(0, 0, 0, 0.7);
-  --chat-thinking-content-bg: rgba(255, 255, 255, 0.5);
-  --chat-thinking-active-border: rgba(59, 130, 246, 0.5);
-  --chat-thinking-active-bg: rgba(59, 130, 246, 0.05);
-}
-
-/* 深色主题 */
-[data-theme="dark"] {
-  --chat-thinking-bg: rgba(30, 41, 59, 0.5);
-  --chat-thinking-border: rgba(255, 255, 255, 0.1);
-  --chat-thinking-hover-bg: rgba(255, 255, 255, 0.05);
-  --chat-thinking-icon: rgba(255, 255, 255, 0.6);
-  --chat-thinking-title: rgba(255, 255, 255, 0.8);
-  --chat-thinking-content: rgba(255, 255, 255, 0.7);
-  --chat-thinking-content-bg: rgba(30, 41, 59, 0.3);
-  --chat-thinking-active-border: rgba(59, 130, 246, 0.5);
-  --chat-thinking-active-bg: rgba(59, 130, 246, 0.1);
+/* 媒体查询 - 中等屏幕 (768px) */
+@media screen and (min-width: 512px) {
+  .messages-container {
+    max-width: 512px;
+    margin-top: 32px; 
+  }
 }
 
 /* 媒体查询 - 中等屏幕 (1024px) */
@@ -593,7 +625,7 @@ html {
 /* 媒体查询 - 大屏幕 (1920px) */
 @media screen and (min-width: 1920px) {
   .messages-container {
-    max-width: 1200px;
+    max-width: 1024px;
     margin-top: 32px; 
   }
 }

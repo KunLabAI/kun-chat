@@ -110,6 +110,7 @@ export interface SettingsMessages {
         description: string;
         light: string;
         dark: string;
+        system: string;
       };
     };
     security: {
@@ -663,10 +664,14 @@ export interface ChatMessages {
       pdf: string;
       word: string;
       text: string;
-      html: string;
       markdown: string;
       document: string;
+      excel: string;
+      csv: string;
+      ppt: string;
     };
+    file_size: string;
+
   };
   input: {
     placeholder: string;

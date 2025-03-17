@@ -659,10 +659,13 @@ const messages: Messages = {
         pdf: 'PDF Document',
         word: 'Word Document',
         text: 'Text Document',
-        html: 'HTML Document',
         markdown: 'Markdown Document',
-        document: 'Document'
-      }
+        document: 'Document',
+        excel: 'Excel Spreadsheet',
+        csv: 'CSV Spreadsheet',
+        ppt: 'PowerPoint Presentation',
+      },
+      file_size: 'File Size'
     },
     input: {
       placeholder: 'Type your message...',

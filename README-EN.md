@@ -253,5 +253,7 @@ If you have any questions or suggestions, please feel free to contact us through
 
 - Submit an Issue: Submit your questions or suggestions on the GitHub repository issues page.
 
+- Email: [service@kunpuai.com](service@kunpuai.com)
+
 > Friendly reminder: kun-lab is still in rapid iterative development, your contributions and feedback are crucial to us!
 

@@ -252,7 +252,7 @@ input[type="checkbox"]:hover {
 }
 
 .delete-button:hover {
-  color: var(--danger-500);
+  color: var(--red-500);
 }
 
 /* 动画效果 */

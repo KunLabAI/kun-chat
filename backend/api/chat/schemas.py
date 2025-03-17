@@ -1,11 +1,17 @@
 from typing import List, Dict, Any, Optional
 from pydantic import BaseModel
 
+class Document(BaseModel):
+    name: str
+    content: str
+    type: str
+
 class Message(BaseModel):
     role: str
     content: str
     timestamp: str
     images: Optional[List[str]] = None
+    document: Optional[Document] = None
     web_search: Optional[bool] = False
 
 class ChatCompletionRequest(BaseModel):
