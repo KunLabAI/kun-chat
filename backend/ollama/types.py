@@ -116,9 +116,10 @@ class ModelPullStatus(BaseModel):
     error: Optional[str] = Field(default=None, description="错误信息")
     details: List[Dict[str, Any]] = Field(default_factory=list, description="详细信息")
 
-    class Config:
-        protected_namespaces = ()
-
+    model_config = {
+        'protected_namespaces': ()
+    }
+    
 class ModelDeleteRequest(BaseModel):
     """
     删除模型的请求
