@@ -257,8 +257,7 @@
 }
 
 .dark .model-select-btn {
-  background: var(--bg-color-dark);
-  color: var(--text-color-dark);
+  color: var(--text-color-lighter);
 }
 
 .model-select-btn:hover {
@@ -278,16 +277,30 @@
 }
 
 .dark .model-select-btn.active {
-  background: var(--primary-900);
-  border-color: var(--primary-700);
+  background: var(--button-hover-bg);
   color: var(--primary-300);
 }
 
-.model-select-btn svg {
-  opacity: 0.7;
+.model-select-btn img {
+  opacity: 0.5;
   transition: all 0.3s ease;
-  color: var(--text-color-light);
+  width: 16px;
+  height: 16px;
+  filter: invert(50%);
 }
+
+.dark .model-select-btn img {
+  filter: invert(100%);
+}
+
+.model-select-btn.active img {
+  filter: var(--filter-primary);
+}
+
+.dark .model-select-btn .active img {
+  filter: var(--filter-primary-dark);
+}
+
 
 .model-select-btn .chevron-icon {
   margin-left: 4px;
@@ -335,7 +348,7 @@
   background: var(--button-hover-bg);
 }
 
-.clear-btn:hover svg {
+.clear-btn:hover img {
   opacity: 1;
 }
 

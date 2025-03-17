@@ -76,9 +76,8 @@
               :data-tooltip="t('chat.input.model_select')"
               @mouseenter="updateTooltipPosition"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7L12 16.8 5.7 21l2.3-7-6-4.6h7.6z"/>
-              </svg>
+            <img src="@/assets/icons/chat_models.svg" alt="model-select" />
+
               <span>{{ getCurrentModelDisplayName }}</span>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-icon">
                 <polyline points="6 9 12 15 18 9"></polyline>

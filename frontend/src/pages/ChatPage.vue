@@ -45,20 +45,21 @@
             </div>
             <!-- 显示文档 -->
               <div v-if="message.document" class="message-file-preview">
-                <div class="file-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                    <polyline points="14 2 14 8 20 8"/>
-                    <line x1="9" y1="15" x2="15" y2="15"/>
-                  </svg>
-                </div>
                 <div class="file-info">
-                  <span class="file-name">{{ message.document.name }}</span>
-                  <span class="file-type">{{ getFileType(message.document.type) }}</span>
+                  <div class="file-icon" :class="getDocumentTypeClass(message.document.type)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                      <polyline points="14 2 14 8 20 8"/>
+                      <line x1="9" y1="15" x2="15" y2="15"/>
+                    </svg>
+                  </div>
+                  <div class="file-details">
+                    <div class="file-name">{{ message.document.name }}</div>
+                    <div class="file-meta">
+                      <span class="file-type">{{ getFileType(message.document.type) }}</span>
+                    </div>
+                  </div>
                 </div>
-                <button class="file-preview-btn" @click="toggleDocumentContent(message)">
-                  {{ message.showDocument ? t('chat.file_preview.hide_content') : t('chat.file_preview.show_content') }}
-                </button>
               </div>
             <div v-if="message.document && message.showDocument" class="document-content">
               <MarkdownRenderer :content="message.document.content" />
@@ -709,6 +710,25 @@ const getFileType = (mimeType) => {
     'text/markdown': t('chat.file_preview.file_types.markdown')
   }
   return types[mimeType] || t('chat.file_preview.file_types.document')
+}
+
+// 获取文档类型对应的CSS类名
+function getDocumentTypeClass(mimeType) {
+  if (!mimeType) return '';
+  
+  if (mimeType.includes('pdf')) {
+    return 'pdf-icon';
+  } else if (mimeType.includes('word') || mimeType.includes('doc')) {
+    return 'word-icon';
+  } else if (mimeType.includes('excel') || mimeType.includes('sheet') || mimeType.includes('xls') || mimeType.includes('csv')) {
+    return 'excel-icon';
+  } else if (mimeType.includes('powerpoint') || mimeType.includes('presentation') || mimeType.includes('ppt')) {
+    return 'ppt-icon';
+  } else if (mimeType.includes('text') || mimeType.includes('txt')) {
+    return 'txt-icon';
+  }
+  
+  return '';
 }
 
 // 处理键盘事件

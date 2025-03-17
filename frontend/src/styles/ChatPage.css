@@ -278,36 +278,15 @@
   word-break: break-word;
 }
 
-.message-group-user .file-name {
-  color: rgba(255, 255, 255, 0.95);
-}
-
 .file-type {
   font-size: 0.75rem;
   color: var(--text-color-light);
   opacity: 0.8;
 }
 
-.message-group-user .file-type {
-  color: rgba(255, 255, 255, 0.7);
-}
-
 /* 如果PDF和图片同时存在，添加间距 */
 .message-file-preview + .message-image {
   margin-top: 12px;
-}
-
-/* 悬浮效果 */
-.message-file-preview:hover {
-  background: rgba(0, 0, 0, 0.06);
-}
-
-.dark .message-file-preview:hover {
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.message-group-user .message-file-preview:hover {
-  background: rgba(255, 255, 255, 0.15);
 }
 
 /* 图片显示相关样式 */
@@ -324,56 +303,136 @@
 .message-file-preview {
   display: flex;
   align-items: center;
-  margin: 8px 8px 8px 0;
-}
-
-.message-file-preview .file-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  margin-right: 12px;
-  color: var(--text-color-light);
+  justify-content: space-between;
+  margin-top: 12px;
 }
 
 .message-file-preview .file-info {
-  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 8px;
+  flex-direction: row;
+  background-color: var(--bg-color-light);
+}
+
+.message-file-preview .file-icon svg {
+  color: var(--color-text-secondary);
+}
+
+.message-file-preview .file-details {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  overflow: hidden;
 }
 
 .message-file-preview .file-name {
+  font-size: 16px;
   font-weight: 500;
-  color: var(--text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.message-file-preview .file-meta {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
 }
 
 .message-file-preview .file-type {
-  font-size: 0.875rem;
-  color: var(--text-color-light);
+  opacity: 0.5;
 }
 
-.message-file-preview .file-preview-btn {
-  padding: 6px 12px;
-  background: none;
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  color: var(--text-color-light);
-  cursor: pointer;
-  transition: all 0.2s;
+.message-file-preview .file-size {
+  opacity: 0.5;
 }
 
-.message-file-preview .file-preview-btn:hover {
-  background-color: var(--button-hover-bg);
-  color: var(--text-color);
+.message-group-user .message-file-preview {
+  color: rgba(255, 255, 255, 0.95);
 }
 
-.document-content {
-  margin-top: 8px;
-  padding: 12px;
-  background-color: var(--bg-color-light);
-  border-radius: 8px;
+.message-group-user .message-file-preview .file-icon svg {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.message-group-user .message-file-preview .file-meta {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* 文件类型图标颜色 */
+.message-file-preview .pdf-icon {
+  background-color: rgba(233, 66, 53, 0.1);
+}
+.message-file-preview .pdf-icon svg {
+  color: #e94235;
+}
+
+.message-file-preview .word-icon {
+  background-color: rgba(33, 85, 168, 0.1);
+}
+.message-file-preview .word-icon svg {
+  color: #2155a8;
+}
+
+.message-file-preview .excel-icon {
+  background-color: rgba(33, 168, 84, 0.1);
+}
+.message-file-preview .excel-icon svg {
+  color: #21a854;
+}
+
+.message-file-preview .ppt-icon {
+  background-color: rgba(242, 147, 13, 0.1);
+}
+.message-file-preview .ppt-icon svg {
+  color: #f2930d;
+}
+
+.message-file-preview .txt-icon {
+  background-color: rgba(103, 58, 183, 0.1);
+}
+.message-file-preview .txt-icon svg {
+  color: #673ab7;
+}
+
+/* 用户消息区域的文件类型图标颜色 */
+.message-group-user .message-file-preview .pdf-icon {
+  background-color: rgba(233, 66, 53, 0.2);
+}
+.message-group-user .message-file-preview .pdf-icon svg {
+  color: #f87171;
+}
+
+.message-group-user .message-file-preview .word-icon {
+  background-color: rgba(33, 85, 168, 0.2);
+}
+.message-group-user .message-file-preview .word-icon svg {
+  color: #60a5fa;
+}
+
+.message-group-user .message-file-preview .excel-icon {
+  background-color: rgba(33, 168, 84, 0.2);
+}
+.message-group-user .message-file-preview .excel-icon svg {
+  color: #4ade80;
+}
+
+.message-group-user .message-file-preview .ppt-icon {
+  background-color: rgba(242, 147, 13, 0.2);
+}
+.message-group-user .message-file-preview .ppt-icon svg {
+  color: #facc15;
+}
+
+.message-group-user .message-file-preview .txt-icon {
+  background-color: rgba(103, 58, 183, 0.2);
+}
+.message-group-user .message-file-preview .txt-icon svg {
+  color: #c084fc;
 }
 
 /* 滚动条样式 */
