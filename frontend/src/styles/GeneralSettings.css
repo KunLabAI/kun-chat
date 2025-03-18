@@ -1,0 +1,68 @@
+/* 
+ * 通用设置页面样式
+ * 遵循项目统一的样式规范
+ */
+
+/* 表单组件样式 */
+.features-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 480px;
+  margin-bottom: 20px;
+}
+
+.features-form-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.features-form-help {
+  font-size: 12px;
+  color: var(--text-color-light);
+  margin: 4px 0 0 0;
+}
+
+/* 切换按钮组样式 */
+.features-toggle-group {
+  display: flex;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.features-toggle-button {
+  flex: 1;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  background: var(--bg-color);
+  color: var(--text-color);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.features-toggle-button-active {
+  background: var(--primary-600);
+  color: white;
+}
+
+.features-toggle-button:first-child {
+  border-right: 1px solid var(--border-color);
+}
+
+.features-toggle-button:hover:not(.features-toggle-button-active) {
+  background: var(--gray-100);
+}
+
+/* 深色模式适配 */
+.dark {
+  .features-toggle-button:hover:not(.features-toggle-button-active) {
+    background: var(--gray-700);
+  }
+}

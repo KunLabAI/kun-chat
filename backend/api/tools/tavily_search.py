@@ -121,15 +121,13 @@ async def update_tavily_settings(
     """
     更新Tavily API设置
     """
+    global TAVILY_API_KEY, tavily_client
+    
     try:
-        # 如果提供了API密钥，则检查其有效性
-        if settings.api_key and settings.api_key.strip():
-            try:
-                test_client = TavilyClient(api_key=settings.api_key)
-                # 执行一个简单的测试查询
-                test_client.search("test", max_results=1)
-                
-                # 更新数据库中的API密钥设置
+        # 如果提供了API密钥，直接保存，不进行验证
+        if settings.api_key is not None:
+            if settings.api_key.strip():
+                # 保存非空的API密钥
                 await db.execute(
                     """
                     INSERT OR REPLACE INTO settings (key, value, user_id, created_at, updated_at)
@@ -141,12 +139,27 @@ async def update_tavily_settings(
                 # 更新全局变量
                 global TAVILY_API_KEY, tavily_client
                 TAVILY_API_KEY = settings.api_key
-                tavily_client = TavilyClient(api_key=TAVILY_API_KEY)
-            except Exception as e:
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail=f"API密钥无效: {str(e)}"
+                try:
+                    tavily_client = TavilyClient(api_key=TAVILY_API_KEY)
+                    logging.info("已更新Tavily客户端实例")
+                except Exception as e:
+                    logging.warning(f"创建Tavily客户端实例失败: {str(e)}")
+                
+                logging.info(f"已保存用户 {current_user['username']} 的Tavily API密钥")
+            else:
+                # 如果API密钥是空字符串，则清除API密钥
+                await db.execute(
+                    """
+                    DELETE FROM settings
+                    WHERE key = ? AND user_id = ?
+                    """,
+                    ("tavily_api_key", current_user["username"])
                 )
+                
+                # 更新全局变量
+                TAVILY_API_KEY = None
+                tavily_client = None
+                logging.info(f"已清除用户 {current_user['username']} 的Tavily API密钥")
         
         # 更新搜索深度设置
         if settings.search_depth is not None:
@@ -208,6 +221,7 @@ async def test_tavily_connection(
         )
         
         if not setting or not setting["value"]:
+            logging.warning(f"用户 {current_user['username']} 尝试测试Tavily连接，但未设置API密钥")
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="未设置Tavily API密钥"
@@ -215,13 +229,26 @@ async def test_tavily_connection(
         
         # 测试连接
         try:
+            logging.info(f"用户 {current_user['username']} 正在测试Tavily API连接")
             test_client = TavilyClient(api_key=setting["value"])
-            response = test_client.search("test connection", max_results=1)
+            response = test_client.search("test connection", max_results=1, search_depth="basic")
+            logging.info(f"用户 {current_user['username']} 的Tavily API连接测试成功")
             return {"status": "success", "message": "Tavily API连接成功", "response": response}
         except Exception as e:
+            error_message = str(e)
+            logging.error(f"用户 {current_user['username']} 的Tavily API连接测试失败: {error_message}")
+            
+            # 提供更友好的错误消息
+            if "401" in error_message or "unauthorized" in error_message.lower():
+                error_message = "API密钥无效或未授权"
+            elif "429" in error_message:
+                error_message = "API请求次数超限"
+            elif "timeout" in error_message.lower():
+                error_message = "API请求超时，请稍后再试"
+            
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"API连接失败: {str(e)}"
+                detail=f"API连接失败: {error_message}"
             )
     except HTTPException:
         raise

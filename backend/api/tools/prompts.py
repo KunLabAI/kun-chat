@@ -32,8 +32,9 @@ class Prompt(PromptBase):
     created_at: str
     updated_at: str
 
-    class Config:
-        from_attributes = True
+    model_config = {
+        'from_attributes': True
+    }
 
 @router.post("/prompts", response_model=Prompt)
 async def create_prompt(

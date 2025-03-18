@@ -189,6 +189,8 @@
   --filter-gray: invert(60%) sepia(14%) saturate(346%) hue-rotate(202deg) brightness(94%) contrast(92%);
   --filter-primary: invert(35%) sepia(34%) saturate(3200%) hue-rotate(254deg) brightness(93%) contrast(93%);
   --filter-dark: invert(10%) sepia(10%) saturate(200%) hue-rotate(180deg) brightness(90%) contrast(95%); /* 深色图标滤镜，用于浅色主题下的 logo */
+  --filter-red: invert(36%) sepia(51%) saturate(2476%) hue-rotate(337deg) brightness(100%) contrast(95%); /* 红色图标滤镜，用于删除等危险操作 */
+  --filter-success: invert(42%) sepia(97%) saturate(427%) hue-rotate(101deg) brightness(96%) contrast(88%); /* 成功色图标滤镜，用于保存等成功操作 */
   
   /* 灰度滤镜系列 - 浅色模式 */
   --filter-gray-100: invert(98%) sepia(3%) saturate(106%) hue-rotate(197deg) brightness(118%) contrast(96%); /* 最浅的灰 */
@@ -204,6 +206,8 @@
   /* 深色模式滤镜 */
   --filter-gray-dark: invert(50%) sepia(9%) saturate(324%) hue-rotate(175deg) brightness(94%) contrast(87%);
   --filter-primary-dark: invert(83%) sepia(33%) saturate(7153%) hue-rotate(218deg) brightness(103%) contrast(96%);
+  --filter-red-dark: invert(80%) sepia(38%) saturate(4985%) hue-rotate(314deg) brightness(101%) contrast(101%); /* 深色主题红色图标滤镜 */
+  --filter-success-dark: invert(85%) sepia(29%) saturate(1122%) hue-rotate(67deg) brightness(92%) contrast(88%); /* 深色主题成功色图标滤镜 */
   --filter-light: invert(95%) sepia(5%) saturate(100%) hue-rotate(180deg) brightness(100%) contrast(100%); /* 浅色图标滤镜，用于深色主题下的 logo */
   
   /* 灰度滤镜系列 - 深色模式 */

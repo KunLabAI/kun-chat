@@ -56,7 +56,24 @@ export async function fetchWithRetry(
   try {
     const response = await fetch(url, options)
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+      // 尝试读取响应内容
+      let errorDetail = '';
+      try {
+        const errorData = await response.json();
+        errorDetail = errorData.detail || JSON.stringify(errorData);
+      } catch (e) {
+        // 如果无法解析为 JSON，尝试读取文本
+        try {
+          errorDetail = await response.text();
+        } catch (textError) {
+          errorDetail = `状态码: ${response.status}`;
+        }
+      }
+      
+      const error = new Error(`HTTP error! status: ${response.status}, detail: ${errorDetail}`) as any;
+      error.status = response.status;
+      error.detail = errorDetail;
+      throw error;
     }
     return response
   } catch (error) {
