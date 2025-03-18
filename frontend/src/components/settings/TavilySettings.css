@@ -1,0 +1,268 @@
+/* 
+ * Tavily 设置页面样式
+ * 遵循项目统一的样式规范
+ */
+
+/* Tavily 设置页面结构样式 */
+.tavily-settings-section {
+  margin-bottom: 32px;
+}
+
+.tavily-section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 16px;
+}
+
+.tavily-setting-description {
+  font-size: 14px;
+  color: var(--text-color-lighter);
+  margin-bottom: 24px;
+}
+
+/* 表单组件样式 */
+.tavily-features-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 480px;
+  margin-bottom: 20px;
+}
+
+.tavily-features-form-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tavily-features-form-hint {
+  font-size: 12px;
+  color: var(--text-color-lighter);
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+.tavily-features-form-input {
+  width: 100%;
+  padding: 8px 12px;
+  padding-right: 120px; /* 增加右侧内边距，为图标和按钮留出空间 */
+  font-size: 14px;
+  color: var(--text-color);
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.tavily-features-form-input:focus {
+  outline: none;
+  border-color: var(--primary-600);
+  box-shadow: 0 0 0 2px var(--primary-100);
+}
+
+.tavily-features-form-input:disabled {
+  background: var(--gray-100);
+  cursor: not-allowed;
+}
+
+.tavily-features-input-group {
+  display: flex;
+  gap: 12px;
+  position: relative;
+}
+
+/* API密钥相关样式 */
+.tavily-features-api-key-container {
+  position: relative;
+  width: 100%;
+}
+
+.tavily-features-api-key-actions {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  z-index: 10;
+}
+
+.tavily-features-api-key-action {
+  background: transparent;
+  border: none;
+  color: var(--gray-500);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tavily-features-api-key-action img {
+  width: 16px;
+  height: 16px;
+  filter: var(--filter-gray-600); /* 使用全局灰度滤镜 */
+  transition: filter 0.2s ease;
+}
+
+.tavily-features-api-key-action:hover img {
+  filter: var(--filter-primary); /* 悬停时使用主题色滤镜 */
+}
+
+.tavily-features-api-key-action:disabled img,
+.tavily-features-api-key-action-disabled img {
+  filter: var(--filter-gray-400); /* 禁用状态使用浅灰色滤镜 */
+}
+
+.tavily-features-api-key-action[title="删除密钥"]:hover img,
+.tavily-features-api-key-action[title^="删除"]:hover img {
+  filter: var(--filter-red); /* 删除按钮悬停时使用红色滤镜 */
+}
+
+.tavily-features-api-key-action[title^="保存"]:hover img,
+.tavily-features-api-key-action[title$="save"]:hover img {
+  filter: var(--filter-success); /* 保存按钮悬停时使用成功色滤镜 */
+}
+
+.tavily-features-api-key-action:hover {
+  color: var(--primary-600);
+  background: var(--gray-100);
+}
+
+.tavily-features-api-key-action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 标签样式 */
+.tavily-features-tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tavily-features-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  background: var(--gray-100);
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--text-color);
+}
+
+.tavily-features-tag-remove {
+  margin-left: 6px;
+  background: transparent;
+  border: none;
+  color: var(--gray-500);
+  cursor: pointer;
+  padding: 0 2px;
+  font-size: 14px;
+  line-height: 1;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.tavily-features-tag-remove:hover {
+  color: var(--red-500);
+}
+
+/* 搜索深度选择器样式 */
+.tavily-features-toggle-group {
+  display: flex;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tavily-features-toggle-button {
+  flex: 1;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  background: var(--bg-color);
+  color: var(--text-color);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tavily-features-toggle-button-active {
+  background: var(--primary-600);
+  color: white;
+}
+
+.tavily-features-toggle-button:first-child {
+  border-right: 1px solid var(--border-color);
+}
+
+.tavily-features-toggle-button:hover:not(.tavily-features-toggle-button-active) {
+  background: var(--gray-100);
+}
+
+/* 动画效果 */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* 深色主题样式 */
+.dark .tavily-features-form-input {
+  background: var(--gray-800);
+  border-color: var(--gray-700);
+}
+
+.dark .tavily-features-form-input:disabled {
+  background: var(--gray-900);
+}
+
+.dark .tavily-features-tag {
+  background: var(--gray-800);
+  color: var(--gray-300);
+}
+
+.dark .tavily-features-api-key-action:hover {
+  background: var(--gray-800);
+}
+
+.dark .tavily-features-toggle-button:hover:not(.tavily-features-toggle-button-active) {
+  background: var(--gray-700);
+}
+
+.dark .tavily-features-api-key-action img {
+  filter: var(--filter-gray-dark-600); /* 深色主题下使用深色主题灰度滤镜 */
+}
+
+.dark .tavily-features-api-key-action:hover img {
+  filter: var(--filter-primary-dark); /* 深色主题下悬停时使用深色主题主题色滤镜 */
+}
+
+.dark .tavily-features-api-key-action:disabled img,
+.dark .tavily-features-api-key-action-disabled img {
+  filter: var(--filter-gray-dark-400); /* 深色主题下禁用状态使用深色主题浅灰色滤镜 */
+}
+
+.dark .tavily-features-api-key-action[title="删除密钥"]:hover img,
+.dark .tavily-features-api-key-action[title^="删除"]:hover img {
+  filter: var(--filter-red-dark); /* 深色主题下删除按钮悬停时使用深色主题红色滤镜 */
+}
+
+.dark .tavily-features-api-key-action[title^="保存"]:hover img,
+.dark .tavily-features-api-key-action[title$="save"]:hover img {
+  filter: var(--filter-success-dark); /* 深色主题下保存按钮悬停时使用深色主题成功色滤镜 */
+}

@@ -112,7 +112,7 @@ const selectLanguage = async (lang: SupportedLocale) => {
 </script>
 
 <style scoped>
-@import '@/styles/FeaturesSettings.css';
+@import './LanguageSwitcher.css';
 
 .language-switcher {
   position: relative;

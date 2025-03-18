@@ -6,43 +6,6 @@
   box-sizing: border-box;
 }
 
-/* 定义颜色变量，直接使用深色配色方案 */
-:root {
-  /* 深色主题的RGB变量，用于透明度控制 */
-  --bg-color-light-rgb: 39, 39, 42; /* 对应 --gray-800 */
-  --bg-color-rgb: 24, 24, 27; /* 对应 --gray-900 */
-  --bg-color-dark-rgb: 11, 11, 11; /* 对应 --gray-950 */
-  
-  /* 深色主题的颜色变量 */
-  --bg-color: #18181b; /* 深灰色背景 */
-  --bg-color-dark: #0b0b0b; /* 更深的背景色 */
-  --bg-color-light: #27272a; /* 稍浅的背景色 */
-  --text-color: #f4f4f5; /* 主要文本颜色 */
-  --text-color-light: #d4d4d8; /* 次要文本颜色 */
-  --text-color-lighter: #a1a1aa; /* 最浅的文本颜色 */
-  
-  /* 紫色主题色系 */
-  --primary-50: #faf5ff;
-  --primary-100: #f3e8ff;
-  --primary-200: #e9d5ff;
-  --primary-300: #d8b4fe;
-  --primary-400: #c084fc;
-  --primary-500: #a855f7;
-  --primary-600: #9333ea;
-  --primary-700: #7e22ce;
-  --primary-800: #6b21a8;
-  --primary-900: #581c87;
-  
-  /* 其他颜色变量 */
-  --border-color: #3f3f46; /* 边框颜色 */
-  --border-color-light: #52525b; /* 浅色边框 */
-  --link-color: #c084fc; /* 链接颜色 */
-  --link-hover-color: #d8b4fe; /* 链接悬停颜色 */
-  --button-hover-bg: #3f3f46; /* 按钮悬停背景 */
-  --button-hover-border: #52525b; /* 按钮悬停边框 */
-  --success-500: #8bc34a; /* 成功色 */
-}
-
 body {
   font-family: 'Inter', sans-serif;
   background-color: var(--bg-color-dark);
