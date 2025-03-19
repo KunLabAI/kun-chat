@@ -1,67 +1,34 @@
+/* Tailwind 指令 */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  html {
-    font-family: 'Inter', system-ui, sans-serif;
-  }
-
-  body {
-    margin: 0;
-    min-width: 320px;
-    height: 100%;
-  }
-
-  /* 浅色主题下的文字选中样式 */
-  *::selection {
-    background-color: rgba(0, 0, 0, 0.2) !important;
-    color: #2c2c2c !important;
-  }
-  *::-moz-selection {
-    background-color: rgba(37, 99, 235, 0.2);
-    color: #ffffff !important;
-  }
-
-  /* 深色主题下的文字选中样式 */
-  .dark *::selection {
-    background-color: rgba(195, 214, 255, 0.918);
-    color: #ffffff !important;
-  }
-  .dark *::-moz-selection {
-    background-color: rgba(210, 224, 255, 0.4) !important;
-    color: #ffffff !important;
-  }
-}
-
-/* 基础样式设置 */
+/* 字体定义 */
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  font-synthesis: none;
+  /* ===== 字体定义 ===== */
+  --font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  
+  /* 代码字体 */
+  --font-family-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Monaco, Consolas, 
+    'Liberation Mono', 'Courier New', monospace;
+  
+  /* 字体渲染优化 */
+  --font-smoothing: antialiased;
+  --font-smoothing-firefox: grayscale;
+  --text-rendering: optimizeLegibility;
 }
 
-/* 基础链接样式 */
-a {
-  font-weight: 500;
-  text-decoration: inherit;
-}
-
-/* 基础标题样式 */
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-/* 基础按钮样式 */
-button {
-  border-radius: 8px;
-}
-
-/* 卡片基础样式 */
-.card {
-  padding: 2em;
+/* 基础布局样式 */
+body {
+  margin: 0;
+  min-width: 320px;
+  height: 100%;
+  font-family: var(--font-family);
+  -webkit-font-smoothing: var(--font-smoothing);
+  -moz-osx-font-smoothing: var(--font-smoothing-firefox);
+  text-rendering: var(--text-rendering);
 }
 
 #app {
