@@ -182,6 +182,7 @@ const messages: Messages = {
           placeholder: '请输入您的 Tavily API 密钥',
           description: '您的 API 密钥'
         },
+        apiKeyHint: '输入 API 密钥后点击保存，然后使用下方的"测试连接"按钮验证密钥有效性',
         test_button: '测试连接',
         test_success: '连接成功',
         test_error: '连接失败',

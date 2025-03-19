@@ -46,12 +46,15 @@
               :disabled="loading.tavilyApiKey"
               :title="$t('common.actions.save')"
             >
-              <img :src="saveIcon" alt="save" :class="{ 'animate-spin': loading.tavilyApiKey }" />
+              <img v-if="!loading.tavilyApiKey" :src="saveIcon" alt="save" />
+              <div v-else class="tavily-loader-container">
+                <DotLoader />
+              </div>
             </button>
           </div>
         </div>
         <p class="tavily-features-form-hint">
-          输入 API 密钥后点击保存，然后使用下方的"测试连接"按钮验证密钥有效性
+          {{ $t('settings.tools.tavily.apiKeyHint') }}
         </p>
       </div>
       
@@ -61,11 +64,18 @@
           @click="testTavilyConnection"
           class="tavily-features-test-button"
           :disabled="!tavilyApiKey || loading.tavilyTest"
-          :loading="loading.tavilyTest"
+          :loading="false"
           variant="secondary"
           size="sm"
         >
-          {{ $t('settings.tools.tavily.test_button') }}
+          <template v-if="loading.tavilyTest">
+            <div class="tavily-button-loader">
+              <DotLoader />
+            </div>
+          </template>
+          <template v-else>
+            {{ $t('settings.tools.tavily.test_button') }}
+          </template>
         </Button>
         <p v-if="tavilyTestResult" 
            :class="tavilyTestResult.success ? 'text-green-600' : 'text-red-600'"
@@ -182,6 +192,7 @@ import { useI18n } from 'vue-i18n'
 import { useNotificationStore } from '@/stores/notification'
 import { toolsApi } from '@/api/tools'
 import Button from '@/components/common/Button.vue'
+import DotLoader from '@/components/common/DotLoader.vue'
 import eyeOnIcon from '@/assets/icons/sys_eyeon.svg'
 import eyeOffIcon from '@/assets/icons/sys_eyeoff.svg'
 import deleteIcon from '@/assets/icons/model_delete.svg'

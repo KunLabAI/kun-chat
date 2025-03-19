@@ -129,10 +129,6 @@
   filter: var(--filter-success); /* 保存按钮悬停时使用成功色滤镜 */
 }
 
-.tavily-features-api-key-action:hover {
-  color: var(--primary-600);
-  background: var(--primary-300);
-}
 
 .tavily-features-api-key-action:disabled {
   opacity: 0.5;
@@ -151,6 +147,15 @@
 .tavily-features-test-button:hover {
   background: var(--button-hover-bg);
   opacity: 1;
+}
+
+/* DotLoader 相关样式 */
+.tavily-button-loader {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* 标签样式 */

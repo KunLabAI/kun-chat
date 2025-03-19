@@ -177,6 +177,7 @@ export interface SettingsMessages {
         placeholder: string;
         description: string;
       };
+      apiKeyHint: string;
       test_button: string;
       test_success: string;
       test_error: string;

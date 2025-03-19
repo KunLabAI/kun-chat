@@ -209,7 +209,7 @@
   width: 100%;
   padding: 12px;
   border-radius: 8px;
-  background-color: var(--bg-input);
+  background-color: var(--bg-color-light);
   color: var(--text-color);
   font-size: 14px;
   line-height: 1.5;
@@ -222,6 +222,7 @@
   border-color: var(--primary-600);
   box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
   outline: none;
+  background: var(--bg-color);
 }
 
 .account-form-textarea::placeholder {

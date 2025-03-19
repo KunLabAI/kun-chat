@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { themeApi } from '@/api/themeApi'
 
 // 检测系统主题色是否为深色
 function isSystemDarkTheme(): boolean {
@@ -39,6 +40,7 @@ export const useThemeStore = defineStore('theme', {
       this.themeSource = this.isDark ? 'dark' : 'light'
       this.updateDocumentClass()
       this.saveThemeToStorage()
+      this.saveThemeToDatabase()
     },
 
     setDark(value: boolean) {
@@ -46,6 +48,7 @@ export const useThemeStore = defineStore('theme', {
       this.themeSource = value ? 'dark' : 'light'
       this.updateDocumentClass()
       this.saveThemeToStorage()
+      this.saveThemeToDatabase()
     },
 
     setTheme(theme: 'system' | 'light' | 'dark') {
@@ -59,6 +62,7 @@ export const useThemeStore = defineStore('theme', {
       
       this.updateDocumentClass()
       this.saveThemeToStorage()
+      this.saveThemeToDatabase()
     },
 
     updateDocumentClass() {
@@ -79,6 +83,7 @@ export const useThemeStore = defineStore('theme', {
             this.isDark = e.matches
             this.updateDocumentClass()
             this.saveThemeToStorage()
+            this.saveThemeToDatabase()
           }
         }
         
@@ -96,6 +101,47 @@ export const useThemeStore = defineStore('theme', {
         }))
       } catch (error) {
         console.error('保存主题设置失败:', error)
+      }
+    },
+
+    // 保存主题设置到数据库
+    async saveThemeToDatabase() {
+      try {
+        const token = localStorage.getItem('token')
+        if (!token) return // 如果用户未登录，不保存到数据库
+        
+        await themeApi.updateThemeSettings({
+          theme_is_dark: this.isDark,
+          theme_source: this.themeSource
+        }, token)
+      } catch (error) {
+        console.error('保存主题设置到数据库失败:', error)
+      }
+    },
+
+    // 从数据库加载主题设置
+    async loadThemeFromDatabase() {
+      try {
+        const token = localStorage.getItem('token')
+        if (!token) return // 如果用户未登录，不从数据库加载
+        
+        const settings = await themeApi.getThemeSettings(token)
+        
+        // 如果数据库中有主题设置，则使用数据库中的设置
+        if (settings.theme_source !== undefined) {
+          this.themeSource = settings.theme_source
+          
+          if (this.themeSource === 'system') {
+            this.isDark = isSystemDarkTheme()
+          } else if (settings.theme_is_dark !== undefined) {
+            this.isDark = settings.theme_is_dark
+          }
+          
+          this.updateDocumentClass()
+          this.saveThemeToStorage()
+        }
+      } catch (error) {
+        console.error('从数据库加载主题设置失败:', error)
       }
     }
   }
