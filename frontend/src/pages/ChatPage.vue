@@ -94,9 +94,16 @@
                 <!-- 用户消息使用纯文本渲染器 -->
                 <PlainTextRenderer v-if="message.role === 'user'" :content="message.content" />
                 <!-- AI消息使用Markdown渲染器 -->
-                <MarkdownRenderer v-else :content="extractFinalContent(message.content) || message.content" />
+                <div v-else>
+                  <!-- 使用key绑定，避免内容更新时重新渲染整个组件 -->
+                  <MarkdownRenderer 
+                    :content="extractFinalContent(message.content) || message.content" 
+                    :key="`content-${message.id}`"
+                  />
+                </div>
               </div>
             </template>
+            <!-- 生成中状态指示器 -->
             <div 
               v-if="chatStore.isGenerating && message === chatStore.messages[chatStore.messages.length - 1] && message.role === 'assistant'"
               class="loading-container"
@@ -110,8 +117,10 @@
                 <div></div>
               </div>
             </div>
+            <!-- 消息操作区域 -->
             <div v-if="message.role === 'assistant'" class="message-footer">
               <span class="message-time">{{ formatTime(message.timestamp) }}</span>
+              <!-- 使用独立的操作区域，避免内容更新时重新渲染 -->
               <div class="message-actions">
                 <button @click="copyMessage(message.content)" :title="t('chat.message_actions.copy')">
                   <img src="@/assets/icons/chat_copy.svg" :alt="t('chat.message_actions.copy')" />

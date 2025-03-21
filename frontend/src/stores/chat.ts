@@ -169,10 +169,18 @@ export const useChatStore = defineStore('chat', () => {
           }
 
           if (data.message) {
-            // 更新最新的消息内容
-            const currentContent = messages.value[assistantMessageIndex].content;
-            messages.value[assistantMessageIndex].content = currentContent + (data.message.content || '');
-
+            // 使用更高效的方式更新消息内容
+            const assistantMessage = messages.value[assistantMessageIndex];
+            
+            // 使用函数式更新方式，减少重新渲染
+            const newContent = (assistantMessage.content || '') + (data.message.content || '');
+            
+            // 使用Object.assign更新内容，避免触发整个对象的响应式更新
+            Object.assign(assistantMessage, { 
+              ...assistantMessage,
+              content: newContent 
+            });
+            
             // 如果是最后一条消息，关闭连接
             if (data.done) {
               isGenerating.value = false;

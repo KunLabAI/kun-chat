@@ -101,6 +101,8 @@
   min-height: 24px;
   opacity: 0;
   transition: opacity 0.2s ease;
+  position: relative; /* 添加相对定位 */
+  z-index: 5; /* 确保在其他元素之上 */
 }
 
 /* 当鼠标悬停在消息气泡上时显示底部区域 */
@@ -119,6 +121,8 @@
 .message-actions {
   display: flex;
   gap: 8px;
+  position: relative; /* 添加相对定位 */
+  z-index: 10; /* 确保在其他元素之上 */
 }
 
 /* 消息操作按钮 */
@@ -134,6 +138,8 @@
   border-radius: 4px;
   opacity: 0.7;
   transition: all 0.2s ease;
+  position: relative; /* 添加相对定位 */
+  z-index: 15; /* 确保在其他元素之上 */
 }
 
 /* 浅色主题悬停效果 */
@@ -153,6 +159,8 @@
   height: 16px;
   filter: var(--filter-message-action);
   transition: filter 0.2s ease;
+  will-change: filter; /* 提示浏览器这个属性会变化，优化渲染性能 */
+  transform: translateZ(0); /* 启用GPU加速 */
 }
 
 .message-actions button:hover img {
@@ -168,11 +176,6 @@
   filter: var(--filter-message-action-dark-hover);
 }
 
-/* 打字动画效果 */
-.typing-dots {
-  display: none; /* 隐藏原来的点点点动画 */
-}
-
 /* 新的加载动画容器 */
 .loading-container {
   display: flex;
@@ -181,6 +184,13 @@
   width: 100%;
   padding: 4px 0;
   margin: 0;
+  position: relative; /* 添加相对定位 */
+  z-index: 1; /* 确保在消息操作区域下方 */
+}
+
+/* 打字动画效果 */
+.typing-dots {
+  display: none; /* 隐藏原来的点点点动画 */
 }
 
 /* From Uiverse.io by bociKond */ 
@@ -538,7 +548,6 @@ html {
   align-items: center;
   margin-bottom: 12px;
   cursor: default;
-  user-select: none;
   transition: background-color 0.2s ease;
 }
 
