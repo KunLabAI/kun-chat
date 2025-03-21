@@ -48,8 +48,6 @@
   padding: 10px 24px;
   font-size: 16px;
   font-weight: 500;
-  color: var(--gray-500);
-  background: var(--gray-100);
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -59,14 +57,13 @@
 }
 
 .account-tab-item:hover {
-  color: var(--primary-600);
-  background: var(--primary-50);
+  color: white;
+  background: var(--primary-400);
 }
 
 .account-tab-item-active {
   color: white;
   background: var(--primary-600);
-  box-shadow: 0 2px 4px rgba(147, 51, 234, 0.1);
 }
 
 .account-tab-item-active::before {
@@ -209,7 +206,7 @@
   width: 100%;
   padding: 12px;
   border-radius: 8px;
-  background-color: var(--bg-input);
+  background-color: var(--bg-color-light);
   color: var(--text-color);
   font-size: 14px;
   line-height: 1.5;
@@ -222,6 +219,7 @@
   border-color: var(--primary-600);
   box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
   outline: none;
+  background: var(--bg-color);
 }
 
 .account-form-textarea::placeholder {
@@ -534,20 +532,5 @@
 
   .account-theme-switch {
     background: var(--gray-700);
-  }
-
-  .account-tab-item {
-    color: var(--gray-400);
-    background: var(--gray-800);
-  }
-
-  .account-tab-item:hover {
-    color: var(--primary-300);
-    background: var(--primary-900);
-  }
-
-  .account-tab-item-active {
-    color: white;
-    background: var(--primary-600);
   }
 }

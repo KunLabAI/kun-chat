@@ -83,7 +83,6 @@ class PasswordChange(BaseModel):
     new_password: str
 
 class UserPreferences(BaseModel):
-    notifications_enabled: Optional[bool] = None
     # 用户昵称
     nickname: Optional[str] = None
     # 用户个人信息和偏好设置

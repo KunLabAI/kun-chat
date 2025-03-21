@@ -61,10 +61,8 @@ async def get_tavily_settings(
         )
         
         if api_key_setting:
-            # 返回设置，但隐藏完整的API密钥
-            api_key = api_key_setting["value"]
-            masked_key = f"{api_key[:4]}...{api_key[-4:]}" if len(api_key) > 8 else "****"
-            settings["api_key"] = masked_key
+            # 返回完整的API密钥，不再使用掩码
+            settings["api_key"] = api_key_setting["value"]
         else:
             settings["api_key"] = ""
             
@@ -236,19 +234,43 @@ async def test_tavily_connection(
             return {"status": "success", "message": "Tavily API连接成功", "response": response}
         except Exception as e:
             error_message = str(e)
+            error_type = type(e).__name__
             logging.error(f"用户 {current_user['username']} 的Tavily API连接测试失败: {error_message}")
             
+            # 记录详细的错误信息，用于调试
+            logging.error(f"Tavily API错误详情: {repr(e)}")
+            logging.error(f"Tavily API错误类型: {error_type}")
+            
             # 提供更友好的错误消息
-            if "401" in error_message or "unauthorized" in error_message.lower():
-                error_message = "API密钥无效或未授权"
-            elif "429" in error_message:
-                error_message = "API请求次数超限"
+            friendly_message = "API连接失败"
+            
+            # 首先检查错误类型
+            if error_type == "InvalidAPIKeyError" or "invalid api key" in error_message.lower():
+                friendly_message = "API密钥无效或未授权"
+            # 然后检查错误消息内容
+            elif "401" in error_message or "unauthorized" in error_message.lower() or "invalid key" in error_message.lower():
+                friendly_message = "API密钥无效或未授权"
+            elif "403" in error_message or "forbidden" in error_message.lower() or "exceeds your plan" in error_message.lower():
+                friendly_message = "超出API使用限制，请升级计划或联系Tavily支持"
+            elif "429" in error_message or "excessive requests" in error_message.lower() or "reduce rate" in error_message.lower():
+                friendly_message = "请求频率过高，请稍后再试"
+            elif "invalid topic" in error_message.lower():
+                friendly_message = "无效的主题参数，必须是'general'或'news'"
             elif "timeout" in error_message.lower():
-                error_message = "API请求超时，请稍后再试"
+                friendly_message = "API请求超时，请稍后再试"
+            elif "internal server error" in error_message.lower() or "500" in error_message:
+                friendly_message = "Tavily服务器内部错误，请稍后再试"
+            else:
+                # 对于其他未知错误，记录原始错误但显示通用消息
+                logging.error(f"未处理的Tavily API错误: {error_message}")
+                friendly_message = "API密钥验证失败"
+            
+            # 记录最终返回的友好消息
+            logging.info(f"返回给用户的友好错误消息: {friendly_message}")
             
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"API连接失败: {error_message}"
+                detail=friendly_message
             )
     except HTTPException:
         raise

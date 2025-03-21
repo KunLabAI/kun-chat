@@ -190,6 +190,7 @@ import ChatInput from '@/components/chat/InputArea/ChatInput.vue'
 import { BubbleAvatar } from '@/components/AIavatar.ts'
 import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue'
 import PlainTextRenderer from '@/components/common/PlainTextRenderer.vue'
+import HtmlRenderer from '@/components/common/HtmlRenderer.vue'
 import Dialog from '@/components/common/Dialog.vue'
 import { API_BASE_URL } from '@/api/config'
 
@@ -761,5 +762,4 @@ function handleBeforeUnload(event) {
 
 <style scoped>
 @import '@/styles/ChatPage.css';
-
 </style>

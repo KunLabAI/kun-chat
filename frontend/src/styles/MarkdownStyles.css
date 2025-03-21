@@ -322,8 +322,8 @@
   cursor: pointer;
   transition: background-color 0.2s, border-color 0.2s, opacity 0.2s;
   padding: 8px;
-  opacity: 0.5;
   margin-left: auto; /* 确保按钮始终在右侧 */
+  opacity: 0.5;
 }
 
 .copy-button:hover {
@@ -334,7 +334,12 @@
 .copy-icon {
   width: 16px;
   height: 16px;
-  filter: var(--code-copy-icon-filter);
+  filter: var(--button-hover-border);
+}
+
+.dark .copy-icon {
+  filter: var(--filter-gray-dark-100);
+
 }
 
 /* 复制成功后的样式 */
@@ -454,4 +459,144 @@ code {
 .hljs-addition {
   color: var(--code-addition-text);
   background-color: var(--code-addition-bg);
+}
+
+.code-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* 渲染按钮 */
+.render-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 0.5rem;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, opacity 0.2s;
+  padding: 8px;
+  margin-left: auto; /* 确保按钮始终在右侧 */
+  opacity: 0.5;
+}
+
+.render-button:hover {
+  background-color: var(--hover-bg);
+  opacity: 1;
+}
+
+.render-button img {
+  width: 16px;
+  height: 16px;
+  filter: var(--button-hover-border);
+}
+
+.dark .render-button img {
+  filter: var(--filter-gray-dark-100);
+}
+
+
+/* ================= HTML渲染器样式 ================= */
+.html-render-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 1000px;
+  height: 80%;
+  max-height: 800px;
+  background-color: var(--bg-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+/* HTML渲染头部 */
+.html-render-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-color-light);
+}
+
+.html-render-title {
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.html-render-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.html-render-action,
+.html-render-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 0.5rem;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, opacity 0.2s;
+  padding: 8px;
+  border: none;
+  opacity: 0.5;
+}
+
+.html-render-action:hover,
+.html-render-close:hover {
+  background-color: var(--hover-bg);
+  opacity: 1;
+}
+
+.action-icon {
+  width: 16px;
+  height: 16px;
+  filter: var(--filter-gray-dark-100);
+}
+
+.html-render-close {
+  margin-left: auto; /* 确保关闭按钮始终在右侧 */
+}
+
+.dark .html-render-action,
+.dark .html-render-close {
+  filter: var(--button-hover-border);
+}
+
+/* HTML渲染器内容区域 */
+.html-render-container .html-renderer {
+  flex: 1;
+  overflow: auto;
+  padding: 16px;
+  margin: 0;
+}
+
+/* HTML渲染器iframe */
+.html-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: #fff;
+}
+
+/* HTML渲染器容器 */
+.html-container {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
 }

@@ -23,7 +23,10 @@ const messages: Messages = {
     no: '否',
     markdown: {
       copy_code: '复制代码',
-      copied: '已复制'
+      copied: '已复制',
+      render: '渲染',
+      render_code: '渲染代码',
+      html_preview: 'HTML/SVG 预览'
     },
     notification: {
       close: '关闭通知'
@@ -182,6 +185,7 @@ const messages: Messages = {
           placeholder: '请输入您的 Tavily API 密钥',
           description: '您的 API 密钥'
         },
+        apiKeyHint: '输入 API 密钥后点击保存，然后使用下方的"测试连接"按钮验证密钥有效性',
         test_button: '测试连接',
         test_success: '连接成功',
         test_error: '连接失败',

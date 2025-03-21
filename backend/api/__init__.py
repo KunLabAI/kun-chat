@@ -7,6 +7,7 @@ from .tools.prompts import router as prompts_router
 from .tools.doc_format import router as doc_format_router
 from .tools.tavily_search import router as tavily_search_router
 from .tools.language import router as language_router
+from .tools.theme import router as theme_router
 
 api_router = APIRouter()
 
@@ -18,3 +19,4 @@ api_router.include_router(image_router, tags=["images"])
 api_router.include_router(prompts_router, tags=["prompts"])
 api_router.include_router(tavily_search_router, prefix="/tavily", tags=["search"])
 api_router.include_router(language_router, prefix="/language", tags=["language"])
+api_router.include_router(theme_router, prefix="/theme", tags=["theme"])

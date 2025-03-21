@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@iframe-resizer/vue": "^5.3.3",
+    "dompurify": "^3.2.4",
+    "iframe-resizer": "^5.3.3"
+  }
+}

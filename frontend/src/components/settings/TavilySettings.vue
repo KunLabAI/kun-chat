@@ -46,12 +46,15 @@
               :disabled="loading.tavilyApiKey"
               :title="$t('common.actions.save')"
             >
-              <img :src="saveIcon" alt="save" :class="{ 'animate-spin': loading.tavilyApiKey }" />
+              <img v-if="!loading.tavilyApiKey" :src="saveIcon" alt="save" />
+              <div v-else class="tavily-loader-container">
+                <DotLoader />
+              </div>
             </button>
           </div>
         </div>
         <p class="tavily-features-form-hint">
-          输入 API 密钥后点击保存，然后使用下方的"测试连接"按钮验证密钥有效性
+          {{ $t('settings.tools.tavily.apiKeyHint') }}
         </p>
       </div>
       
@@ -59,12 +62,20 @@
       <div class="tavily-features-form-group">
         <Button
           @click="testTavilyConnection"
+          class="tavily-features-test-button"
           :disabled="!tavilyApiKey || loading.tavilyTest"
-          :loading="loading.tavilyTest"
+          :loading="false"
           variant="secondary"
           size="sm"
         >
-          {{ $t('settings.tools.tavily.test_connection') }}
+          <template v-if="loading.tavilyTest">
+            <div class="tavily-button-loader">
+              <DotLoader />
+            </div>
+          </template>
+          <template v-else>
+            {{ $t('settings.tools.tavily.test_button') }}
+          </template>
         </Button>
         <p v-if="tavilyTestResult" 
            :class="tavilyTestResult.success ? 'text-green-600' : 'text-red-600'"
@@ -122,10 +133,15 @@
             type="text" 
             v-model="newIncludeDomain"
             class="tavily-features-form-input"
+            :class="{ 'border-red-500': newIncludeDomain && !isValidDomain(newIncludeDomain) }"
             :disabled="loading.tavilySettings"
             :placeholder="$t('settings.tools.tavily.include_domains.placeholder')"
             @keyup.enter="addIncludeDomainAndSave"
+            @input="validateIncludeDomain"
           >
+          <p v-if="newIncludeDomain && !isValidDomain(newIncludeDomain)" class="text-red-500 text-xs mt-1">
+            请输入有效的域名格式
+          </p>
         </div>
       </div>
 
@@ -155,10 +171,15 @@
             type="text" 
             v-model="newExcludeDomain"
             class="tavily-features-form-input"
+            :class="{ 'border-red-500': newExcludeDomain && !isValidDomain(newExcludeDomain) }"
             :disabled="loading.tavilySettings"
             :placeholder="$t('settings.tools.tavily.exclude_domains.placeholder')"
             @keyup.enter="addExcludeDomainAndSave"
+            @input="validateExcludeDomain"
           >
+          <p v-if="newExcludeDomain && !isValidDomain(newExcludeDomain)" class="text-red-500 text-xs mt-1">
+            请输入有效的域名格式
+          </p>
         </div>
       </div>
     </div>
@@ -166,11 +187,12 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useNotificationStore } from '@/stores/notification'
 import { toolsApi } from '@/api/tools'
 import Button from '@/components/common/Button.vue'
+import DotLoader from '@/components/common/DotLoader.vue'
 import eyeOnIcon from '@/assets/icons/sys_eyeon.svg'
 import eyeOffIcon from '@/assets/icons/sys_eyeoff.svg'
 import deleteIcon from '@/assets/icons/model_delete.svg'
@@ -195,14 +217,6 @@ const excludeDomains = ref([])
 const newIncludeDomain = ref('')
 const newExcludeDomain = ref('')
 const tavilyTestResult = ref(null)
-
-// 计算属性：显示部分隐藏的API密钥
-const maskedApiKey = computed(() => {
-  if (!tavilyApiKey.value) return ''
-  const key = tavilyApiKey.value
-  if (key.length <= 4) return key
-  return key.substring(0, 4) + '•'.repeat(key.length - 4)
-})
 
 // 切换显示/隐藏API密钥
 const toggleShowApiKey = () => {
@@ -312,6 +326,13 @@ const selectSearchDepth = async (depth) => {
   } finally {
     loading.value.tavilySettings = false
   }
+}
+
+// 验证域名格式
+const isValidDomain = (domain) => {
+  // 域名格式验证正则表达式
+  const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/i;
+  return domainRegex.test(domain);
 }
 
 // 添加包含域名
@@ -474,14 +495,15 @@ const testTavilyConnection = async () => {
     // 提取详细的错误信息
     let errorMessage = '连接测试失败'
     
-    if (error.detail) {
-      errorMessage = `连接测试失败: ${error.detail}`
-    } else if (error.message && error.message.includes('detail:')) {
-      // 从错误消息中提取详细信息
-      const detailMatch = error.message.match(/detail: (.+)/)
-      if (detailMatch && detailMatch[1]) {
-        errorMessage = `连接测试失败: ${detailMatch[1]}`
-      }
+    if (error.response && error.response.data && error.response.data.detail) {
+      // 直接使用后端返回的友好错误消息
+      errorMessage = error.response.data.detail
+    } else if (error.detail) {
+      // 兼容旧的错误格式
+      errorMessage = error.detail
+    } else if (error.message) {
+      // 如果没有详细信息，则使用一般错误消息
+      errorMessage = error.message
     }
     
     tavilyTestResult.value = {

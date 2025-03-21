@@ -182,6 +182,7 @@ const messages: Messages = {
           placeholder: 'Enter your Tavily API key',
           description: 'Your API key'
         },
+        apiKeyHint: 'Enter your API key and click save, then use the "Test Connection" button below to verify the key validity',
         test_button: 'Test Connection',
         test_success: 'Connection successful',
         test_error: 'Connection failed',

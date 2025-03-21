@@ -152,6 +152,17 @@ onMounted(async () => {
   if (route.query.tab && tabs.some(tab => tab.key === route.query.tab)) {
     currentTab.value = route.query.tab
   }
+  
+  // 从数据库加载主题设置
+  try {
+    await themeStore.loadThemeFromDatabase()
+  } catch (error) {
+    console.error('从数据库加载主题设置失败:', error)
+    notificationStore.showNotification({
+      type: 'error',
+      message: t('notifications.error.loadThemeSettings')
+    })
+  }
 })
 </script>
 

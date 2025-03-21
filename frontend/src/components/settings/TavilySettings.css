@@ -52,9 +52,8 @@
   padding-right: 120px; /* 增加右侧内边距，为图标和按钮留出空间 */
   font-size: 14px;
   color: var(--text-color);
-  background: var(--bg-color);
   border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border-radius: 8px;
   transition: all 0.3s ease;
 }
 
@@ -98,7 +97,6 @@
   color: var(--gray-500);
   cursor: pointer;
   padding: 4px;
-  border-radius: 4px;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
@@ -131,14 +129,33 @@
   filter: var(--filter-success); /* 保存按钮悬停时使用成功色滤镜 */
 }
 
-.tavily-features-api-key-action:hover {
-  color: var(--primary-600);
-  background: var(--gray-100);
-}
 
 .tavily-features-api-key-action:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.tavily-features-test-button {
+  font-size: 14px;
+  opacity: 0.5;
+  color: var(--text-color);
+  background: var(--bg-color);
+  height: 32px;
+  border-radius: 8px;
+}
+
+.tavily-features-test-button:hover {
+  background: var(--button-hover-bg);
+  opacity: 1;
+}
+
+/* DotLoader 相关样式 */
+.tavily-button-loader {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* 标签样式 */
@@ -162,12 +179,8 @@
   margin-left: 6px;
   background: transparent;
   border: none;
-  color: var(--gray-500);
   cursor: pointer;
   padding: 0 2px;
-  font-size: 14px;
-  line-height: 1;
-  border-radius: 50%;
   transition: all 0.2s ease;
 }
 
@@ -232,7 +245,7 @@
 }
 
 .dark .tavily-features-tag {
-  background: var(--gray-800);
+  background: var(--gray-700);
   color: var(--gray-300);
 }
 

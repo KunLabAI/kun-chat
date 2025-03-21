@@ -19,7 +19,7 @@ app.use(i18n)
 
 // 获取语言设置并初始化
 console.log('正在初始化应用，加载语言设置...')
-fetchLanguageSettings().then(() => {
+fetchLanguageSettings().then(async () => {
   console.log('语言设置加载完成，挂载应用')
   
   // 初始化主题
@@ -27,9 +27,17 @@ fetchLanguageSettings().then(() => {
   themeStore.updateDocumentClass()
   themeStore.setupSystemThemeListener()
   
+  // 从数据库加载主题设置
+  try {
+    await themeStore.loadThemeFromDatabase()
+    console.log('从数据库加载主题设置完成')
+  } catch (error) {
+    console.error('从数据库加载主题设置失败:', error)
+  }
+  
   // 挂载应用
   app.use(router).mount('#app')
-}).catch(error => {
+}).catch(async error => {
   console.error('初始化语言设置失败:', error)
   // 即使语言设置初始化失败，也继续挂载应用
   console.log('尽管语言设置加载失败，仍然挂载应用')
@@ -38,6 +46,14 @@ fetchLanguageSettings().then(() => {
   const themeStore = useThemeStore()
   themeStore.updateDocumentClass()
   themeStore.setupSystemThemeListener()
+  
+  // 从数据库加载主题设置
+  try {
+    await themeStore.loadThemeFromDatabase()
+    console.log('从数据库加载主题设置完成')
+  } catch (error) {
+    console.error('从数据库加载主题设置失败:', error)
+  }
   
   app.use(router).mount('#app')
 })

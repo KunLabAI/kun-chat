@@ -13,9 +13,12 @@
   "dependencies": {
     "@headlessui/vue": "^1.7.16",
     "@heroicons/vue": "^2.0.18",
+    "@iframe-resizer/vue": "^5.3.3",
+    "@iframe-resizer": "^5.3.3",
     "@vueuse/core": "^10.7.0",
     "autoprefixer": "^10.4.16",
     "axios": "^1.8.2",
+    "dompurify": "^3.2.4",
     "electron": "^28.1.0",
     "highlight.js": "^11.10.0",
     "pinia": "^2.1.7",
