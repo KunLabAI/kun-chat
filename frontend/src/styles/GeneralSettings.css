@@ -31,7 +31,7 @@
 .features-toggle-group {
   display: flex;
   border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
 }
 

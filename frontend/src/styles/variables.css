@@ -129,8 +129,8 @@
   --md-text-primary: var(--gray-900);
   --md-text-secondary: var(--gray-600);
   --md-heading-color: var(--gray-900);
-  --md-link-color: var(--blue-600);
-  --md-link-hover-color: var(--green-600);
+  --md-link-color: var(--primary-800);
+  --md-link-hover-color: var(--primary-400);
   --md-blockquote-border: var(--gray-300);
   --md-blockquote-bg: var(--gray-100);
   --md-blockquote-text: var(--gray-600);
@@ -323,8 +323,8 @@
   --md-text-primary: var(--gray-50);
   --md-text-secondary: var(--gray-300);
   --md-heading-color: var(--gray-50);
-  --md-link-color: var(--blue-400);
-  --md-link-hover-color: var(--green-400);
+  --md-link-color: var(--primary-500);
+  --md-link-hover-color: var(--primary-400);
   --md-blockquote-border: var(--gray-700);
   --md-blockquote-bg: var(--gray-800);
   --md-blockquote-text: var(--gray-300);
