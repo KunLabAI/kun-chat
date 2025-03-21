@@ -23,7 +23,10 @@ const messages: Messages = {
     no: '否',
     markdown: {
       copy_code: '复制代码',
-      copied: '已复制'
+      copied: '已复制',
+      render: '渲染',
+      render_code: '渲染代码',
+      html_preview: 'HTML/SVG 预览'
     },
     notification: {
       close: '关闭通知'
