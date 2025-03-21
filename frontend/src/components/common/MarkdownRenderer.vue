@@ -3,6 +3,7 @@
     <div 
       class="markdown-content"
       v-html="renderedContent"
+      :key="props.content"
     ></div>
     <!-- HTML渲染器 -->
     <div v-if="activeHtmlRender" class="html-render-container">
@@ -114,6 +115,10 @@ const renderedContent = computed(() => {
   return md.render(props.content || '')
 })
 
+// 使用ref获取当前组件的DOM元素
+const markdownRef = ref(null)
+const htmlRendererRef = ref(null)
+
 // 添加复制和渲染功能
 const handleClick = async (e) => {
   // 复制按钮功能
@@ -127,13 +132,16 @@ const handleClick = async (e) => {
       
       // 替换为勾选图标
       const iconImg = copyButton.querySelector('img')
-      iconImg.src = '/src/assets/icons/sys_check.svg'
-      iconImg.classList.add('copied')
-      
-      setTimeout(() => {
-        iconImg.classList.remove('copied')
-        iconImg.src = '/src/assets/icons/chat_copy.svg'
-      }, 2000)
+      if (iconImg) {
+        const originalSrc = iconImg.src
+        iconImg.src = '/src/assets/icons/sys_check.svg'
+        iconImg.classList.add('copied')
+        
+        setTimeout(() => {
+          iconImg.classList.remove('copied')
+          iconImg.src = originalSrc
+        }, 2000)
+      }
     } catch (err) {
       console.error('Failed to copy code:', err)
     }
@@ -152,13 +160,13 @@ const handleClick = async (e) => {
   }
 }
 
-// 使用ref获取当前组件的DOM元素
-const markdownRef = ref(null)
-
 onMounted(() => {
-  // 使用nextTick确保DOM已经更新
+  // 确保DOM已经更新后再添加事件监听器
   setTimeout(() => {
     if (markdownRef.value) {
+      // 移除之前可能存在的事件监听器，避免重复添加
+      markdownRef.value.removeEventListener('click', handleClick)
+      // 添加新的事件监听器
       markdownRef.value.addEventListener('click', handleClick)
     }
   }, 0)

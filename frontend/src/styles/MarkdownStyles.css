@@ -81,12 +81,12 @@
 .markdown-content ul,
 .markdown-content ol {
   margin: 16px 0;
-  padding-left: 2em;
   color: var(--md-text-primary);
 }
 
 /* 有序列表样式 */
 .markdown-content ol {
+  padding-left: 2em;
   list-style-type: decimal;
   counter-reset: item;
 }
@@ -102,6 +102,7 @@
 /* 无序列表样式 */
 .markdown-content ul {
   list-style: none;
+  padding-left: 2em;
 }
 
 .markdown-content ul li {
@@ -140,7 +141,6 @@
 /* 列表项通用样式 */
 .markdown-content li {
   margin: 0.5em 0;
-  padding-left: 0.5em;
 }
 
 .markdown-content li > p {
