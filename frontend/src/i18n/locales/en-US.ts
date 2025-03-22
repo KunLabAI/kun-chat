@@ -71,7 +71,7 @@ const messages: Messages = {
     tabs: {
       general: 'General',
       tools: 'Tool',
-      connection: 'Connection',
+      connection: 'Engine',
     },
     features: {
       title: 'Language & Theme'
@@ -208,8 +208,7 @@ const messages: Messages = {
     },
     connection: {
       ollama: {
-        title: 'Ollama Connection Settings',
-        description: 'Configure connection settings for your local Ollama server.',
+        title: 'Ollama inference engine Settings',
         host: {
           label: 'Connection Settings',
           placeholder: 'Enter Ollama host address (e.g. http://localhost:11434)',
