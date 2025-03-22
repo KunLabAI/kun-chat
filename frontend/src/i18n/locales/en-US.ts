@@ -23,7 +23,11 @@ const messages: Messages = {
     no: 'No',
     markdown: {
       copy_code: 'Copy Code',
-      copied: 'Copied'
+      copied: 'Copied',
+      preview_code: 'Preview Code',
+      html_preview: 'HTML Code Preview',
+      open_in_new_window: 'Open in New Window',
+      close: 'Close'
     },
     notification: {
       close: 'Close Notification'
@@ -67,9 +71,7 @@ const messages: Messages = {
     tabs: {
       general: 'General',
       tools: 'Tool',
-      appearance: 'Appearance',
-      advanced: 'Advanced',
-      account: 'Account Settings'
+      connection: 'Connection',
     },
     features: {
       title: 'Language & Theme'
@@ -202,6 +204,42 @@ const messages: Messages = {
           description: 'Search results will exclude content from these domains',
           placeholder: 'Enter domain and press Enter to add (e.g. example.com)'
         }
+      }
+    },
+    connection: {
+      ollama: {
+        title: 'Ollama Connection Settings',
+        description: 'Configure connection settings for your local Ollama server.',
+        host: {
+          label: 'Connection Settings',
+          placeholder: 'Enter Ollama host address (e.g. http://localhost:11434)',
+          description: 'Configure the connection address of the Ollama service'
+        },
+        test_button: 'Test Connection',
+        test_success: 'Connection successful',
+        test_error: 'Connection failed',
+        status: {
+          label: 'Connection Status',
+          description: 'Shows the current connection status and version information of the Ollama service',
+          connected: 'Connected',
+          disconnected: 'Disconnected',
+          version: 'Version',
+          state: 'Status'
+        },
+        auto_check: {
+          label: 'Automatic Connection Check',
+          description: 'Automatically check connection every 30 minutes (default)'
+        },
+        notification: {
+          label: 'Show Connection Status Change Notifications',
+          connected: 'Successfully connected to Ollama service ({version})',
+          disconnected: 'Unable to connect to Ollama service ({host}), please check if the service is running'
+        },
+        save_button: 'Save',
+        checking: 'Checking...',
+        save_success: 'Ollama connection settings saved',
+        save_failed: 'Failed to save settings',
+        load_failed: 'Failed to load settings'
       }
     }
   },

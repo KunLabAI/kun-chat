@@ -5,7 +5,6 @@
   background: var(--bg-color);
   max-width: 100%;
   margin: auto;
-  padding: 0 1rem; /* 添加基础内边距 */
 }
 
 /* 页面头部 */
@@ -149,10 +148,6 @@
 
 /* 媒体查询 - 中等屏幕 (1024px) */
 @media screen and (min-width: 1024px) {
-  .models-page {
-    padding: 0 1.5rem;
-  }
-  
   .page-header {
     padding-top: 60px;
     margin-bottom: 1.75rem;
@@ -197,10 +192,6 @@
 
 /* 媒体查询 - 大屏幕 (1920px) */
 @media screen and (min-width: 1920px) {
-  .models-page {
-    padding: 0 2rem;
-  }
-  
   .page-header {
     padding-top: 72px;
     margin-bottom: 2rem;

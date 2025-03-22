@@ -1,0 +1,340 @@
+/* 
+ * Ollama 设置页面样式
+ */
+
+.settings-section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 16px;
+}
+
+.settings-section-content {
+  padding: 8px 0;
+}
+
+.settings-description {
+  font-size: 14px;
+  color: var(--text-color-lighter);
+  margin-bottom: 24px;
+}
+
+/* 表单组件样式 */
+.settings-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 480px;
+  margin-bottom: 20px;
+}
+
+.settings-form-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.settings-form-help {
+  font-size: 12px;
+  color: var(--text-color-lighter);
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.settings-form-input {
+  width: 100%;
+  padding: 8px 12px;
+  padding-right: 60px; 
+  font-size: 14px;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  margin-bottom: 8px;
+}
+
+.settings-form-input:focus {
+  outline: none;
+  border-color: var(--primary-600);
+}
+
+.settings-form-input:disabled {
+  background: var(--gray-100);
+  cursor: not-allowed;
+}
+
+/* 状态指示器样式 */
+.status-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding: 16px;
+  border-radius: 8px;
+  background-color: var(--bg-color-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-label {
+  font-weight: 500;
+  min-width: 60px;
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.status-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.status-connected {
+  color: var(--success-500);
+  font-weight: 600;
+}
+
+.status-disconnected {
+  color: var(--red-500);
+  font-weight: 600;
+}
+
+.status-info {
+  margin-left: 10px;
+  font-size: 12px;
+  color: var(--text-color-lighter);
+}
+
+/* 按钮样式 */
+.settings-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.settings-primary-button {
+  background-color: var(--primary-600);
+  color: white;
+}
+
+.settings-primary-button:hover:not(:disabled) {
+  background-color: var(--primary-700);
+}
+
+.settings-secondary-button {
+  background-color: var(--bg-color);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+
+.settings-secondary-button:hover:not(:disabled) {
+  background-color: var(--bg-color-hover);
+}
+
+.settings-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 测试连接按钮样式 */
+.settings-test-button {
+  font-size: 14px;
+  opacity: 0.5;
+  color: var(--text-color);
+  background: var(--bg-color);
+  height: 32px;
+  border-radius: 8px;
+}
+
+.settings-test-button:hover {
+  background: var(--button-hover-bg);
+  opacity: 1;
+}
+
+/* 输入框与按钮组合 */
+.settings-input-with-button {
+  display: flex;
+  gap: 10px;
+}
+
+.settings-input-with-button .settings-form-input {
+  flex: 1;
+}
+
+/* 开关按钮样式 */
+.settings-toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+.settings-toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.settings-toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--gray-300);
+  transition: .4s;
+  border-radius: 20px;
+}
+
+.settings-toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .settings-toggle-slider {
+  background-color: var(--primary-600);
+}
+
+input:focus + .settings-toggle-slider {
+  box-shadow: 0 0 1px var(--primary-600);
+}
+
+input:checked + .settings-toggle-slider:before {
+  transform: translateX(20px);
+}
+
+.dark input:checked + .settings-toggle-slider {
+  background-color: var(--primary-500);
+}
+
+.settings-toggle-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.settings-toggle-label {
+  font-size: 14px;
+  color: var(--text-color);
+  margin-bottom: 8px;
+  width: 80%;
+}
+
+/* API密钥相关样式 */
+.settings-api-key-container {
+  position: relative;
+  width: 100%;
+}
+
+.settings-api-key-actions {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  z-index: 10;
+}
+
+.settings-api-key-action {
+  background: transparent;
+  border: none;
+  color: var(--gray-500);
+  cursor: pointer;
+  padding: 4px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-api-key-action img {
+  width: 16px;
+  height: 16px;
+  filter: var(--filter-gray-600); 
+  transition: filter 0.2s ease;
+}
+
+.settings-api-key-action:hover img {
+  filter: var(--filter-primary); 
+}
+
+.settings-api-key-action:disabled img,
+.settings-api-key-action-disabled img {
+  filter: var(--filter-gray-400); 
+}
+
+.settings-api-key-action[title="保存"]:hover img,
+.settings-api-key-action[title="Save"]:hover img {
+  filter: var(--filter-success); 
+}
+
+.settings-api-key-action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 加载动画 */
+.loading-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--gray-300);
+  border-radius: 50%;
+  border-top-color: var(--primary-600);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 深色主题样式 */
+.dark .settings-form-input {
+  background: var(--gray-800);
+  border-color: var(--gray-700);
+}
+
+.dark .settings-form-input:disabled {
+  background: var(--gray-900);
+}
+
+.dark .status-container {
+  background-color: var(--gray-800);
+  border-color: var(--gray-700);
+}
+
+.dark .settings-secondary-button {
+  background-color: var(--gray-800);
+  border-color: var(--gray-700);
+}
+
+.dark .settings-secondary-button:hover:not(:disabled) {
+  background-color: var(--gray-700);
+}

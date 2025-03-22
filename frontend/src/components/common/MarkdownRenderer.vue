@@ -8,12 +8,12 @@
     <!-- HTML渲染器 -->
     <div v-if="activeHtmlRender" class="html-render-container">
       <div class="html-render-header">
-        <span class="html-render-title">HTML代码预览</span>
+        <span class="html-render-title">{{ t('common.markdown.html_preview') }}</span>
         <div class="html-render-actions">
-          <button class="html-render-action" @click="openInNewWindow" title="在新窗口打开">
+          <button class="html-render-action" @click="openInNewWindow" :title="t('common.markdown.open_in_new_window')">
             <img src="/src/assets/icons/sys_jump.svg" alt="open" class="action-icon" />
           </button>
-          <button class="html-render-close" @click="closeHtmlRender" title="关闭">
+          <button class="html-render-close" @click="closeHtmlRender" :title="t('common.markdown.close')">
             <img src="/src/assets/icons/sys_close.svg" alt="close" class="action-icon" />
           </button>
         </div>
@@ -91,7 +91,7 @@ md.renderer.rules.fence = (tokens, idx) => {
   
   // 为HTML和SVG代码块添加渲染按钮
   const renderButton = (lang === 'html' || lang === 'svg' || lang === 'javascript') 
-    ? `<button class="render-button" data-lang="${lang}" data-code="${encodeURIComponent(code)}" title="预览代码">
+    ? `<button class="render-button" data-lang="${lang}" data-code="${encodeURIComponent(code)}" title="${t('common.markdown.preview_code')}">
         <img src="/src/assets/icons/sys_codepreview.svg" alt="preview" class="preview-icon" />
       </button>`
     : ''
@@ -101,7 +101,7 @@ md.renderer.rules.fence = (tokens, idx) => {
       ${lang ? `<span class="language-label">${lang}</span>` : ''}
       <div class="code-actions">
         ${renderButton}
-        <button class="copy-button" title="复制代码">
+        <button class="copy-button" title="${t('common.markdown.copy_code')}">
           <img src="/src/assets/icons/chat_copy.svg" alt="copy" class="copy-icon" />
         </button>
       </div>

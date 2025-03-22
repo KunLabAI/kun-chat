@@ -6,6 +6,7 @@ import App from './App.vue'
 import router from './router'
 import { i18n, fetchLanguageSettings } from './i18n'
 import { useThemeStore } from './stores/theme'
+import { initOllamaService } from './services/ollamaService'
 
 // 初始化 Pinia
 const pinia = createPinia()
@@ -35,6 +36,14 @@ fetchLanguageSettings().then(async () => {
     console.error('从数据库加载主题设置失败:', error)
   }
   
+  // 初始化 Ollama 服务（静默检查连接状态）
+  try {
+    await initOllamaService()
+    console.log('Ollama 服务初始化完成')
+  } catch (error) {
+    console.error('Ollama 服务初始化失败:', error)
+  }
+  
   // 挂载应用
   app.use(router).mount('#app')
 }).catch(async error => {
@@ -53,6 +62,14 @@ fetchLanguageSettings().then(async () => {
     console.log('从数据库加载主题设置完成')
   } catch (error) {
     console.error('从数据库加载主题设置失败:', error)
+  }
+  
+  // 初始化 Ollama 服务（静默检查连接状态）
+  try {
+    await initOllamaService()
+    console.log('Ollama 服务初始化完成')
+  } catch (error) {
+    console.error('Ollama 服务初始化失败:', error)
   }
   
   app.use(router).mount('#app')

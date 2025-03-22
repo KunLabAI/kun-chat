@@ -86,6 +86,12 @@
             </div>
           </div>
 
+          <!-- 连接设置 -->
+          <div v-show="currentTab === 'connection'" class="account-tab-pane">
+            <!-- Ollama 连接管理设置 -->
+            <OllamaSettings ref="ollamaSettingsRef" />
+          </div>
+
           <!-- 工具设置 -->
           <div v-show="currentTab === 'tools'" class="account-tab-pane">
             <!-- Tavily 搜索设置 -->
@@ -108,6 +114,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useLocalization } from '@/i18n/composables'
 import { SunIcon, MoonIcon, ComputerDesktopIcon } from '@heroicons/vue/24/solid'
 import TavilySettings from '@/components/settings/TavilySettings.vue'
+import OllamaSettings from '@/components/settings/OllamaSettings.vue'
 
 const { t } = useI18n()
 const { language } = useLocalization()
@@ -117,12 +124,23 @@ const router = useRouter()
 const notificationStore = useNotificationStore()
 const themeStore = useThemeStore()
 const tavilySettingsRef = ref(null)
+const ollamaSettingsRef = ref(null)
 
 // 标签页定义
-const tabs = [
+const tabs = ref([
   { key: 'general', label: t('settings.tabs.general') },
+  { key: 'connection', label: t('settings.tabs.connection') },
   { key: 'tools', label: t('settings.tabs.tools') }
-]
+])
+
+// 监听语言变化，更新标签页文本
+watch(language, () => {
+  tabs.value = [
+    { key: 'general', label: t('settings.tabs.general') },
+    { key: 'connection', label: t('settings.tabs.connection') },
+    { key: 'tools', label: t('settings.tabs.tools') }
+  ]
+})
 
 // 当前标签页
 const currentTab = ref(route.query.tab || 'general')
@@ -135,21 +153,15 @@ const switchTab = (tab) => {
 
 // 监听路由变化，更新当前标签页
 watch(() => route.query.tab, (newTab) => {
-  if (newTab && tabs.some(tab => tab.key === newTab)) {
+  if (newTab && tabs.value.some(tab => tab.key === newTab)) {
     currentTab.value = newTab
   }
-})
-
-// 监听语言变化，更新标签页标签
-watch(() => language.value, () => {
-  tabs[0].label = t('settings.tabs.general')
-  tabs[1].label = t('settings.tabs.tools')
 })
 
 // 在组件挂载时获取设置
 onMounted(async () => {
   // 从URL获取当前标签页
-  if (route.query.tab && tabs.some(tab => tab.key === route.query.tab)) {
+  if (route.query.tab && tabs.value.some(tab => tab.key === route.query.tab)) {
     currentTab.value = route.query.tab
   }
   

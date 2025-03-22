@@ -12,7 +12,7 @@
   font-size: 18px;
   font-weight: 600;
   color: var(--text-color);
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 .tavily-setting-description {
@@ -27,7 +27,7 @@
   flex-direction: column;
   gap: 8px;
   max-width: 480px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .tavily-features-form-label {
