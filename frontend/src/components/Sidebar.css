@@ -340,16 +340,52 @@
 
 .dark .menu-item:hover {
   background: var(--gray-800);
+  color: var(--primary-400);
 }
 
 .menu-icon {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   flex-shrink: 0;
 }
 
+/* 为菜单SVG图标设置颜色 */
+.menu-item img.menu-icon {
+  filter: invert(40%) sepia(10%) saturate(400%) hue-rotate(180deg) brightness(90%) contrast(90%);
+  transition: all 0.2s ease;
+}
+
+.menu-item:hover img.menu-icon {
+  filter: invert(35%) sepia(34%) saturate(3200%) hue-rotate(254deg) brightness(93%) contrast(93%);
+}
+
+.dark .menu-item img.menu-icon {
+  filter: invert(70%) sepia(10%) saturate(300%) hue-rotate(175deg) brightness(90%) contrast(90%);
+}
+
+.dark .menu-item:hover img.menu-icon {
+  filter: invert(83%) sepia(33%) saturate(7153%) hue-rotate(218deg) brightness(103%) contrast(96%);
+}
+
+/* 退出登录图标特殊样式 */
+.menu-item.logout img.menu-icon {
+  filter: invert(29%) sepia(94%) saturate(1274%) hue-rotate(338deg) brightness(91%) contrast(91%);
+}
+
+.menu-item.logout:hover img.menu-icon {
+  filter: invert(29%) sepia(94%) saturate(1274%) hue-rotate(338deg) brightness(110%) contrast(110%);
+}
+
+.dark .menu-item.logout img.menu-icon {
+  filter: invert(40%) sepia(94%) saturate(1274%) hue-rotate(338deg) brightness(91%) contrast(91%);
+}
+
+.dark .menu-item.logout:hover img.menu-icon {
+  filter: invert(40%) sepia(94%) saturate(1274%) hue-rotate(338deg) brightness(110%) contrast(110%);
+}
+
 .menu-item.logout {
-  color: var(--red-600);
+  color: var(--red-500);
 }
 
 .menu-item.logout:hover {
@@ -358,6 +394,7 @@
 
 .dark .menu-item.logout:hover {
   background: var(--gray-800);
+  color: var(--red-600);
 }
 
 /* 移动设备适配 */

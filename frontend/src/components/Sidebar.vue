@@ -58,23 +58,23 @@
         </div>
         <div class="menu-items">
           <RouterLink to="/account-settings" class="menu-item" @click="closeUserMenu">
-            <Cog6ToothIcon class="menu-icon" />
+            <img src="@/assets/icons/sys_accountsettings.svg" class="menu-icon" />
             <span>{{ t('sidebar.account_settings') }}</span>
           </RouterLink>
           <RouterLink to="/features-settings" class="menu-item" @click="closeUserMenu">
-            <WrenchScrewdriverIcon class="menu-icon" />
+            <img src="@/assets/icons/sys_systemsettings.svg" class="menu-icon" />
             <span>{{ t('sidebar.features_settings') }}</span>
           </RouterLink>
           <a href="https://lab.kunpuai.com" target="_blank" class="menu-item" @click="closeUserMenu">
-            <UsersIcon class="menu-icon" />
+            <img src="@/assets/icons/sys_community.svg" class="menu-icon" />
             <span>{{ t('sidebar.community') }}</span>
           </a>
           <a href="https://github.com/bahamutww/kun-lab.git" target="_blank" class="menu-item" @click="closeUserMenu">
-            <QuestionMarkCircleIcon class="menu-icon" />
+            <img src="@/assets/icons/sys_help.svg" class="menu-icon" />
             <span>{{ t('sidebar.help_docs') }}</span>
           </a>
           <button @click="handleLogout" class="menu-item logout">
-            <ArrowLeftOnRectangleIcon class="menu-icon" />
+            <img src="@/assets/icons/sys_logout.svg" class="menu-icon" />
             <span>{{ t('sidebar.logout') }}</span>
           </button>
         </div>
@@ -96,13 +96,8 @@ import { useModelsStore } from '@/stores/models'
 import { useNotificationStore } from '@/stores/notification'
 import { useLocalization } from '@/i18n/composables'
 import { 
-  Cog6ToothIcon, 
-  ArrowLeftOnRectangleIcon,
   UserIcon,
-  UserPlusIcon,
-  UsersIcon,
-  QuestionMarkCircleIcon,
-  WrenchScrewdriverIcon
+  UserPlusIcon
 } from '@heroicons/vue/24/outline'
 
 const router = useRouter()
