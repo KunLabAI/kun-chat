@@ -1,0 +1,172 @@
+/* 
+ * 网络设置页面样式
+ * 遵循项目统一的样式规范
+ */
+
+/* 网络设置页面结构样式 */
+.network-settings-section {
+  margin-bottom: 32px;
+}
+
+.network-section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 32px;
+}
+
+.network-setting-description {
+  font-size: 14px;
+  color: var(--text-color-lighter);
+  margin-bottom: 24px;
+}
+
+/* 设置组样式 */
+.network-setting-group {
+  margin-bottom: 30px;
+  border-radius: 8px;
+  max-width: 480px;
+}
+
+.network-setting-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.network-setting-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.network-setting-content {
+  width: 100%;
+}
+
+/* URL显示样式 */
+.network-url-container {
+  position: relative;
+  width: 100%;
+}
+
+.network-url-display {
+  width: 100%;
+  padding: 8px 12px;
+  padding-right: 120px; /* 增加右侧内边距，为图标和按钮留出空间 */
+  font-size: 14px;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-color-secondary);
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.network-url-display span {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.network-url-actions {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  z-index: 10;
+}
+
+.network-url-action {
+  background: transparent;
+  border: none;
+  color: var(--gray-500);
+  cursor: pointer;
+  padding: 4px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.network-url-action img {
+  width: 16px;
+  height: 16px;
+  filter: var(--filter-gray-600); /* 使用全局灰度滤镜 */
+  transition: filter 0.2s ease;
+}
+
+.network-url-action:hover img {
+  filter: var(--filter-primary); /* 悬停时使用主题色滤镜 */
+}
+
+.network-url-action:disabled img {
+  filter: var(--filter-gray-400); /* 禁用状态使用浅灰色滤镜 */
+}
+
+.network-url-action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 局域网URL列表样式 */
+.network-urls-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.network-url-item {
+  position: relative;
+  width: 100%;
+  padding: 8px 12px;
+  padding-right: 60px; /* 为复制按钮留出空间 */
+  font-size: 14px;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-color-secondary);
+  display: flex;
+  align-items: center;
+}
+
+.network-url-item span {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.network-url-item-actions {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  z-index: 10;
+}
+
+.network-no-urls {
+  color: var(--text-color-lighter);
+  font-style: italic;
+  padding: 8px 12px;
+}
+
+/* 暗黑模式适配 */
+
+.dark .network-url-display,
+.dark .network-url-item {
+  background-color: var(--bg-color-secondary-dark);
+  border-color: var(--border-color-dark);
+}

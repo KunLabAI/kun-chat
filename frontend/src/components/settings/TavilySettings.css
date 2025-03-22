@@ -59,8 +59,7 @@
 
 .tavily-features-form-input:focus {
   outline: none;
-  border-color: var(--primary-600);
-  box-shadow: 0 0 0 2px var(--primary-100);
+  background: var(--gray-100);
 }
 
 .tavily-features-form-input:disabled {
@@ -241,6 +240,11 @@
 }
 
 .dark .tavily-features-form-input:disabled {
+  background: var(--gray-900);
+}
+
+.dark .tavily-features-form-input:focus {
+  outline: none;
   background: var(--gray-900);
 }
 

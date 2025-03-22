@@ -20,6 +20,16 @@ def get_local_ip():
     except Exception:
         return "127.0.0.1"
 
+def get_free_port(port):
+    while True:
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.bind(("localhost", port))
+            s.close()
+            return port
+        except socket.error:
+            port += 1
+
 def kill_process_tree(pid):
     try:
         parent = psutil.Process(pid)
@@ -96,6 +106,9 @@ class DevServer:
                 print(f"Error installing frontend dependencies: {e}")
                 raise
         
+        frontend_port = get_free_port(5173)
+        os.environ["FRONTEND_PORT"] = str(frontend_port)
+        
         try:
             # 使用shell=True来运行npm命令
             self.frontend_process = subprocess.Popen(
@@ -104,7 +117,7 @@ class DevServer:
                 shell=True,
                 creationflags=subprocess.CREATE_NEW_PROCESS_GROUP
             )
-            print("Frontend server started successfully!")
+            print(f"Frontend server started successfully! Please access http://localhost:{frontend_port}")
         except Exception as e:
             print(f"Error starting frontend server: {e}")
             raise

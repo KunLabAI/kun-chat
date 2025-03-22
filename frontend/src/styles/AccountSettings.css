@@ -54,16 +54,19 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+  opacity: 0.5;
 }
 
 .account-tab-item:hover {
   color: white;
-  background: var(--primary-400);
+  background: var(--primary-800);
+  opacity: 1;
 }
 
 .account-tab-item-active {
   color: white;
   background: var(--primary-600);
+  opacity: 1;
 }
 
 .account-tab-item-active::before {

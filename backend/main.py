@@ -42,17 +42,30 @@ app = FastAPI(
 )
 
 # 配置CORS
-origins = [
-    "http://localhost:5173",  # 前端开发服务器
-    "http://127.0.0.1:5173",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-        # 添加局域网IP地址
-    "http://192.168.50.102:5173",
-    "http://192.168.50.102:8000"
-    # 如果需要支持更多IP，可以添加更多条目
-    # 或者使用环境变量动态配置
-]
+def get_allowed_origins():
+    """获取允许的跨域来源列表，包括动态的局域网IP"""
+    from api.tools.network import get_local_ip, get_frontend_port
+    
+    # 获取前端端口
+    frontend_port = get_frontend_port()
+    
+    # 基本允许的来源
+    base_origins = [
+        f"http://localhost:{frontend_port}",  # 前端开发服务器
+        f"http://127.0.0.1:{frontend_port}",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+    ]
+    
+    # 添加局域网IP地址
+    local_ip = get_local_ip()
+    if local_ip != "127.0.0.1":
+        base_origins.append(f"http://{local_ip}:{frontend_port}")
+        base_origins.append(f"http://{local_ip}:8000")
+    
+    return base_origins
+
+origins = get_allowed_origins()
 
 app.add_middleware(
     CORSMiddleware,

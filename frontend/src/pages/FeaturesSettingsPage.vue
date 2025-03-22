@@ -92,6 +92,12 @@
             <OllamaSettings ref="ollamaSettingsRef" />
           </div>
 
+          <!-- 网络设置 -->
+          <div v-show="currentTab === 'network'" class="account-tab-pane">
+            <!-- 网络设置组件 -->
+            <NetworkSettings ref="networkSettingsRef" />
+          </div>
+
           <!-- 工具设置 -->
           <div v-show="currentTab === 'tools'" class="account-tab-pane">
             <!-- Tavily 搜索设置 -->
@@ -115,6 +121,7 @@ import { useLocalization } from '@/i18n/composables'
 import { SunIcon, MoonIcon, ComputerDesktopIcon } from '@heroicons/vue/24/solid'
 import TavilySettings from '@/components/settings/TavilySettings.vue'
 import OllamaSettings from '@/components/settings/OllamaSettings.vue'
+import NetworkSettings from '@/components/settings/NetworkSettings.vue'
 
 const { t } = useI18n()
 const { language } = useLocalization()
@@ -125,11 +132,13 @@ const notificationStore = useNotificationStore()
 const themeStore = useThemeStore()
 const tavilySettingsRef = ref(null)
 const ollamaSettingsRef = ref(null)
+const networkSettingsRef = ref(null)
 
 // 标签页定义
 const tabs = ref([
   { key: 'general', label: t('settings.tabs.general') },
   { key: 'connection', label: t('settings.tabs.connection') },
+  { key: 'network', label: '网络设置' },
   { key: 'tools', label: t('settings.tabs.tools') }
 ])
 
@@ -138,6 +147,7 @@ watch(language, () => {
   tabs.value = [
     { key: 'general', label: t('settings.tabs.general') },
     { key: 'connection', label: t('settings.tabs.connection') },
+    { key: 'network', label: '网络设置' },
     { key: 'tools', label: t('settings.tabs.tools') }
   ]
 })

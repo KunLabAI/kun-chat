@@ -458,7 +458,7 @@
 
 .account-tab-item:hover {
   color: white;
-  background: var(--primary-400);
+  background: var(--primary-800);
 }
 
 .account-tab-item-active {

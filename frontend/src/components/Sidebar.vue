@@ -58,23 +58,23 @@
         </div>
         <div class="menu-items">
           <RouterLink to="/account-settings" class="menu-item" @click="closeUserMenu">
-            <img src="@/assets/icons/sys_accountsettings.svg" class="menu-icon" />
+            <img :src="accountSettingsIcon" class="menu-icon" />
             <span>{{ t('sidebar.account_settings') }}</span>
           </RouterLink>
           <RouterLink to="/features-settings" class="menu-item" @click="closeUserMenu">
-            <img src="@/assets/icons/sys_systemsettings.svg" class="menu-icon" />
+            <img :src="systemSettingsIcon" class="menu-icon" />
             <span>{{ t('sidebar.features_settings') }}</span>
           </RouterLink>
           <a href="https://lab.kunpuai.com" target="_blank" class="menu-item" @click="closeUserMenu">
-            <img src="@/assets/icons/sys_community.svg" class="menu-icon" />
+            <img :src="communityIcon" class="menu-icon" />
             <span>{{ t('sidebar.community') }}</span>
           </a>
           <a href="https://github.com/bahamutww/kun-lab.git" target="_blank" class="menu-item" @click="closeUserMenu">
-            <img src="@/assets/icons/sys_help.svg" class="menu-icon" />
+            <img :src="helpIcon" class="menu-icon" />
             <span>{{ t('sidebar.help_docs') }}</span>
           </a>
           <button @click="handleLogout" class="menu-item logout">
-            <img src="@/assets/icons/sys_logout.svg" class="menu-icon" />
+            <img :src="logoutIcon" class="menu-icon" />
             <span>{{ t('sidebar.logout') }}</span>
           </button>
         </div>
@@ -99,6 +99,13 @@ import {
   UserIcon,
   UserPlusIcon
 } from '@heroicons/vue/24/outline'
+
+// 预加载菜单图标
+const accountSettingsIcon = new URL('@/assets/icons/sys_accountsettings.svg', import.meta.url).href
+const systemSettingsIcon = new URL('@/assets/icons/sys_systemsettings.svg', import.meta.url).href
+const communityIcon = new URL('@/assets/icons/sys_community.svg', import.meta.url).href
+const helpIcon = new URL('@/assets/icons/sys_help.svg', import.meta.url).href
+const logoutIcon = new URL('@/assets/icons/sys_logout.svg', import.meta.url).href
 
 const router = useRouter()
 const authStore = useAuthStore()
