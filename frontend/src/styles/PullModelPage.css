@@ -4,7 +4,6 @@
   background: var(--bg-color);
   max-width: 100%;
   margin: auto;
-  padding: 0 1rem;
 }
 
 /* 页面头部样式 */
@@ -27,7 +26,6 @@
   font-weight: 600;
   color: var(--text-color);
   margin: 0;
-  padding-top: 72px;
   margin-bottom: 8px;
 }
 
@@ -397,8 +395,29 @@
 @media screen and (min-width: 1024px) {
   .pull-model-page .page-header .header-content {
     max-width: 1024px;
+    margin: 0 auto;
   }
 
+  .input-section {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+
+  .pull-model-page .progress-section.empty-state {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+
+  .pull-model-page .progress-section {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+
+  .pull-model-page .page-header .main-title {
+    font-size: 34px;
+    margin-top: 60px;
+  }
+  
 }
 
 /* 媒体查询 - 大屏幕 (1920px) */
@@ -406,4 +425,25 @@
   .pull-model-page .page-header .header-content {
     max-width: 1200px;
   }
+  .input-section {
+    max-width: 1200px;
+  }
+
+  .pull-model-page .progress-section.empty-state {
+    max-width: 1200px;
+  }
+  .input-section {
+    max-width: 1200px;
+  }
+
+  .pull-model-page .progress-section {
+    max-width: 1200px;
+  }
+
+  .pull-model-page .page-header .main-title {
+    font-size: 40px;
+    margin-top: 72px;
+  }
+
+
 }

@@ -117,11 +117,11 @@
 }
 
 .model-card-button {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   padding: 4px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   transition: all 0.2s ease;
   display: flex;
   justify-content: center;
@@ -220,7 +220,7 @@
 }
 
 .model-card-button.delete-button:hover {
-  background-color: var(--danger-500);
+  background-color: var(--red-500);
 }
 
 .model-card-button:hover img {

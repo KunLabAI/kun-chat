@@ -92,7 +92,7 @@
               </div>
               <div v-if="!hasThinkingContent(message.content) || extractFinalContent(message.content)">
                 <!-- 用户消息使用纯文本渲染器 -->
-                <PlainTextRenderer v-if="message.role === 'user'" :content="message.content" />
+                <PlainTextRenderer v-if="message.role === 'user'" :content="message.content" :max-lines="5" />
                 <!-- AI消息使用Markdown渲染器 -->
                 <div v-else>
                   <!-- 使用key绑定，避免内容更新时重新渲染整个组件 -->

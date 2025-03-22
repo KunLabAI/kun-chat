@@ -566,6 +566,10 @@ code {
 .action-icon {
   width: 16px;
   height: 16px;
+  filter: var(--filter-gray-dark-500);
+}
+
+.dark .action-icon {
   filter: var(--filter-gray-dark-100);
 }
 

@@ -24,9 +24,10 @@ const messages: Messages = {
     markdown: {
       copy_code: '复制代码',
       copied: '已复制',
-      render: '渲染',
-      render_code: '渲染代码',
-      html_preview: 'HTML/SVG 预览'
+      preview_code: '预览代码',
+      html_preview: 'HTML代码预览',
+      open_in_new_window: '在新窗口打开',
+      close: '关闭'
     },
     notification: {
       close: '关闭通知'
@@ -70,9 +71,7 @@ const messages: Messages = {
     tabs: {
       general: '常规设置',
       tools: '工具设置',
-      appearance: '外观设置',
-      advanced: '高级设置',
-      account: '账户设置',
+      connection: '连接设置',
     },
     features: {
       title: '语言和主题'
@@ -205,6 +204,42 @@ const messages: Messages = {
           description: '搜索结果将排除这些域名的内容',
           placeholder: '输入域名并按回车添加（例如：example.com）'
         }
+      }
+    },
+    connection: {
+      ollama: {
+        title: 'Ollama 连接设置',
+        description: '配置本地 Ollama 服务器的连接设置。',
+        host: {
+          label: '连接设置',
+          placeholder: '请输入 Ollama 主机地址（例如：http://localhost:11434）',
+          description: '配置 Ollama 服务的连接地址'
+        },
+        test_button: '测试连接',
+        test_success: '连接成功',
+        test_error: '连接失败',
+        status: {
+          label: '连接状态',
+          description: '显示当前 Ollama 服务的连接状态和版本信息',
+          connected: '已连接',
+          disconnected: '未连接',
+          version: '版本',
+          state: '状态'
+        },
+        auto_check: {
+          label: '自动检测设置',
+          description: '默认每30分钟检测一次'
+        },
+        notification: {
+          label: '显示连接状态变化通知',
+          connected: '成功连接到 Ollama 服务 ({version})',
+          disconnected: '无法连接到 Ollama 服务 ({host})，请检查服务是否运行'
+        },
+        save_button: '保存',
+        checking: '检测中...',
+        save_success: 'Ollama 连接设置已保存',
+        save_failed: '保存设置失败',
+        load_failed: '加载设置失败'
       }
     }
   },

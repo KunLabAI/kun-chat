@@ -17,6 +17,10 @@ export interface CommonMessages {
   markdown: {
     copy_code: string;
     copied: string;
+    preview_code: string;
+    html_preview: string;
+    open_in_new_window: string;
+    close: string;
   };
   notification: {
     close: string;
@@ -62,9 +66,7 @@ export interface SettingsMessages {
   tabs: {
     general: string;
     tools: string;
-    appearance: string;
-    advanced: string;
-    account?: string;
+    connection: string;
   };
   features?: {
     title: string;
@@ -197,6 +199,42 @@ export interface SettingsMessages {
         description: string;
         placeholder: string;
       };
+    };
+  };
+  connection: {
+    ollama: {
+      title: string;
+      description: string;
+      host: {
+        label: string;
+        placeholder: string;
+        description: string;
+      };
+      test_button: string;
+      test_success: string;
+      test_error: string;
+      status: {
+        label: string;
+        description: string;
+        connected: string;
+        disconnected: string;
+        version: string;
+        state: string;
+      };
+      notification: {
+        label: string;
+        connected: string;
+        disconnected: string;
+      };
+      auto_check: {
+        label: string;
+        description: string;
+      };
+      save_button: string;
+      checking: string;
+      save_success: string;
+      save_failed: string;
+      load_failed: string;
     };
   };
 }
