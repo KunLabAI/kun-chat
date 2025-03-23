@@ -71,7 +71,7 @@ const messages: Messages = {
     tabs: {
       general: '常规设置',
       tools: '工具设置',
-      connection: '连接设置',
+      connection: '引擎设置',
     },
     features: {
       title: '语言和主题'
@@ -117,7 +117,7 @@ const messages: Messages = {
           description: '切换深色和浅色主题',
           light: '浅色',
           dark: '深色',
-          system: '跟随系统'
+          system: '系统'
         }
       },
       security: {
@@ -208,8 +208,7 @@ const messages: Messages = {
     },
     connection: {
       ollama: {
-        title: 'Ollama 连接设置',
-        description: '配置本地 Ollama 服务器的连接设置。',
+        title: 'Ollama 推理引擎设置',
         host: {
           label: '连接设置',
           placeholder: '请输入 Ollama 主机地址（例如：http://localhost:11434）',

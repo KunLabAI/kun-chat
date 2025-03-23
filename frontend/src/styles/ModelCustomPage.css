@@ -4,7 +4,6 @@
   position: relative;
   max-width: 100%;
   margin: auto;
-  padding: 0 1rem; /* 添加基础内边距 */
 }
 
 .header-content {
@@ -583,33 +582,6 @@
   filter: var(--filter-gray-dark-100);
 }
 
-/* 响应式布局 */
-@media (max-width: 768px) {
-  .model-create {
-    padding: 16px;
-  }
-  
-  .header-content {
-    flex-direction: column;
-    gap: 16px;
-    text-align: center;
-  }
-  
-  .header-actions {
-    width: 100%;
-    justify-content: center;
-  }
-  
-  .parameters-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .section-header {
-    flex-direction: column;
-    gap: 12px;
-  }
-}
-
 /* 模型选择器样式 */
 .model-selector {
   position: relative;
@@ -753,10 +725,6 @@
 
 /* 媒体查询 - 中等屏幕 (1024px) */
 @media screen and (min-width: 1024px) {
-  .model-create {
-    padding: 0 1.5rem;
-  }
-  
   .page-header {
     padding-top: 60px;
     margin-bottom: 1.75rem;
@@ -800,16 +768,11 @@
 
 /* 媒体查询 - 大屏幕 (1920px) */
 @media screen and (min-width: 1920px) {
-  .model-create {
-    padding: 0 2rem;
-  }
-  
   .page-header {
     padding-top: 72px;
     margin-bottom: 2rem;
     max-width: 1200px;
     margin: 0 auto;
-
   }
   
   .header-content {

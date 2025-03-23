@@ -5,9 +5,6 @@
       <!-- Ollama 连接状态 -->
       <div class="settings-form-group">
         <label class="settings-form-label">{{ $t('settings.connection.ollama.status.label') }}</label>
-        <p class="settings-form-help mb-4">
-          {{ $t('settings.connection.ollama.status.description') }}
-        </p>
         <div class="status-container">
           <div class="status-item">
             <span class="status-label">{{ $t('settings.connection.ollama.status.state') }}：</span>

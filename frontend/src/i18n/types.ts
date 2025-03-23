@@ -204,7 +204,6 @@ export interface SettingsMessages {
   connection: {
     ollama: {
       title: string;
-      description: string;
       host: {
         label: string;
         placeholder: string;
