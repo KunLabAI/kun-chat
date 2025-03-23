@@ -3,7 +3,6 @@
   position: relative;
   min-height: 100vh;
   background: var(--bg-color);
-  padding: 0 1rem; /* 添加基础内边距 */
 }
 
 /* 页面头部样式 */
@@ -308,10 +307,6 @@ input[type="checkbox"]:hover {
 
 /* 媒体查询 - 中等屏幕 (1024px) */
 @media screen and (min-width: 1024px) {
-  .history-page {
-    padding: 0 1.5rem;
-  }
-  
   .page-header {
     max-width: 1024px;
     padding-top: 60px;
@@ -395,10 +390,6 @@ input[type="checkbox"]:hover {
 
 /* 媒体查询 - 大屏幕 (1920px) */
 @media screen and (min-width: 1920px) {
-  .history-page {
-    padding: 0 2rem;
-  }
-  
   .page-header {
     max-width: 1200px;
     padding-top: 72px;

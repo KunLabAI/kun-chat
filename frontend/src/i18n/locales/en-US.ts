@@ -142,7 +142,6 @@ const messages: Messages = {
       preferences: {
         title: 'Immersive Settings',
         personal_info: {
-          label: 'Personal Preferences',
           placeholder: 'Enter your personal preferences that you want the AI to remember...',
           description: 'Add personal preferences that you want the AI to remember, such as language style, answer format, etc., and when enabled, it will also remember your nickname by default.'
         },

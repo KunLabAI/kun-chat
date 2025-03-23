@@ -137,7 +137,6 @@ export interface SettingsMessages {
     preferences: {
       title: string;
       personal_info: {
-          label: string;
           placeholder: string;
           description: string;
       };

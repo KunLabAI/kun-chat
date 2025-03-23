@@ -3,7 +3,6 @@
   position: relative;
   max-width: 100%;
   margin: auto;
-  padding: 0 1rem; /* 添加基础内边距 */
 }
 
 /* 页面头部 */
@@ -36,8 +35,8 @@
 }
 
 .sub-title {
-  font-size: 14px;
-  color: var(--el-text-color-secondary);
+  font-size: 16px;
+  color: var(--text-color-lighter);
   font-weight: normal;
   line-height: 1.5;
   max-width: 100%; /* 小屏幕占满宽度 */
@@ -134,10 +133,6 @@
 
 /* 媒体查询 - 中等屏幕 (1024px) */
 @media screen and (min-width: 1024px) {
-  .prompts-page {
-    padding: 0 1.5rem;
-  }
-  
   .page-header {
     padding-top: 60px;
     margin-bottom: 1.75rem;
@@ -160,7 +155,7 @@
   }
   
   .sub-title {
-    font-size: 15px;
+    font-size: 16px;
     max-width: 550px;
     margin: 0.4rem 0 0;
   }
@@ -177,16 +172,12 @@
     min-height: 250px;
     margin: 28px auto;
     max-width: 1024px;
-    font-size: 15px;
+    font-size: 14px;
   }
 }
 
 /* 媒体查询 - 大屏幕 (1920px) */
 @media screen and (min-width: 1920px) {
-  .prompts-page {
-    padding: 0 2rem;
-  }
-  
   .page-header {
     padding-top: 72px;
     margin-bottom: 2rem;

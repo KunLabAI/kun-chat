@@ -102,7 +102,7 @@
   font-size: 20px;
   font-weight: 600;
   color: var(--text-color);
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .account-section-content {
@@ -175,7 +175,7 @@
 .account-form-label {
   font-size: 14px;
   font-weight: 500;
-  color: var(--text-color);
+  color: var(--bg-color-lighter);
 }
 
 .account-form-input {
@@ -209,19 +209,23 @@
   width: 100%;
   padding: 12px;
   border-radius: 8px;
-  background-color: var(--bg-color-light);
+  background: var(--bg-color-dark);
   color: var(--text-color);
   font-size: 14px;
   line-height: 1.5;
   transition: all 0.2s ease;
   resize: vertical;
   min-height: 120px;
+  border: 1px solid var(--gray-300);
+}
+
+.dark .account-form-textarea {
+  background: var(--gray-800);
+  border-color: var(--gray-600);
 }
 
 .account-form-textarea:focus {
-  border-color: var(--primary-600);
-  box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
-  outline: none;
+  border: 1px solid var(--primary-800);
   background: var(--bg-color);
 }
 
@@ -444,6 +448,10 @@
   border: 1px solid var(--border-color);
   border-radius: 8px;
   margin-top: 8px;
+}
+
+.dark .account-immersive-switch {
+  border-color: var(--gray-600);
 }
 
 .switch-label-group {

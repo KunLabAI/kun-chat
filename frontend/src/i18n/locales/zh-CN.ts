@@ -142,7 +142,6 @@ const messages: Messages = {
       preferences: {
         title: '沉浸设置',
         personal_info: {
-          label: '个人偏好信息',
           placeholder: '请输入您希望AI记住的个人偏好信息...',
           description: '说明：添加您希望AI记住的个人偏好，如语言风格、回答格式等，启用后还会默认记住您的昵称。'
         },
