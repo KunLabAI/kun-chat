@@ -72,6 +72,7 @@ const messages: Messages = {
       general: 'General',
       tools: 'Tool',
       connection: 'Engine',
+      network: 'Network'
     },
     features: {
       title: 'Language & Theme'

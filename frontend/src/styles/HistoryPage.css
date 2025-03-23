@@ -224,7 +224,7 @@ input[type="checkbox"]:hover {
 
 .conversation-message {
   font-size: 13px;
-  color: var(--text-color-light);
+  color: var(--text-color-lighter);
   margin-bottom: 6px;
   line-height: 1.5;
 }

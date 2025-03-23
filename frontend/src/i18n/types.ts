@@ -67,6 +67,7 @@ export interface SettingsMessages {
     general: string;
     tools: string;
     connection: string;
+    network: string;
   };
   features?: {
     title: string;

@@ -605,7 +605,7 @@ const togglePersonalInfo = async () => {
 
 <style scoped>
 /* 导入账户设置样式 */
-@import '@/styles/AccountSettings.css';
+@import '@/styles/FeaturesSettingsPage.css';
 
 /* 密码错误提示样式 */
 .account-password-errors {

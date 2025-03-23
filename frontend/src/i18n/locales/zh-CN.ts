@@ -72,6 +72,7 @@ const messages: Messages = {
       general: '常规设置',
       tools: '工具设置',
       connection: '引擎设置',
+      network: '网络设置'
     },
     features: {
       title: '语言和主题'

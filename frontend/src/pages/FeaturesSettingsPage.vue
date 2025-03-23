@@ -138,7 +138,7 @@ const networkSettingsRef = ref(null)
 const tabs = ref([
   { key: 'general', label: t('settings.tabs.general') },
   { key: 'connection', label: t('settings.tabs.connection') },
-  { key: 'network', label: '网络设置' },
+  { key: 'network', label: t('settings.tabs.network') },
   { key: 'tools', label: t('settings.tabs.tools') }
 ])
 
@@ -147,7 +147,7 @@ watch(language, () => {
   tabs.value = [
     { key: 'general', label: t('settings.tabs.general') },
     { key: 'connection', label: t('settings.tabs.connection') },
-    { key: 'network', label: '网络设置' },
+    { key: 'network', label: t('settings.tabs.network') },
     { key: 'tools', label: t('settings.tabs.tools') }
   ]
 })
@@ -189,6 +189,6 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-@import '@/styles/AccountSettings.css';
+@import '@/styles/FeaturesSettingsPage.css';
 @import '@/styles/GeneralSettings.css';
 </style>
