@@ -127,6 +127,11 @@ async function fetchFavoriteModels() {
     if (!authStore.user.username) return
     isLoading.value = true
     favoriteModels.value = await modelsStore.getFavoriteModels(authStore.user.username)
+    
+    // 设置收藏状态
+    favoriteModels.value.forEach(model => {
+      model.is_favorite = true
+    })
   } catch (error) {
     console.error('获取收藏模型失败:', error)
     notificationStore.showError(t('status.error'))

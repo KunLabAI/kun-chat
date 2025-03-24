@@ -53,7 +53,6 @@
   border: 1px solid var(--border-color);
   border-radius: 8px;
   transition: all 0.3s ease;
-  margin-bottom: 8px;
 }
 
 .settings-form-input:focus {

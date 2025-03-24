@@ -72,6 +72,7 @@ import DotLoader from '@/components/common/DotLoader.vue'
 import { useModelsStore } from '@/stores/models'
 import { useChatStore } from '@/stores/chat'
 import { useNotificationStore } from '@/stores/notification'
+import { useAuthStore } from '@/stores/auth'
 import { Model } from '@/types/models'
 import { useConversation } from '@/hooks/chat/useConversation'
 import { useLocalization } from '@/i18n/composables'
@@ -80,6 +81,7 @@ const router = useRouter()
 const modelsStore = useModelsStore()
 const chatStore = useChatStore()
 const notificationStore = useNotificationStore()
+const authStore = useAuthStore()
 const { createConversation } = useConversation()
 const { t } = useLocalization()
 
@@ -87,8 +89,27 @@ const showDeleteDialog = ref(false)
 const modelToDelete = ref<Model | null>(null)
 
 onMounted(async () => {
-  await modelsStore.fetchModels()
+  await fetchModelsWithFavoriteStatus()
 })
+
+// 获取模型列表并设置收藏状态
+async function fetchModelsWithFavoriteStatus() {
+  await modelsStore.fetchModels()
+  
+  // 如果用户已登录，检查每个模型的收藏状态
+  if (authStore.isAuthenticated && authStore.user.username) {
+    const username = authStore.user.username
+    
+    // 获取所有收藏的模型
+    const favoriteModels = await modelsStore.getFavoriteModels(username)
+    const favoriteModelIds = favoriteModels.map(model => model.id)
+    
+    // 更新模型列表中的收藏状态
+    modelsStore.models.forEach(model => {
+      model.is_favorite = favoriteModelIds.includes(model.id)
+    })
+  }
+}
 
 const viewModelDetails = (model: Model) => {
   console.log('查看模型详情:', model.name)

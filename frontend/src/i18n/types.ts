@@ -67,6 +67,7 @@ export interface SettingsMessages {
     general: string;
     tools: string;
     connection: string;
+    network: string;
   };
   features?: {
     title: string;
@@ -137,7 +138,6 @@ export interface SettingsMessages {
     preferences: {
       title: string;
       personal_info: {
-          label: string;
           placeholder: string;
           description: string;
       };

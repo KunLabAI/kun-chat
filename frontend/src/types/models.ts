@@ -19,6 +19,7 @@ export interface Model {
   options?: any
   modified_at?: string
   created_at: string
+  is_favorite?: boolean
 }
 
 export interface ModelDetails {

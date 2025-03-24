@@ -16,9 +16,8 @@
             <div class="favorite-container">
               <input type="checkbox" id="favorite-checkbox" :checked="isFavorite" @change="toggleFavorite" />
               <label for="favorite-checkbox">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                </svg>
+                <img v-if="!isFavorite" :src="emptyStarIcon" width="24" height="24" alt="未收藏" />
+                <img v-else :src="starIcon" width="24" height="24" alt="已收藏" />
               </label>
             </div>
             <Button variant="link" size="md" @click="goBack">
@@ -122,6 +121,8 @@ import MainLayout from '@/layouts/MainLayout.vue'
 import Button from '@/components/common/Button.vue'
 import { getModelLogo } from '@/utils/ModelsLogoMap'
 import { useLocalization } from '@/i18n/composables'
+import emptyStarIcon from '@/assets/icons/sys_emptystar.svg'
+import starIcon from '@/assets/icons/sys_star.svg'
 
 const router = useRouter()
 const route = useRoute()

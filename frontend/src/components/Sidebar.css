@@ -32,8 +32,8 @@
 }
 
 .logo-icon {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   filter: brightness(0) saturate(100%) invert(50%) 
 }
 

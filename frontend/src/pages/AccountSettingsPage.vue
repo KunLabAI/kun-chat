@@ -210,7 +210,6 @@
                 <div class="account-preferences-form">
                   <!-- 个人偏好信息 -->
                   <div class="account-form-group">
-                    <label class="account-form-label">{{ $t('settings.account.preferences.personal_info.label') }}</label>
                     <p class="account-form-help mb-2">
                       {{ $t('settings.account.preferences.personal_info.description') }}
                     </p>
@@ -606,7 +605,7 @@ const togglePersonalInfo = async () => {
 
 <style scoped>
 /* 导入账户设置样式 */
-@import '@/styles/AccountSettings.css';
+@import '@/styles/FeaturesSettingsPage.css';
 
 /* 密码错误提示样式 */
 .account-password-errors {

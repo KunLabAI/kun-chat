@@ -62,17 +62,20 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+  opacity: 0.5;
 }
 
 .model-tab-item:hover {
   color: white;
-  background: var(--primary-400);
+  background: var(--primary-800);
+  opacity: 1;
   
 }
 
 .model-tab-item-active {
   color: white;
   background: var(--primary-600);
+  opacity: 1;
 }
 
 /* 内容区域 */
@@ -201,9 +204,8 @@
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-.favorite-container input:checked + label svg {
-  fill: hsl(0deg 100% 50%);
-  stroke: hsl(0deg 100% 50%);
+/* 已收藏状态动画 */
+.favorite-container input:checked + label img {
   animation: heartButton 1s;
 }
 

@@ -31,7 +31,7 @@
 
 .pull-model-page .page-header .sub-title {
   font-size: 16px;
-  color: var(--text-color-light);
+  color: var(--text-color-lighter);
   font-weight: normal;
   margin: 8px 0 0 0;
 }
@@ -140,8 +140,8 @@
 }
 
 .pull-model-page .status-badge.downloading {
-  background: rgba(37, 99, 235, 0.1);
-  color: #2563eb;
+  background: var(--primary-500);
+  color: var(--primary-100);
 }
 
 .pull-model-page .status-badge.completed {

@@ -29,6 +29,16 @@ body {
   -webkit-font-smoothing: var(--font-smoothing);
   -moz-osx-font-smoothing: var(--font-smoothing-firefox);
   text-rendering: var(--text-rendering);
+
+  /* 移除输入框聚焦时的描边 */
+input:focus {
+  outline: none;
+}
+
+/* 如果需要移除所有表单元素的聚焦描边 */
+input:focus, textarea:focus, select:focus, button:focus {
+  outline: none;
+}
 }
 
 #app {

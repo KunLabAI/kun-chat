@@ -32,13 +32,13 @@
 .main-title {
   font-size: 28px; /* 小屏幕默认字体大小 */
   font-weight: bold;
-  color: var(--el-text-color-primary);
+  color: var(--text-color);
   margin-bottom: 6px;
 }
 
 .sub-title {
-  font-size: 14px;
-  color: var(--el-text-color-secondary);
+  font-size: 16px;
+  color: var(--text-color-lighter);
   font-weight: normal;
   line-height: 1.5;
   max-width: 100%; /* 小屏幕占满宽度 */
@@ -105,46 +105,13 @@
   margin: 24px auto;
   max-width: 768px; /* 小屏幕默认宽度 */
   text-align: center;
-  color: var(--el-text-color-secondary);
+  color: var(--text-color-lighter);
   font-size: 14px;
   background: var(--el-bg-color-overlay);
   border-radius: 8px;
   border: 1px dashed var(--el-border-color-lighter);
 }
 
-/* 暗色主题适配 */
-:root[data-theme="dark"] .models-page {
-  background: var(--el-bg-color-overlay);
-}
-
-:root[data-theme="dark"] .page-header {
-  background: linear-gradient(135deg, 
-    rgba(var(--el-color-primary-rgb), 0.15) 0%,
-    rgba(var(--el-color-primary-rgb), 0.05) 100%
-  );
-}
-
-:root[data-theme="dark"] .main-title {
-  background: linear-gradient(135deg,
-    var(--el-color-primary-light-3) 0%,
-    var(--el-color-primary-light-5) 100%
-  );
-  -webkit-text-fill-color: transparent;
-}
-
-:root[data-theme="dark"] .sub-title {
-  color: var(--el-text-color-secondary);
-}
-
-:root[data-theme="dark"] .dialog-content input {
-  background: var(--el-bg-color-overlay);
-  border-color: var(--el-border-color-darker);
-}
-
-:root[data-theme="dark"] .dialog-content input:focus {
-  border-color: var(--el-color-primary);
-  box-shadow: 0 0 0 2px rgba(var(--el-color-primary-rgb), 0.2);
-}
 
 /* 媒体查询 - 中等屏幕 (1024px) */
 @media screen and (min-width: 1024px) {
@@ -170,7 +137,7 @@
   }
   
   .sub-title {
-    font-size: 15px;
+    font-size: 16px;
     max-width: 550px;
     margin: 0.4rem 0 0;
   }

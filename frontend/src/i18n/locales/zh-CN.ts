@@ -72,6 +72,7 @@ const messages: Messages = {
       general: '常规设置',
       tools: '工具设置',
       connection: '引擎设置',
+      network: '网络设置'
     },
     features: {
       title: '语言和主题'
@@ -142,7 +143,6 @@ const messages: Messages = {
       preferences: {
         title: '沉浸设置',
         personal_info: {
-          label: '个人偏好信息',
           placeholder: '请输入您希望AI记住的个人偏好信息...',
           description: '说明：添加您希望AI记住的个人偏好，如语言风格、回答格式等，启用后还会默认记住您的昵称。'
         },

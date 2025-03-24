@@ -9,6 +9,7 @@ from .tools.tavily_search import router as tavily_search_router
 from .tools.language import router as language_router
 from .tools.theme import router as theme_router
 from .tools.ollama import router as ollama_router
+from .tools.network import router as network_router
 
 api_router = APIRouter()
 
@@ -22,3 +23,4 @@ api_router.include_router(tavily_search_router, prefix="/tavily", tags=["search"
 api_router.include_router(language_router, prefix="/language", tags=["language"])
 api_router.include_router(theme_router, prefix="/theme", tags=["theme"])
 api_router.include_router(ollama_router, prefix="/ollama", tags=["ollama"])
+api_router.include_router(network_router, prefix="/network", tags=["network"])
