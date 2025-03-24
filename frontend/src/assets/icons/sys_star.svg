@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <clipPath id="clip-sys_star">
+      <rect width="24" height="24"/>
+    </clipPath>
+  </defs>
+  <g id="sys_star" clip-path="url(#clip-sys_star)">
+    <path id="sys_emptystar" d="M12.477,2.324a.583.583,0,0,1,1.045,0l2.541,5.146a2.335,2.335,0,0,0,1.754,1.276l5.682.832a.583.583,0,0,1,.323.994l-4.109,4a2.335,2.335,0,0,0-.672,2.066l.97,5.653a.583.583,0,0,1-.848.616l-5.079-2.671a2.334,2.334,0,0,0-2.17,0L6.835,22.909a.583.583,0,0,1-.847-.616l.969-5.652a2.334,2.334,0,0,0-.672-2.067l-4.109-4a.583.583,0,0,1,.323-1l5.681-.83A2.334,2.334,0,0,0,9.937,7.471Z" transform="translate(-0.998 -0.489)" fill="#ffb507"/>
+  </g>
+</svg>

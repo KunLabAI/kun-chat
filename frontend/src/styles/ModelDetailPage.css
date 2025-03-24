@@ -204,9 +204,8 @@
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-.favorite-container input:checked + label svg {
-  fill: hsl(0deg 100% 50%);
-  stroke: hsl(0deg 100% 50%);
+/* 已收藏状态动画 */
+.favorite-container input:checked + label img {
   animation: heartButton 1s;
 }
 

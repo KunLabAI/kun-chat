@@ -4,6 +4,9 @@
       <img :src="getModelLogo(model.family || 'default')" :alt="model.family || t('model.card.unknown')" class="model-card-icon">
       <h2 class="model-card-title">{{ model.display_name || model.name }}</h2>
     </div>
+    <div v-if="model.is_favorite" class="favorite-star">
+      <img :src="starIconSrc" width="20" height="20" alt="已收藏" />
+    </div>
     <div class="model-card-hover">
       <div class="model-card-info">
         <p>{{ t('model.card.parameter_size') }}: {{ model.parameter_size || t('model.card.unknown') }}</p>
@@ -62,6 +65,9 @@ const emit = defineEmits<{
   (e: 'start-chat', model: Model): void
   (e: 'delete', model: Model): void
 }>()
+
+// 导入星星图标
+const starIconSrc = new URL('@/assets/icons/sys_star.svg', import.meta.url).href
 
 const handleStartChat = async () => {
   try {

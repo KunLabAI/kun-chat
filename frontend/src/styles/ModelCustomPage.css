@@ -96,10 +96,19 @@
   outline: none;
 }
 
+.dark .form-input {
+  border: 1px solid var(--gray-700);
+}
+
 .form-input.error,
 .form-select.error,
 .form-textarea.error {
   border-color: #ef4444;
+}
+
+.form-input:focus{
+  border-color: var(--primary-400);
+  background: var(--gray-100);
 }
 
 .dark .form-input:focus{
@@ -217,6 +226,11 @@
   border-radius: 0.5rem;
   background-color: var(--bg-color-light);
   overflow: hidden;
+  border: 1px solid var(--gray-300);
+}
+
+.dark .code-block {
+  border: 1px solid var(--gray-700);
 }
 
 .code-header {
@@ -306,7 +320,6 @@
   padding: 1.5rem;
   background: var(--bg-color);
   border-radius: 0.75rem;
-  border: 1px solid var(--border-color);
 }
 
 .group-header {
@@ -336,7 +349,6 @@
 
 .parameter-item {
   border-radius: 0.5rem;
-  padding: 1rem;
 }
 
 .parameter-header {
@@ -530,6 +542,7 @@
   padding: 1.5rem;
   border: 1px solid var(--border-color);
   border-radius: 0.75rem;
+  background-color: var(--bg-color-light);
 }
 
 .tab-pane {
