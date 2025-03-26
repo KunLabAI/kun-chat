@@ -105,7 +105,10 @@ const isFormValid = computed(() => username.value && password.value)
 // 尝试自动登录
 const tryAutoLogin = async () => {
   const token = localStorage.getItem('token')
-  if (token) {
+  // 检查是否是第一次启动应用，如果是，则不进行自动登录
+  const isFirstLaunch = localStorage.getItem('firstLaunch') !== 'false'
+  
+  if (token && !isFirstLaunch) {
     try {
       loading.value = true
       const response = await authApi.autoLogin(token)
@@ -126,6 +129,9 @@ const tryAutoLogin = async () => {
     } finally {
       loading.value = false
     }
+  } else if (isFirstLaunch) {
+    // 标记应用已经启动过
+    localStorage.setItem('firstLaunch', 'false')
   }
 }
 
