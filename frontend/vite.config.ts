@@ -31,7 +31,7 @@ export default defineConfig({
     }
   },
   // 为 Electron 添加配置
-  base: './',
+  base: process.env.NODE_ENV === 'production' ? './' : '/',
   build: {
     outDir: 'dist',
     emptyOutDir: true,

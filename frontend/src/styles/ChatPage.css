@@ -4,13 +4,13 @@
   flex-direction: column;
   position: absolute;
   top: 4px;
-  left: 48px; /* 为侧边栏留出空间 */
+  left: 0;
   right: 0;
   bottom: 0;
   overflow-y: auto;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  transition: all 0.3s ease; /* 添加过渡效果 */
+  transition: all 0.3s ease;
 }
 
 /* 抽屉打开时的状态 */
@@ -646,7 +646,11 @@ html {
 
 
 /* 媒体查询 - 小屏幕 */
-@media screen and (max-width: 768px) {  
+@media screen and (max-width: 1023px) {  
+  .messages-container {
+    width: 90%;
+  }
+
   .scroll-to-bottom {
     bottom: 150px; 
   }

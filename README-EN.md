@@ -38,7 +38,7 @@ kun-lab is a lightweight AI conversation application based on Ollama, designed t
 ### Desktop Application Installation (Recommended)
 
 1. **Download the Installation Package**:
-   - Visit the [Release Page](https://github.com/your-repo/kun-lab/releases) to download the installation package for your platform
+   - Visit the [Release Page](https://github.com/bahamutww/kun-lab/releases) to download the installation package for your platform
    - Windows: `.exe` installer (currently only Windows is supported)
    - macOS: `.dmg` package
    - Linux: `.AppImage` or `.deb` package

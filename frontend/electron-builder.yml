@@ -16,12 +16,16 @@ extraResources:
 publish:
   provider: github
   owner: bahamutww
-  repo: KunyuAI
+  repo: kun-lab
   private: false
+  releaseType: draft
+  draft: true
+  prerelease: false
 win:
   target:
     - nsis
   icon: public/icon.ico
+  artifactName: "${productName}-Setup-${version}.${ext}"
 mac:
   target:
     - dmg
@@ -29,10 +33,12 @@ mac:
   icon: public/icon.icns
   category: public.app-category.productivity
   darkModeSupport: true
+  artifactName: "${productName}-${version}-${arch}.${ext}"
 linux:
   target:
     - AppImage
     - deb
     - rpm
   icon: public/icon.png
-  category: Office 
+  category: Office
+  artifactName: "${productName}-${version}.${ext}" 

@@ -13,24 +13,34 @@ from contextlib import asynccontextmanager
 from ensure_dirs import ensure_directories  # 导入目录确保函数
 from data_path import get_avatars_dir, get_logs_dir  # 导入获取目录函数
 
+# 根据环境变量决定日志级别
+log_level = os.environ.get('KUNLAB_LOG_LEVEL', 'INFO').upper()
+verbose_logging = os.environ.get('KUNLAB_VERBOSE', '').lower() in ('true', '1', 'yes')
+
 # 确保必要的目录存在
 ensure_directories()
 
 # 配置日志
 logs_dir = get_logs_dir()
-log_file = logs_dir / "kunyu_backend.log"
+log_file = logs_dir / "kun-lab_backend.log"
 
 logging.basicConfig(
-    level=logging.INFO,
+    level=getattr(logging, log_level, logging.INFO),
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.FileHandler(log_file),
-        logging.StreamHandler()
+        logging.StreamHandler() if verbose_logging else logging.StreamHandler(open(os.devnull, 'w'))
     ]
 )
 
 # 设置uvicorn日志级别
-logging.getLogger("uvicorn.access").setLevel(logging.WARNING)
+if not verbose_logging:
+    logging.getLogger("uvicorn").setLevel(logging.WARNING)
+    logging.getLogger("uvicorn.access").setLevel(logging.WARNING)
+    # 设置其他常见的可能产生大量日志的模块
+    logging.getLogger("sqlalchemy").setLevel(logging.WARNING)
+    logging.getLogger("aiohttp").setLevel(logging.WARNING)
+    logging.getLogger("websockets").setLevel(logging.WARNING)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

@@ -347,21 +347,31 @@ async function checkForUpdates() {
     
     if (result.success) {
       // 检查成功，等待更新事件通知结果
+      updateStatus.value = { status: 'not-available' };
     } else {
-      // 检查失败
+      // 检查失败，但不影响页面正常显示
+      let errorMessage = result.error || result.message || t('about.appInfo.checkFailed');
+      
+      // 特殊处理"没有发布版本"的情况
+      if (errorMessage.includes('No published versions')) {
+        errorMessage = t('about.appInfo.noRelease');
+      }
+      
       updateStatus.value = { 
         status: 'error', 
-        error: result.error || result.message || t('about.appInfo.checkFailed') 
+        error: errorMessage
       };
-      notificationStore.error(t('about.appInfo.checkFailed'));
+      console.warn('检查更新失败:', errorMessage);
+      notificationStore.warning(errorMessage);
     }
   } catch (error) {
     console.error('检查更新失败:', error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
     updateStatus.value = { 
       status: 'error', 
-      error: error instanceof Error ? error.message : String(error)
+      error: errorMessage
     };
-    notificationStore.error(t('about.appInfo.checkFailed'));
+    notificationStore.warning(t('about.appInfo.checkFailed'));
   } finally {
     setTimeout(() => {
       isCheckingUpdate.value = false;
@@ -502,54 +512,62 @@ onMounted(async () => {
     isElectron.value = checkIsElectron();
     
     if (isElectron.value) {
-      // 获取应用版本
-      appVersion.value = await getCurrentVersion();
-      
-      // 获取 Electron 版本
-      if (window.electronAPI) {
-        electronVersion.value = window.electronAPI.getElectronVersion?.() || '';
-      }
-      
-      // 设置更新状态监听
-      removeUpdateStatusListener = onUpdateStatus((status) => {
-        try {
-          console.log('更新状态变化:', status);
-          
-          // 验证状态对象
-          if (!status || typeof status !== 'object') {
-            console.error('无效的更新状态:', status);
-            return;
-          }
-          
-          // 确保必要的字段存在
-          updateStatus.value = {
-            status: status.status || null,
-            version: status.version || null,
-            releaseDate: status.releaseDate || null,
-            progress: status.progress || null,
-            error: status.error || null,
-            updatePath: status.updatePath || null  // 添加更新包路径
-          };
-          
-          // 根据状态显示通知
-          switch (status.status) {
-            case 'available':
-              notificationStore.info(t('about.appInfo.updateAvailable', { version: status.version || '未知版本' }));
-              break;
-            case 'downloaded':
-              notificationStore.success(t('about.appInfo.downloadSuccess'));
-            case 'error':
-              notificationStore.error(status.error || t('about.appInfo.updateError'));
-              break;
-          }
-        } catch (err) {
-          console.error('处理更新状态失败:', err);
-          updateStatus.value = {
-            status: 'error',
-            error: '处理更新状态时发生错误'
-          };
+      try {
+        // 获取应用版本
+        appVersion.value = await getCurrentVersion();
+        
+        // 获取 Electron 版本
+        if (window.electronAPI) {
+          electronVersion.value = window.electronAPI.getElectronVersion?.() || '';
         }
-      });
+        
+        // 设置更新状态监听
+        removeUpdateStatusListener = onUpdateStatus((status) => {
+          try {
+            console.log('更新状态变化:', status);
+            
+            // 验证状态对象
+            if (!status || typeof status !== 'object') {
+              console.error('无效的更新状态:', status);
+              return;
+            }
+            
+            // 确保必要的字段存在
+            updateStatus.value = {
+              status: status.status || null,
+              version: status.version || null,
+              releaseDate: status.releaseDate || null,
+              progress: status.progress || null,
+              error: status.error || null,
+              updatePath: status.updatePath || null  // 添加更新包路径
+            };
+            
+            // 根据状态显示通知
+            switch (status.status) {
+              case 'available':
+                notificationStore.info(t('about.appInfo.updateAvailable', { version: status.version || '未知版本' }));
+                break;
+              case 'downloaded':
+                notificationStore.success(t('about.appInfo.downloadSuccess'));
+                break;
+              case 'error':
+                // 错误状态只显示警告，不影响页面功能
+                notificationStore.warning(status.error || t('about.appInfo.updateError'));
+                break;
+            }
+          } catch (err) {
+            console.error('处理更新状态失败:', err);
+            updateStatus.value = {
+              status: 'error',
+              error: '处理更新状态时发生错误'
+            };
+          }
+        });
+      } catch (err) {
+        console.error('初始化 Electron 功能失败:', err);
+        // 错误不影响页面基本功能
+        isElectron.value = false;
+      }
     }
 
     // 如果当前是许可证标签页，加载许可证内容

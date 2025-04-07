@@ -9,10 +9,11 @@
     <div v-else class="changelog-content">
       <div v-for="release in releases" :key="release.tag_name" class="changelog-release">
         <div class="changelog-release-header">
-          <h3 class="changelog-version">v{{ release.tag_name }}</h3>
+          <h3 class="changelog-version">{{ release.tag_name }}</h3>
           <span class="changelog-date">{{ formatDate(release.published_at) }}</span>
         </div>
-        <div class="changelog-body" v-html="formatChangelog(release.body)"></div>
+        <!-- 使用MarkdownRenderer组件渲染更新日志内容 -->
+        <MarkdownRenderer :content="release.body" />
       </div>
     </div>
   </div>
@@ -23,6 +24,8 @@ import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import axios from 'axios';
 import { getChangelog } from '@/api/changelogApi';
+import MarkdownRenderer from './MarkdownRenderer.vue';
+
 const { t } = useI18n();
 const loading = ref(true);
 const error = ref(null);
@@ -65,58 +68,91 @@ async function fetchReleases() {
     error.value = null;
     releases.value = [];
     
-    // 检查是否在 Electron 环境中
+    // 首先从GitHub API获取更新日志（优先级最高）
     if (window.electronAPI) {
-      // Electron 环境：从 GitHub API 获取
-      const config = await window.electronAPI.getGitHubConfig();
-      if (!config || !config.owner || !config.repo) {
-        console.log('GitHub 配置不完整，跳过更新日志获取');
-        return;
-      }
-      
-      console.log('正在获取更新日志，配置:', {
-        owner: config.owner,
-        repo: config.repo
-      });
-      
-      const response = await axios.get(`https://api.github.com/repos/${config.owner}/${config.repo}/releases`, {
-        headers: {
-          'Authorization': `Bearer ${config.token}`,
+      try {
+        console.log('尝试从 GitHub API 获取更新日志');
+        const config = await window.electronAPI.getGitHubConfig();
+        if (!config || !config.owner || !config.repo) {
+          throw new Error('GitHub 配置不完整');
+        }
+        
+        const headers = {
           'Accept': 'application/vnd.github.v3+json'
-        },
-        timeout: 10000
-      });
-      
-      if (!response.data || !Array.isArray(response.data)) {
-        throw new Error('无效的响应数据格式');
+        };
+        
+        // 如果存在token，添加授权头
+        if (config.token) {
+          headers['Authorization'] = `token ${config.token}`;
+          console.log('已添加GitHub授权令牌');
+        }
+        
+        const response = await axios.get(`https://api.github.com/repos/${config.owner}/${config.repo}/releases`, {
+          headers: headers,
+          timeout: 15000,
+          skipAuthRefresh: true,
+          skipErrorHandler: true,
+          withCredentials: false
+        });
+        
+        if (response.data && Array.isArray(response.data) && response.data.length > 0) {
+          console.log('从 GitHub API 获取更新日志成功');
+          releases.value = response.data;
+          return;
+        } else {
+          console.log('GitHub API 未返回有效的发布信息，尝试其他方式');
+          throw new Error('GitHub API 未返回有效的发布信息');
+        }
+      } catch (githubErr) {
+        console.error('从 GitHub API 获取更新日志失败:', githubErr);
+        // 继续尝试其他方式
       }
       
-      releases.value = response.data;
-    } else {
-      // Web 环境：从后端 API 获取
-      console.log('在 Web 环境中，从后端获取更新日志');
-      const response = await getChangelog();
-      if (!response || !response.content) {
-        throw new Error('无效的响应数据格式');
+      // 次优先：从本地文件读取
+      try {
+        console.log('尝试直接读取本地 CHANGELOG.md 文件');
+        const content = await window.electronAPI.readLocalFile('CHANGELOG.md');
+        if (content) {
+          const parsedReleases = parseChangelogContent(content);
+          if (parsedReleases.length > 0) {
+            console.log('从本地文件读取更新日志成功');
+            releases.value = parsedReleases;
+            return;
+          }
+        }
+        throw new Error('无法读取本地 CHANGELOG.md 文件');
+      } catch (fileErr) {
+        console.error('读取本地 CHANGELOG.md 文件失败:', fileErr);
+        // 继续尝试下一种方式
       }
-      
-      // 解析 CHANGELOG.md 内容并设置 releases
-      releases.value = parseChangelogContent(response.content);
     }
     
-    console.log('成功获取更新日志，版本数:', releases.value.length);
+    // 最后尝试从后端 API 获取
+    try {
+      console.log('尝试从后端获取更新日志');
+      const response = await getChangelog();
+      if (response && response.content) {
+        // 解析 CHANGELOG.md 内容并设置 releases
+        const parsedReleases = parseChangelogContent(response.content);
+        if (parsedReleases.length > 0) {
+          console.log('从后端获取更新日志成功');
+          releases.value = parsedReleases;
+          return;
+        }
+      }
+      throw new Error('从后端获取更新日志失败或内容无效');
+    } catch (apiErr) {
+      console.error('从后端获取更新日志失败:', apiErr);
+      
+      // 所有方式都失败，使用默认内容
+      console.log('所有获取方式均失败，使用默认更新日志');
+      const defaultChangelog = `# 更新日志\n\n## [0.0.1] - ${new Date().toISOString().split('T')[0]}\n\n### 新增\n- 初始版本发布\n`;
+      const parsedReleases = parseChangelogContent(defaultChangelog);
+      releases.value = parsedReleases;
+    }
   } catch (err) {
     console.error('获取更新日志失败:', err);
-    error.value = err.message;
-    
-    // 如果是网络错误，显示更友好的错误信息
-    if (err.code === 'ECONNABORTED') {
-      error.value = '网络连接超时，请检查网络设置';
-    } else if (err.response?.status === 401) {
-      error.value = 'GitHub API 认证失败';
-    } else if (err.response?.status === 403) {
-      error.value = '没有权限访问 GitHub 仓库';
-    }
+    error.value = t('about.changelog.error');
   } finally {
     loading.value = false;
   }
@@ -131,53 +167,6 @@ function formatDate(dateString) {
   });
 }
 
-function formatChangelog(content) {
-  try {
-    if (!content) return '';
-    
-    // 转义 HTML 特殊字符
-    let safeContent = content
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
-    
-    // 将换行符转换为 <br>
-    safeContent = safeContent.replace(/\n/g, '<br>');
-    
-    // 处理 Markdown 格式
-    safeContent = safeContent
-      // 处理加粗
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      // 处理斜体
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      // 处理代码
-      .replace(/`(.*?)`/g, '<code>$1</code>')
-      // 处理链接
-      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
-      // 处理列表
-      .replace(/^\s*[-*]\s+(.*)$/gm, '<li>$1</li>')
-      .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>')
-      // 处理标题
-      .replace(/^#\s+(.*)$/gm, '<h1>$1</h1>')
-      .replace(/^##\s+(.*)$/gm, '<h2>$1</h2>')
-      .replace(/^###\s+(.*)$/gm, '<h3>$1</h3>');
-    
-    return safeContent;
-  } catch (err) {
-    console.error('更新日志格式化失败:', err);
-    // 如果格式化失败，返回原始内容，但确保安全
-    return content
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;')
-      .replace(/\n/g, '<br>');
-  }
-}
-
 onMounted(async () => {
   console.log('ChangelogViewer 组件已挂载');
   try {
@@ -189,7 +178,7 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped>
+<style>
 .changelog-viewer {
   max-width: 100%;
   margin: 0 auto;
@@ -275,27 +264,46 @@ onMounted(async () => {
   color: var(--text-color);
 }
 
-.changelog-body :deep(code) {
+/* 自定义标题样式 */
+.changelog-body >>> .changelog-section-title {
+  margin: 16px 0 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--primary-500);
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* 自定义列表样式 */
+.changelog-body >>> ul {
+  margin: 8px 0 16px;
+  padding-left: 20px;
+  list-style-type: disc;
+}
+
+.changelog-body >>> li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+  position: relative;
+  padding-left: 8px;
+}
+
+/* 自定义文本样式 */
+.changelog-body >>> code {
   background-color: var(--gray-100);
   padding: 2px 4px;
   border-radius: 4px;
   font-family: monospace;
+  font-size: 0.9em;
 }
 
-.changelog-body :deep(strong) {
+.changelog-body >>> strong {
   font-weight: 600;
+  color: var(--text-color-dark);
 }
 
-.changelog-body :deep(em) {
+.changelog-body >>> em {
   font-style: italic;
-}
-
-.changelog-body :deep(ul) {
-  padding-left: 20px;
-}
-
-.changelog-body :deep(li) {
-  margin-bottom: 8px;
 }
 
 .changelog-loading,
@@ -306,20 +314,27 @@ onMounted(async () => {
 }
 
 /* 深色模式适配 */
-:deep(.dark) .changelog-release {
-  background-color: var(--gray-800);
+.dark .changelog-release {
+  background-color: var(--gray-1000);
+}
+
+.dark .changelog-release::before {
   border-color: var(--gray-700);
 }
 
-:deep(.dark) .changelog-release::before {
-  border-color: var(--gray-700);
-}
-
-:deep(.dark) .changelog-version {
+.dark .changelog-version {
   color: var(--primary-400);
 }
 
-:deep(.dark) .changelog-body code {
+.dark .changelog-body >>> .changelog-section-title {
+  color: var(--primary-300);
+}
+
+.dark .changelog-body >>> code {
   background-color: var(--gray-700);
+}
+
+.dark .changelog-body >>> strong {
+  color: var(--text-color-light);
 }
 </style>
