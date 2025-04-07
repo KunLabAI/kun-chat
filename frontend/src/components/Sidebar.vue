@@ -1,90 +1,107 @@
 <template>
-  <aside class="sidebar">
-    <!-- Logo -->
-    <div class="logo-section">
-      <img src="@/assets/kun-lab_logo.svg" class="logo-icon" :data-tooltip="t('sidebar.logo_tooltip')" @mouseenter="updateTooltipPosition" alt="kun-lab logo" />
-    </div>
+  <div>
+    <!-- 小屏幕下的侧边栏触发区域 -->
+    <div class="sidebar-trigger-area" 
+         v-if="isMobileView" 
+         @mouseenter="showSidebar = true"></div>
 
-    <!-- Navigation -->
-    <nav class="nav-section">
-      <div class="nav-group">
-        <template v-if="!authStore.isAuthenticated">
-          <RouterLink to="/login" class="nav-item" v-slot="{ isActive }" :data-tooltip="t('sidebar.login')" @mouseenter="updateTooltipPosition">
-            <UserIcon class="icon" :class="{ 'active': isActive }" />
-          </RouterLink>
-          <RouterLink to="/register" class="nav-item" v-slot="{ isActive }" :data-tooltip="t('sidebar.register')" @mouseenter="updateTooltipPosition">
-            <UserPlusIcon class="icon" :class="{ 'active': isActive }" />
-          </RouterLink>
-        </template>
-        
-        <template v-else>
-          <RouterLink to="/" class="nav-item" v-slot="{ isActive }" :data-tooltip="t('sidebar.home')" @mouseenter="updateTooltipPosition">
-            <img src="@/assets/icons/sys_home.svg" class="icon" :class="{ 'active': isActive }" />
-          </RouterLink>
-          <RouterLink to="/chat" class="nav-item" v-slot="{ isActive }" @click="handleChatNavigation" :data-tooltip="t('sidebar.chat')" @mouseenter="updateTooltipPosition">
-            <img src="@/assets/icons/sys_chat.svg" class="icon" :class="{ 'active': isActive }" />
-          </RouterLink>
-          <RouterLink to="/models" class="nav-item" v-slot="{ isActive }" :data-tooltip="t('sidebar.models')" @mouseenter="updateTooltipPosition">
-            <img src="@/assets/icons/sys_model.svg" class="icon" :class="{ 'active': isActive }" />
-          </RouterLink>
-          <RouterLink to="/prompts" class="nav-item" v-slot="{ isActive }" :data-tooltip="t('sidebar.prompts')" @mouseenter="updateTooltipPosition">
-            <img src="@/assets/icons/sys_prompts.svg" class="icon" :class="{ 'active': isActive }" />
-          </RouterLink>
-        </template>
+    <!-- 侧边栏 -->
+    <aside class="sidebar" 
+           :class="{ 'sidebar-mobile-hidden': isMobileView && !showSidebar }"
+           @mouseleave="isMobileView && (showSidebar = false)">
+      <!-- Logo -->
+      <div class="logo-section">
+        <img src="@/assets/kun-lab_logo.svg" class="logo-icon" :data-tooltip="t('sidebar.logo_tooltip')" @mouseenter="updateTooltipPosition" alt="kun-lab logo" />
       </div>
 
-      <div class="nav-group bottom" v-if="authStore.isAuthenticated">
-        <RouterLink to="/history" class="nav-item" v-slot="{ isActive }" :data-tooltip="t('sidebar.history')" @mouseenter="updateTooltipPosition">
-          <img src="@/assets/icons/sys_history.svg" class="icon" :class="{ 'active': isActive }" />
-        </RouterLink>
-        <div class="nav-item user-avatar" @click="toggleUserMenu" :data-tooltip="t('sidebar.user_menu')" @mouseenter="updateTooltipPosition">
-          <img :src="userAvatarUrl" class="avatar-img" :alt="t('sidebar.user_avatar')" />
+      <!-- Navigation -->
+      <nav class="nav-section">
+        <div class="nav-group">
+          <template v-if="!authStore.isAuthenticated">
+            <RouterLink to="/login" class="nav-item" v-slot="{ isActive }" :data-tooltip="t('sidebar.login')" @mouseenter="updateTooltipPosition">
+              <img src="@/assets/icons/sys_user.svg" class="icon" :class="{ 'active': isActive }" />
+            </RouterLink>
+            <RouterLink to="/register" class="nav-item" v-slot="{ isActive }" :data-tooltip="t('sidebar.register')" @mouseenter="updateTooltipPosition">
+              <img src="@/assets/icons/sys_safe.svg" class="icon" :class="{ 'active': isActive }" />
+            </RouterLink>
+          </template>
+          
+          <template v-else>
+            <RouterLink to="/" class="nav-item" v-slot="{ isActive }" :data-tooltip="t('sidebar.home')" @mouseenter="updateTooltipPosition">
+              <img src="@/assets/icons/sys_home.svg" class="icon" :class="{ 'active': isActive }" />
+            </RouterLink>
+            <RouterLink to="/chat" class="nav-item" v-slot="{ isActive }" @click="handleChatNavigation" :data-tooltip="t('sidebar.chat')" @mouseenter="updateTooltipPosition">
+              <img src="@/assets/icons/sys_chat.svg" class="icon" :class="{ 'active': isActive }" />
+            </RouterLink>
+            <RouterLink to="/models" class="nav-item" v-slot="{ isActive }" :data-tooltip="t('sidebar.models')" @mouseenter="updateTooltipPosition">
+              <img src="@/assets/icons/sys_model.svg" class="icon" :class="{ 'active': isActive }" />
+            </RouterLink>
+            <RouterLink to="/prompts" class="nav-item" v-slot="{ isActive }" :data-tooltip="t('sidebar.prompts')" @mouseenter="updateTooltipPosition">
+              <img src="@/assets/icons/sys_prompts.svg" class="icon" :class="{ 'active': isActive }" />
+            </RouterLink>
+            <RouterLink to="/notes" class="nav-item" v-slot="{ isActive }" :data-tooltip="t('sidebar.notes')" @mouseenter="updateTooltipPosition">
+              <img src="@/assets/icons/sys_note.svg" class="icon" :class="{ 'active': isActive }" />
+            </RouterLink>
+          </template>
         </div>
-      </div>
-    </nav>
 
-    <!-- 用户菜单弹窗 -->
-    <Teleport to="body">
-      <!-- 遮罩层 -->
-      <div v-if="showUserMenu" class="menu-overlay" @click="closeUserMenu"></div>
-      <!-- 菜单内容 -->
-      <div v-if="showUserMenu" 
-           class="user-menu" 
-           :style="userMenuStyle"
-           @click.stop>
-        <div class="user-menu-header">
-          <img :src="userAvatarUrl" class="menu-avatar" :alt="t('sidebar.user_avatar')" />
-          <span class="username">{{ authStore.user?.username || '用户' }}</span>
-        </div>
-        <div class="menu-items">
-          <RouterLink to="/account-settings" class="menu-item" @click="closeUserMenu">
-            <img src="@/assets/icons/sys_accountsettings.svg" class="menu-icon" />
-            <span>{{ t('sidebar.account_settings') }}</span>
+        <div class="nav-group bottom" v-if="authStore.isAuthenticated">
+          <RouterLink to="/history" class="nav-item" v-slot="{ isActive }" :data-tooltip="t('sidebar.history')" @mouseenter="updateTooltipPosition">
+            <img src="@/assets/icons/sys_history.svg" class="icon" :class="{ 'active': isActive }" />
           </RouterLink>
-          <RouterLink to="/features-settings" class="menu-item" @click="closeUserMenu">
-            <img src="@/assets/icons/sys_systemsettings.svg" class="menu-icon" />
-            <span>{{ t('sidebar.features_settings') }}</span>
-          </RouterLink>
-          <a href="https://lab.kunpuai.com" target="_blank" class="menu-item" @click="closeUserMenu">
-            <img src="@/assets/icons/sys_community.svg" class="menu-icon" />
-            <span>{{ t('sidebar.community') }}</span>
-          </a>
-          <a href="https://github.com/bahamutww/kun-lab.git" target="_blank" class="menu-item" @click="closeUserMenu">
-            <img src="@/assets/icons/sys_help.svg" class="menu-icon" />
-            <span>{{ t('sidebar.help_docs') }}</span>
-          </a>
-          <button @click="handleLogout" class="menu-item logout">
-            <img src="@/assets/icons/sys_logout.svg" class="menu-icon" />
-            <span>{{ t('sidebar.logout') }}</span>
-          </button>
+          <div class="nav-item user-avatar" @click="toggleUserMenu" :data-tooltip="t('sidebar.user_menu')" @mouseenter="updateTooltipPosition">
+            <img :src="userAvatarUrl" class="avatar-img" :alt="t('sidebar.user_avatar')" />
+          </div>
         </div>
-      </div>
-    </Teleport>
-  </aside>
+      </nav>
+
+      <!-- 用户菜单弹窗 -->
+      <Teleport to="body">
+        <!-- 遮罩层 -->
+        <div v-if="showUserMenu" class="menu-overlay" @click="closeUserMenu"></div>
+        <!-- 菜单内容 -->
+        <div v-if="showUserMenu" 
+             class="user-menu" 
+             :style="userMenuStyle"
+             @click.stop>
+          <div class="user-menu-header">
+            <img :src="userAvatarUrl" class="menu-avatar" :alt="t('sidebar.user_avatar')" />
+            <span class="username">{{ authStore.user?.username || '用户' }}</span>
+          </div>
+          <div class="menu-items">
+            <RouterLink to="/account-settings" class="menu-item" @click="closeUserMenu">
+              <img src="@/assets/icons/sys_accountsettings.svg" class="menu-icon" />
+              <span>{{ t('sidebar.account_settings') }}</span>
+            </RouterLink>
+            <RouterLink to="/features-settings" class="menu-item" @click="closeUserMenu">
+              <img src="@/assets/icons/sys_systemsettings.svg" class="menu-icon" />
+              <span>{{ t('sidebar.features_settings') }}</span>
+            </RouterLink>
+            <a href="https://lab.kunpuai.com" target="_blank" class="menu-item" @click="closeUserMenu">
+              <img src="@/assets/icons/sys_community.svg" class="menu-icon" />
+              <span>{{ t('sidebar.community') }}</span>
+            </a>
+            <a href="https://github.com/bahamutww/kun-lab.git" target="_blank" class="menu-item" @click="closeUserMenu">
+              <img src="@/assets/icons/sys_help.svg" class="menu-icon" />
+              <span>{{ t('sidebar.help_docs') }}</span>
+            </a>
+            <RouterLink to="/about" class="menu-item" @click="closeUserMenu">
+              <img src="@/assets/icons/sys_info.svg" class="menu-icon" />
+              <span>{{ t('sidebar.about') }}</span>
+            </RouterLink>
+            <button @click="handleLogout" class="menu-item logout">
+              <img src="@/assets/icons/sys_logout.svg" class="menu-icon" />
+              <span>{{ t('sidebar.logout') }}</span>
+            </button>
+          </div>
+        </div>
+      </Teleport>
+    </aside>
+  </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
@@ -95,10 +112,6 @@ import { useConversation } from '@/hooks/chat/useConversation'
 import { useModelsStore } from '@/stores/models'
 import { useNotificationStore } from '@/stores/notification'
 import { useLocalization } from '@/i18n/composables'
-import { 
-  UserIcon,
-  UserPlusIcon
-} from '@heroicons/vue/24/outline'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -110,6 +123,20 @@ const { t } = useLocalization()
 
 const showUserMenu = ref(false)
 const userMenuStyle = ref({})
+const isMobileView = ref(false)
+const showSidebar = ref(false)
+
+// 检测屏幕尺寸
+function checkScreenSize() {
+  isMobileView.value = window.innerWidth < 768
+  // 如果不是移动视图，确保侧边栏显示
+  if (!isMobileView.value) {
+    showSidebar.value = true
+  } else {
+    // 移动视图默认隐藏侧边栏
+    showSidebar.value = false
+  }
+}
 
 const userAvatarUrl = computed(() => {
   if (authStore.user?.avatar) {
@@ -124,7 +151,8 @@ const userAvatarUrl = computed(() => {
       return `${API_BASE_URL}${authStore.user.avatar}`
     }
   }
-  return `${API_BASE_URL}/static/default-avatar.jpg`
+  // 使用本地静态资源
+  return new URL('../assets/default-avatar.jpg', import.meta.url).href
 })
 
 // 处理ESC键关闭菜单
@@ -134,14 +162,25 @@ function handleEscKey(event) {
   }
 }
 
-// 在组件挂载时添加ESC键监听
+// 在组件挂载时添加ESC键监听和窗口大小变化监听
 onMounted(() => {
   document.addEventListener('keydown', handleEscKey)
+  window.addEventListener('resize', checkScreenSize)
+  // 初始检查屏幕尺寸
+  checkScreenSize()
 })
 
-// 在组件卸载时移除ESC键监听
+// 在组件卸载时移除ESC键监听和窗口大小变化监听
 onUnmounted(() => {
   document.removeEventListener('keydown', handleEscKey)
+  window.removeEventListener('resize', checkScreenSize)
+})
+
+// 当路由变化时关闭侧边栏（在移动视图下）
+watch(() => router.currentRoute.value.path, () => {
+  if (isMobileView.value) {
+    showSidebar.value = false
+  }
 })
 
 function toggleUserMenu(event) {
@@ -199,51 +238,58 @@ async function handleChatNavigation() {
     // 尝试获取模型，但不阻止导航
     try {
       if (!modelsStore.isLoading && modelsStore.models.length === 0) {
-        await modelsStore.fetchChatModels()
-      }
-      defaultModel = modelsStore.models[0]?.name
-    } catch (modelError) {
-      console.error('获取模型失败:', modelError)
-      notificationStore.warning('获取模型列表失败，将使用默认模型')
-    }
-    
-    // 如果没有获取到模型，使用默认值
-    if (!defaultModel) {
-      defaultModel = 'llama3'  // 使用一个常见的默认模型名称
-      notificationStore.info('使用默认模型创建对话')
-    }
-
-    // 创建新对话
-    const conversation = await createConversation({
-      title: '新对话',
-      model: defaultModel
-    })
-    
-    if (conversation && conversation.conversation_id) {
-      // 设置当前模型并同步到后端
-      try {
-        await chatStore.setCurrentModel(defaultModel, conversation.conversation_id, true)
-      } catch (modelSetError) {
-        console.error('设置模型失败:', modelSetError)
-        // 继续导航，不阻止用户体验
+        await modelsStore.fetchModels()
       }
       
-      chatStore.setCurrentConversation(conversation.conversation_id)
-      router.push(`/chat/${conversation.conversation_id}`)
-    } else {
-      throw new Error('创建对话失败：未获取到对话ID')
+      // 尝试获取默认模型
+      if (modelsStore.models.length > 0) {
+        // 查找默认模型或使用第一个可用模型
+        defaultModel = modelsStore.models.find(model => model.is_default) || modelsStore.models[0]
+      }
+    } catch (error) {
+      console.error('获取模型失败:', error)
+      notificationStore.showNotification({
+        type: 'error',
+        title: t('notifications.error'),
+        message: t('notifications.fetch_models_failed')
+      })
+    }
+    
+    // 创建新对话
+    try {
+      const modelId = defaultModel ? defaultModel.id : null
+      const newConversation = await createConversation(modelId)
+      
+      // 设置当前对话并导航到对话页面
+      chatStore.setCurrentConversation(newConversation.conversation_id)
+      router.push(`/chat/${newConversation.conversation_id}`)
+    } catch (error) {
+      console.error('创建对话失败:', error)
+      notificationStore.showNotification({
+        type: 'error',
+        title: t('notifications.error'),
+        message: t('notifications.create_conversation_failed')
+      })
     }
   } catch (error) {
-    console.error('处理聊天导航失败:', error)
-    notificationStore.showError(error instanceof Error ? error.message : '处理聊天导航失败')
+    console.error('导航到聊天页面失败:', error)
+    notificationStore.showNotification({
+      type: 'error',
+      title: t('notifications.error'),
+      message: t('notifications.navigation_failed')
+    })
   }
 }
 
 // 处理提示框位置
-const updateTooltipPosition = (event) => {
-  const target = event.currentTarget;
-  const rect = target.getBoundingClientRect();
-  target.style.setProperty('--tooltip-y', `${rect.top + rect.height/2}px`);
+function updateTooltipPosition(event) {
+  const target = event.currentTarget
+  if (!target) return
+  
+  // 获取元素相对于视口的位置
+  const rect = target.getBoundingClientRect()
+  // 设置提示框的垂直位置
+  target.style.setProperty('--tooltip-y', rect.top + rect.height / 2 + 'px')
 }
 </script>
 

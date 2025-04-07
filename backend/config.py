@@ -1,17 +1,28 @@
 import os
+import sys
 from pathlib import Path
 from typing import Dict, Any
 from dotenv import load_dotenv
+from data_path import get_user_data_dir, get_models_dir, get_prompts_dir, get_chat_history_dir
 
 # 加载环境变量
 load_dotenv()
 
+# 获取应用基础路径
+def get_base_dir():
+    """获取应用程序基础目录"""
+    # 如果是打包后的应用，使用应用所在目录
+    if getattr(sys, 'frozen', False):
+        return Path(sys._MEIPASS)
+    # 否则使用脚本所在目录
+    return Path(__file__).resolve().parent
+
 # 基础路径配置
-BASE_DIR = Path(__file__).resolve().parent
-DATA_DIR = BASE_DIR / "data"
-MODELS_DIR = DATA_DIR / "models"
-PROMPTS_DIR = DATA_DIR / "prompts"
-CHAT_HISTORY_DIR = DATA_DIR / "chat_history"
+BASE_DIR = get_base_dir()
+DATA_DIR = get_user_data_dir()
+MODELS_DIR = get_models_dir()
+PROMPTS_DIR = get_prompts_dir()
+CHAT_HISTORY_DIR = get_chat_history_dir()
 
 # 创建必要的目录
 for dir_path in [DATA_DIR, MODELS_DIR, PROMPTS_DIR, CHAT_HISTORY_DIR]:

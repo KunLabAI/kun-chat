@@ -2,7 +2,7 @@
 
 import { Model, ModelInfo } from '../types/models'
 import axios from 'axios';
-import { API_URL } from './config';
+import { API_URL, getAuthHeaders } from './config';
 
 const API_BASE_URL = API_URL;
 
@@ -48,7 +48,9 @@ interface CreateModelData {
 export const modelApi = {
   async getModelList(): Promise<Model[]> {
     try {
-      const response = await axios.get(`${API_BASE_URL}/models/list`)
+      const response = await axios.get(`${API_BASE_URL}/models/list`, {
+        headers: getAuthHeaders()
+      })
       return await handleApiResponse<Model[]>(response)
     } catch (error) {
       console.error('Error fetching models:', error)
@@ -58,7 +60,9 @@ export const modelApi = {
 
   async getModelInfo(modelId: number): Promise<ModelInfo> {
     try {
-      const response = await axios.get(`${API_BASE_URL}/models/${modelId}`)
+      const response = await axios.get(`${API_BASE_URL}/models/${modelId}`, {
+        headers: getAuthHeaders()
+      })
       return await handleApiResponse<ModelInfo>(response)
     } catch (error) {
       console.error('API: 获取模型详情失败:', error)
@@ -68,7 +72,9 @@ export const modelApi = {
 
   async checkModelExists(modelName: string): Promise<boolean> {
     try {
-      const response = await axios.get(`${API_BASE_URL}/models/exists/${encodeURIComponent(modelName)}`)
+      const response = await axios.get(`${API_BASE_URL}/models/exists/${encodeURIComponent(modelName)}`, {
+        headers: getAuthHeaders()
+      })
       return await handleApiResponse<boolean>(response)
     } catch (error) {
       console.error('Error checking model existence:', error)
@@ -77,17 +83,26 @@ export const modelApi = {
   },
 
   async updateModelOptions(modelId: number, options: any): Promise<Model> {
-    const response = await axios.put(`${API_BASE_URL}/models/${modelId}/options`, options)
+    const response = await axios.put(`${API_BASE_URL}/models/${modelId}/options`, options, {
+      headers: getAuthHeaders()
+    })
     return await handleApiResponse<Model>(response)
   },
 
   async updateModelDisplayName(modelId: number, displayName: string): Promise<Model> {
-    const response = await axios.put(`${API_BASE_URL}/models/${modelId}/display-name`, { display_name: displayName })
+    const response = await axios.put(`${API_BASE_URL}/models/${modelId}/display-name`, { display_name: displayName }, {
+      headers: getAuthHeaders()
+    })
     return await handleApiResponse<Model>(response)
   },
 
   pullModel(modelName: string, force: boolean = false): EventSource {
-    const url = `${API_BASE_URL}/models/pull/${encodeURIComponent(modelName)}?force=${force}`
+    // 获取认证头
+    const authHeaders = getAuthHeaders();
+    const authToken = authHeaders.Authorization || '';
+    
+    // 为EventSource添加认证信息
+    const url = `${API_BASE_URL}/models/pull/${encodeURIComponent(modelName)}?force=${force}&token=${encodeURIComponent(authToken.replace('Bearer ', ''))}`;
     const eventSource = new EventSource(url)
     
     // 添加错误处理
@@ -100,7 +115,9 @@ export const modelApi = {
 
   async cancelPull(modelName: string): Promise<void> {
     try {
-      const response = await axios.post(`${API_BASE_URL}/models/pull/${encodeURIComponent(modelName)}/cancel`)
+      const response = await axios.post(`${API_BASE_URL}/models/pull/${encodeURIComponent(modelName)}/cancel`, {}, {
+        headers: getAuthHeaders()
+      })
       
       if (!response.data) {
         const errorText = response.statusText
@@ -116,17 +133,23 @@ export const modelApi = {
   },
 
   async deleteModel(modelId: number): Promise<{ status: string, message: string }> {
-    const response = await axios.delete(`${API_BASE_URL}/models/${modelId}`)
+    const response = await axios.delete(`${API_BASE_URL}/models/${modelId}`, {
+      headers: getAuthHeaders()
+    })
     return await handleApiResponse<{ status: string, message: string }>(response)
   },
 
   async getModels(): Promise<Model[]> {
-    const response = await axios.get(`${API_BASE_URL}/models`)
+    const response = await axios.get(`${API_BASE_URL}/models`, {
+      headers: getAuthHeaders()
+    })
     return await handleApiResponse<Model[]>(response)
   },
 
   async getFavoriteModels(username: string): Promise<Model[]> {
-    const response = await axios.get(`${API_BASE_URL}/models/favorites/${username}`)
+    const response = await axios.get(`${API_BASE_URL}/models/favorites/${username}`, {
+      headers: getAuthHeaders()
+    })
     return await handleApiResponse<Model[]>(response)
   },
 
@@ -135,7 +158,9 @@ export const modelApi = {
       if (!username) {
         return false;
       }
-      const response = await axios.get(`${API_BASE_URL}/models/${modelId}/favorite/${username}`);
+      const response = await axios.get(`${API_BASE_URL}/models/${modelId}/favorite/${username}`, {
+        headers: getAuthHeaders()
+      });
       return response.data;
     } catch (error) {
       console.error('检查收藏状态失败:', error);
@@ -148,7 +173,9 @@ export const modelApi = {
       if (!username) {
         throw new Error('用户未登录');
       }
-      const response = await axios.post(`${API_BASE_URL}/models/${modelId}/favorite/${username}`);
+      const response = await axios.post(`${API_BASE_URL}/models/${modelId}/favorite/${username}`, {}, {
+        headers: getAuthHeaders()
+      });
       return response.data;
     } catch (error) {
       console.error('切换收藏状态失败:', error);
@@ -158,7 +185,9 @@ export const modelApi = {
 
   async createModel(data: CreateModelData): Promise<Model> {
     try {
-      const response = await axios.post(`${API_BASE_URL}/models/custom`, data)
+      const response = await axios.post(`${API_BASE_URL}/models/custom`, data, {
+        headers: getAuthHeaders()
+      })
       return await handleApiResponse<Model>(response)
     } catch (error) {
       console.error('Error creating model:', error)

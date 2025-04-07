@@ -49,7 +49,7 @@
 .tavily-features-form-input {
   width: 100%;
   padding: 8px 12px;
-  padding-right: 120px; /* 增加右侧内边距，为图标和按钮留出空间 */
+  padding-right: 120px;
   font-size: 14px;
   color: var(--text-color);
   border: 1px solid var(--border-color);
@@ -105,27 +105,27 @@
 .tavily-features-api-key-action img {
   width: 16px;
   height: 16px;
-  filter: var(--filter-gray-600); /* 使用全局灰度滤镜 */
+  filter: var(--filter-gray-600);
   transition: filter 0.2s ease;
 }
 
 .tavily-features-api-key-action:hover img {
-  filter: var(--filter-primary); /* 悬停时使用主题色滤镜 */
+  filter: var(--filter-primary);
 }
 
 .tavily-features-api-key-action:disabled img,
 .tavily-features-api-key-action-disabled img {
-  filter: var(--filter-gray-400); /* 禁用状态使用浅灰色滤镜 */
+  filter: var(--filter-gray-400);
 }
 
 .tavily-features-api-key-action[title="删除密钥"]:hover img,
 .tavily-features-api-key-action[title^="删除"]:hover img {
-  filter: var(--filter-red); /* 删除按钮悬停时使用红色滤镜 */
+  filter: var(--filter-red);
 }
 
 .tavily-features-api-key-action[title^="保存"]:hover img,
 .tavily-features-api-key-action[title$="save"]:hover img {
-  filter: var(--filter-success); /* 保存按钮悬停时使用成功色滤镜 */
+  filter: var(--filter-success);
 }
 
 
@@ -148,13 +148,30 @@
   opacity: 1;
 }
 
-/* DotLoader 相关样式 */
-.tavily-button-loader {
-  width: 32px;
-  height: 32px;
+.dark .tavily-features-test-button:hover {
+  background: var(--gray-1000);
+}
+
+.tavily-refresh-icon-container {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 6px;
+}
+
+.tavily-refresh-icon {
+  animation: spin 1.5s linear infinite;
+  width: 16px;
+  height: 16px;
+  filter: var(--filter-gray-600);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* 标签样式 */
@@ -219,20 +236,6 @@
   background: var(--gray-100);
 }
 
-/* 动画效果 */
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.animate-spin {
-  animation: spin 1s linear infinite;
-}
-
 /* 深色主题样式 */
 .dark .tavily-features-form-input {
   background: var(--gray-800);
@@ -258,28 +261,28 @@
 }
 
 .dark .tavily-features-toggle-button:hover:not(.tavily-features-toggle-button-active) {
-  background: var(--gray-700);
+  background: var(--gray-1000);
 }
 
 .dark .tavily-features-api-key-action img {
-  filter: var(--filter-gray-dark-600); /* 深色主题下使用深色主题灰度滤镜 */
+  filter: var(--filter-gray-dark-600);
 }
 
 .dark .tavily-features-api-key-action:hover img {
-  filter: var(--filter-primary-dark); /* 深色主题下悬停时使用深色主题主题色滤镜 */
+  filter: var(--filter-primary-dark);
 }
 
 .dark .tavily-features-api-key-action:disabled img,
 .dark .tavily-features-api-key-action-disabled img {
-  filter: var(--filter-gray-dark-400); /* 深色主题下禁用状态使用深色主题浅灰色滤镜 */
+  filter: var(--filter-gray-dark-400);
 }
 
 .dark .tavily-features-api-key-action[title="删除密钥"]:hover img,
 .dark .tavily-features-api-key-action[title^="删除"]:hover img {
-  filter: var(--filter-red-dark); /* 深色主题下删除按钮悬停时使用深色主题红色滤镜 */
+  filter: var(--filter-red-dark);
 }
 
 .dark .tavily-features-api-key-action[title^="保存"]:hover img,
 .dark .tavily-features-api-key-action[title$="save"]:hover img {
-  filter: var(--filter-success-dark); /* 深色主题下保存按钮悬停时使用深色主题成功色滤镜 */
+  filter: var(--filter-success-dark);
 }

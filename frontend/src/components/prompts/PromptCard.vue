@@ -6,12 +6,11 @@
           <h3 class="card-title cursor-pointer" @click="$emit('edit')">
             {{ prompt.title }}
           </h3>
-          <p class="card-meta">
-            {{ prompt.updated_at !== prompt.created_at ? '更新于' : '创建于' }} {{ formatDate(prompt.updated_at || prompt.created_at) }}
-          </p>
         </div>
         <div class="card-actions">
-          <slot name="actions"></slot>
+          <button class="action-button delete-button" @click="$emit('delete')">
+            <img src="@/assets/icons/model_delete.svg" alt="删除" class="action-icon" />
+          </button>
         </div>
       </div>
       <div class="card-body cursor-pointer" @click="$emit('edit')">
@@ -19,6 +18,9 @@
           {{ prompt.content }}
         </p>
       </div>
+      <p class="card-meta">
+            {{ prompt.updated_at !== prompt.created_at ? '更新于' : '创建于' }} {{ formatDate(prompt.updated_at || prompt.created_at) }}
+          </p>
       <div class="card-tags">
         <span 
           v-for="tag in prompt.tags" 
@@ -42,6 +44,7 @@ defineProps<{
 
 defineEmits<{
   edit: []
+  delete: []
 }>()
 
 function formatDate(timestamp: string) {
@@ -63,5 +66,5 @@ function formatDate(timestamp: string) {
 </script>
 
 <style scoped>
-@import '@/styles/PromptCard.css';
+@import './PromptCard.css';
 </style>

@@ -36,6 +36,7 @@ const iframeOptions = {
   heightCalculationMethod: 'lowestElement',
   warningTimeout: 0,
   log: false,
+  license: 'GPLv3', 
   sandbox: 'allow-scripts allow-same-origin allow-modals allow-forms allow-popups allow-presentation allow-downloads allow-pointer-lock'
 }
 
@@ -77,6 +78,8 @@ const createHtmlDoc = (content) => {
     (function() {
       if (window.parentIFrame) return;
       window.parentIFrame = {
+        // 添加GPLv3许可证密钥
+        license: 'GPLv3',
         size: function(customHeight, customWidth) {
           var height = customHeight || document.documentElement.offsetHeight || document.body.offsetHeight;
           var width = customWidth || document.documentElement.offsetWidth || document.body.offsetWidth;

@@ -250,15 +250,15 @@
  * 用于仅包含图标的按钮
  */
 .btn-icon {
-  padding: 0.5rem;
+  padding: 0px;
 }
 
 .btn-icon.btn-sm {
-  padding: 0.25rem;
+  padding: 0px;
 }
 
 .btn-icon.btn-lg {
-  padding: 0.75rem;
+  padding: 0px;
 }
 
 /* 

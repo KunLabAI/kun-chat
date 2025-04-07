@@ -27,13 +27,17 @@
     },
 
     /* Type Declarations */
-    "types": ["vite/client"]
+    "types": ["vite/client", "node", "vue"]
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
-    "src/**/*.vue"
-, "src/components/AIavatar.js"  ],
+    "src/**/*.vue",
+    "src/components/AIavatar.js"
+  ],
+  "exclude": [
+    "src/pages/UnderConstructionPage.vue"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -3,14 +3,33 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import uvicorn
 import os
+import sys
 from typing import List
 from api import api_router
 from config import API_CONFIG
 import logging
 from database import db  # 导入数据库实例
 from contextlib import asynccontextmanager
+from ensure_dirs import ensure_directories  # 导入目录确保函数
+from data_path import get_avatars_dir, get_logs_dir  # 导入获取目录函数
 
-# 配置日志级别
+# 确保必要的目录存在
+ensure_directories()
+
+# 配置日志
+logs_dir = get_logs_dir()
+log_file = logs_dir / "kunyu_backend.log"
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(log_file),
+        logging.StreamHandler()
+    ]
+)
+
+# 设置uvicorn日志级别
 logging.getLogger("uvicorn.access").setLevel(logging.WARNING)
 
 @asynccontextmanager
@@ -35,7 +54,7 @@ async def lifespan(app: FastAPI):
         logging.error(f"Error disconnecting database at shutdown: {e}")
 
 app = FastAPI(
-    title="KunyuChat Backend",
+    title="Kun-Lab Backend",
     description="基于Ollama的轻量级聊天应用后端服务",
     version="1.0.0",
     lifespan=lifespan
@@ -77,10 +96,18 @@ app.add_middleware(
 )
 
 # 创建静态文件目录
-os.makedirs("static/avatars", exist_ok=True)
+avatars_dir = get_avatars_dir()
+os.makedirs(avatars_dir, exist_ok=True)
 
 # 挂载静态文件目录
-app.mount("/static", StaticFiles(directory="static"), name="static")
+if getattr(sys, 'frozen', False):
+    # 打包环境：使用用户数据目录中的avatars目录作为静态文件目录
+    app.mount("/static/avatars", StaticFiles(directory=str(avatars_dir)), name="avatars")
+else:
+    # 开发环境：使用用户数据目录中的avatars目录
+    app.mount("/static/avatars", StaticFiles(directory=str(avatars_dir)), name="avatars")
+    # 同时挂载项目目录中的static目录用于其他静态文件
+    app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # 包含API路由
 app.include_router(api_router, prefix="/api")  # 添加全局 /api 前缀
@@ -106,7 +133,7 @@ manager = ConnectionManager()
 @app.get("/")
 async def root():
     return {
-        "message": "Welcome to KunyuChat Backend Service",
+        "message": "Welcome to Kun-Lab Backend Service",
         "version": "1.0.0",
         "status": "running"
     }

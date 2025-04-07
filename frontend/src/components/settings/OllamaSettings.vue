@@ -20,10 +20,6 @@
             </span>
           </div>
         </div>
-        <button class="settings-test-button" @click="checkConnection" :disabled="isChecking">
-          <span v-if="isChecking">{{ $t('settings.connection.ollama.checking') }}</span>
-          <span v-else>{{ $t('settings.connection.ollama.test_button') }}</span>
-        </button>
       </div>
 
       <!-- Ollama 连接设置 -->

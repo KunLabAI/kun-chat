@@ -1,5 +1,5 @@
-/* 提示词卡片基础样式 */
-.prompt-card {
+/* 笔记卡片基础样式 */
+.note-card {
   background: var(--el-bg-color-overlay);
   border: 1px solid var(--gray-600);
   border-radius: 8px;
@@ -7,7 +7,7 @@
   transition: all 0.2s ease;
 }
 
-.prompt-card:hover {
+.note-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
@@ -67,27 +67,38 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   line-clamp: 3;
-  min-height: 4.5em; /* 约等于三行文本的高度 */
+  min-height: 3.9em; /* 确保最少有3行的高度 */
+  line-height: 1.3em; /* 行高设置为正常行高 */
 }
 
-.card-tags {
-  display: flex;
-  flex-wrap: nowrap;  /* 防止换行 */
-  overflow: hidden; /* 隐藏溢出部分 */
-  white-space: nowrap; /* 确保不换行 */
-  margin-top: 8px;
-  gap: 8px;
-  position: relative;
-  width: 100%;
-  mask-image: linear-gradient(to right, black 100%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, black 96%, transparent 100%);
-}
-
-.tag {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 8px;
-  font-size: 0.75rem;
-  color: #ffffff;
+.action-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
   border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  opacity: 0.5;
 }
+
+.action-button:hover {
+  opacity: 1;
+}
+
+.action-button:hover img {
+  filter: var(--filter-red);
+}
+
+.action-icon {
+  width: 16px;
+  height: 16px;
+  filter:var(--filter-gray-dark)
+}
+
+/* 通用类 */
+.cursor-pointer {
+  cursor: pointer;
+} 

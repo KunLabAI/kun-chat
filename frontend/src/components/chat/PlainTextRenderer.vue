@@ -100,7 +100,7 @@ onMounted(() => {
     opacity: 0.5;
     transition: opacity 0.2s ease;
     border-radius: 8px;
-    z-index: 5;
+    z-index: 0;
 }
 
 .text-toggle-button:hover {

@@ -29,5 +29,25 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, '/api')
       }
     }
-  }
+  },
+  // 为 Electron 添加配置
+  base: './',
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+    sourcemap: false,
+    // 优化构建设置
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['vue', 'vue-router', 'pinia'],
+          ui: ['@headlessui/vue', '@heroicons/vue']
+        }
+      }
+    },
+    // 确保静态资源被复制
+    assetsInlineLimit: 0, // 禁用小文件内联，确保所有文件都作为资源处理
+  },
+  // 确保public目录下的文件被正确处理
+  publicDir: 'public'
 })

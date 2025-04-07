@@ -84,7 +84,7 @@ const getIcon = (type: NotificationType) => {
 }
 
 /* 深色模式通知基础样式 */
-:global(.dark) .kun-notification {
+.dark .kun-notification {
   background-color: var(--gray-800);
   box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.3), 0 4px 8px -4px rgba(0, 0, 0, 0.2);
 }

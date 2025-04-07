@@ -10,6 +10,11 @@ from .tools.language import router as language_router
 from .tools.theme import router as theme_router
 from .tools.ollama import router as ollama_router
 from .tools.network import router as network_router
+from .tools.notes import router as notes_router
+from .license import router as license_router
+from .changelog import router as changelog_router
+
+
 
 api_router = APIRouter()
 
@@ -19,8 +24,11 @@ api_router.include_router(models_router, tags=["models"])
 api_router.include_router(doc_format_router, prefix="/doc", tags=["document"])
 api_router.include_router(image_router, tags=["images"])
 api_router.include_router(prompts_router, tags=["prompts"])
+api_router.include_router(notes_router, prefix="/notes", tags=["notes"])
 api_router.include_router(tavily_search_router, prefix="/tavily", tags=["search"])
 api_router.include_router(language_router, prefix="/language", tags=["language"])
 api_router.include_router(theme_router, prefix="/theme", tags=["theme"])
 api_router.include_router(ollama_router, prefix="/ollama", tags=["ollama"])
 api_router.include_router(network_router, prefix="/network", tags=["network"])
+api_router.include_router(license_router, tags=["license"])
+api_router.include_router(changelog_router, tags=["changelog"])

@@ -37,18 +37,12 @@
                 <!-- 语言设置 -->
                 <div class="features-form-group">
                   <label class="features-form-label">{{ $t('settings.general.language.title') }}</label>
-                  <p class="features-form-help mb-4">
-                    {{ $t('settings.general.language.description') }}
-                  </p>
                   <LanguageSwitcher />
                 </div>
                 
                 <!-- 主题设置 -->
                 <div class="features-form-group mt-8">
                   <label class="features-form-label">{{ $t('settings.account.theme.title') }}</label>
-                  <p class="features-form-help mb-4">
-                    {{ $t('settings.account.theme.switch.description') }}
-                  </p>
                   <div class="features-toggle-group">
                     <button 
                       @click="themeStore.setTheme('system')"

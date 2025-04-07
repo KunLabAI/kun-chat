@@ -11,7 +11,13 @@
   border-radius: 8px;
   padding: 12px;
   border: 1px solid var(--border-color);
-  box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+/* 添加一个新的类，当笔记抽屉打开时使用 */
+.chat-container.with-drawer .input-container {
+  width: calc(50% - 48px);
+  right: 50%;
+  transition: all 0.3s ease;
 }
 
 .dark .input-container {
@@ -31,7 +37,6 @@
   gap: 8px;
   width: 100%;
   background: var(--bg-color-light);
-  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 4px 8px;
   transition: all 0.2s ease;
@@ -39,7 +44,6 @@
 
 .dark .input-controls {
   background: var(--bg-color-darker);
-  border-color: var(--border-color-dark);
 }
 
 /* 消息输入框 */
@@ -123,6 +127,7 @@
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative;
 }
 
 .web-search-btn img {
@@ -148,12 +153,13 @@
   opacity: 1;
 }
 
-.web-search-btn[data-tooltip]::before {
+/* 所有按钮的提示框通用样式 */
+[data-tooltip]::before {
   content: attr(data-tooltip);
   position: absolute;
-  right: calc(10% + 10px);
-  top: 50%;
-  transform: translateY(-50%);
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100%);
   padding: 6px 10px;
   font-size: 12px;
   font-weight: 500;
@@ -169,62 +175,14 @@
   pointer-events: none;
 }
 
-.web-search-btn[data-tooltip]:hover::before,
-.web-search-btn[data-tooltip]:hover::after {
-  visibility: visible;
-  opacity: 1;
-}
-
-.dark .web-search-btn[data-tooltip]::before {
-  background-color: var(--tooltip-bg-dark);
-  color: var(--tooltip-text-dark);
-}
-
-.dark .web-search-btn[data-tooltip]::after {
-  border-right-color: var(--tooltip-bg-dark);
-}
-
-/* 模型选择按钮和清空按钮提示框样式 */
-.model-select-btn[data-tooltip]::before {
-  content: attr(data-tooltip);
+[data-tooltip]::after {
+  content: '';
   position: absolute;
-  left: calc(10% + 10px);
-  top: 50%;
-  transform: translateY(-50%) translateX(-230%);
-  padding: 6px 10px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-color);
-  background-color: var(--tooltip-bg);
-  white-space: nowrap;
-  border-radius: 4px;
-  visibility: hidden;
-  opacity: 0;
-  transition: all 0.2s ease;
-  z-index: 1100;
-  box-shadow: 0 2px 4px var(--shadow-color);
-  pointer-events: none;
-}
-
-.model-select-btn[data-tooltip]:hover::before,
-.model-select-btn[data-tooltip]:hover::after {
-  visibility: visible;
-  opacity: 1;
-}
-
-.clear-btn[data-tooltip]::before {
-  content: attr(data-tooltip);
-  position: absolute;
-  left: calc(100% + 10px);
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 6px 10px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-color);
-  background-color: var(--tooltip-bg);
-  white-space: nowrap;
-  border-radius: 4px;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--tooltip-bg);
   visibility: hidden;
   opacity: 0;
   transition: all 0.2s ease;
@@ -232,15 +190,19 @@
   pointer-events: none;
 }
 
-.clear-btn[data-tooltip]:hover::before {
+[data-tooltip]:hover::before,
+[data-tooltip]:hover::after {
   visibility: visible;
   opacity: 1;
 }
 
-.dark .model-select-btn[data-tooltip]::before,
-.dark .clear-btn[data-tooltip]::before {
+.dark [data-tooltip]::before {
   background-color: var(--tooltip-bg-dark);
   color: var(--tooltip-text-dark);
+}
+
+.dark [data-tooltip]::after {
+  border-top-color: var(--tooltip-bg-dark);
 }
 
 /* 模型选择按钮 */
@@ -254,6 +216,7 @@
   font-size: 14px;
   transition: all 0.2s ease;
   cursor: pointer;
+  position: relative;
 }
 
 .dark .model-select-btn {
@@ -301,7 +264,6 @@
   filter: var(--filter-primary-dark);
 }
 
-
 .model-select-btn .chevron-icon {
   margin-left: 4px;
   transition: transform 0.3s ease;
@@ -321,11 +283,6 @@
   transform: rotate(180deg);
 }
 
-/* 上传按钮组 */
-.upload-group {
-  position: relative;
-}
-
 /* 清空按钮 */
 .clear-btn {
   display: flex;
@@ -335,6 +292,7 @@
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative;
 }
 
 .clear-btn img {
@@ -361,6 +319,7 @@
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative;
 }
 
 .upload-btn img {
@@ -388,109 +347,8 @@
   opacity: 1;
 }
 
-/* 提示框样式 */
-.upload-btn[data-tooltip]::before {
-  content: attr(data-tooltip);
-  position: absolute;
-  right: calc(100% + 10px);
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 6px 10px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-color);
-  background-color: var(--tooltip-bg);
-  white-space: nowrap;
-  border-radius: 4px;
-  visibility: hidden;
-  opacity: 0;
-  transition: all 0.2s ease;
-  z-index: 1100;
-  box-shadow: 0 2px 4px var(--shadow-color);
-  pointer-events: none;
-}
-
-.upload-btn[data-tooltip]::after {
-  content: '';
-  position: absolute;
-  right: calc(100% + 5px);
-  top: 50%;
-  transform: translateY(-50%);
-  border: 5px solid transparent;
-  border-left-color: var(--tooltip-bg);
-  visibility: hidden;
-  opacity: 0;
-  transition: all 0.2s ease;
-  z-index: 1100;
-  pointer-events: none;
-}
-
-.upload-btn[data-tooltip]:hover::before,
-.upload-btn[data-tooltip]:hover::after {
-  visibility: visible;
-  opacity: 1;
-}
-
-.dark .upload-btn[data-tooltip]::before {
-  background-color: var(--tooltip-bg-dark);
-  color: var(--tooltip-text-dark);
-}
-
-.dark .upload-btn[data-tooltip]::after {
-  border-left-color: var(--tooltip-bg-dark);
-}
-
 /* 上传选项提示框样式 */
-.upload-option[data-tooltip]::before {
-  content: attr(data-tooltip);
-  position: absolute;
-  left: calc(100% + 10px);
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 6px 10px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-color);
-  background-color: var(--tooltip-bg);
-  white-space: nowrap;
-  border-radius: 4px;
-  visibility: hidden;
-  opacity: 0;
-  transition: all 0.2s ease;
-  z-index: 1100;
-  box-shadow: 0 2px 4px var(--shadow-color);
-  pointer-events: none;
-}
-
-.upload-option[data-tooltip]::after {
-  content: '';
-  position: absolute;
-  left: calc(100% + 5px);
-  top: 50%;
-  transform: translateY(-50%);
-  border: 5px solid transparent;
-  border-right-color: var(--tooltip-bg);
-  visibility: hidden;
-  opacity: 0;
-  transition: all 0.2s ease;
-  z-index: 1100;
-  pointer-events: none;
-}
-
-.upload-option[data-tooltip]:hover::before,
-.upload-option[data-tooltip]:hover::after {
-  visibility: visible;
-  opacity: 1;
-}
-
-.dark .upload-option[data-tooltip]::before {
-  background-color: var(--tooltip-bg-dark);
-  color: var(--tooltip-text-dark);
-}
-
-.dark .upload-option[data-tooltip]::after {
-  border-right-color: var(--tooltip-bg-dark);
-}
+/* 这部分也可以删除，使用通用样式 */
 
 /* 上传弹出层位置调整 */
 .upload-popup {
@@ -519,6 +377,7 @@
   color: var(--text-color-light);
   font-size: 0.875rem;
   font-weight: 500;
+  position: relative;
 }
 
 .upload-option img {
@@ -815,17 +674,32 @@
 /* 媒体查询 - 中等屏幕 (768px) */
 @media screen and (min-width: 512px) {
   .input-container {
-    max-width: 512px;
-    margin-top: 32px; 
+    bottom: 24px;
+    left: 48px;
+    right: 32px;
+    max-width: calc(100% - 64px);
+  }
+  
+  .chat-container.with-drawer .input-container {
+    width: calc(46%);
+    left: 48px;
+    right: 50%;
   }
 }
 
+@media screen and (max-width: 768px) {
+  .chat-container.with-drawer .input-container {
+    width: calc(100% - 32px);
+    right: 0;
+    left: 16px;
+    z-index: 5;
+  }
+}
 
 /* 媒体查询 - 中等屏幕 (1024px) */
 @media screen and (min-width: 1024px) {
   .input-container {
     max-width: 768px;
-    margin-top: 16px; 
   }
 }
 
@@ -833,6 +707,5 @@
 @media screen and (min-width: 1920px) {
   .input-container {
     max-width: 1024px;
-    margin-top: 16px; 
   }
 }

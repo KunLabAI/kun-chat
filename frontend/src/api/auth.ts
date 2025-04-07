@@ -58,15 +58,23 @@ const authAxios = axios.create({
 authAxios.interceptors.response.use(
   (response) => {
     // 如果响应中包含新的token，更新本地存储
-    if (response.data.token_refreshed) {
-      localStorage.setItem('token', response.data.token)
+    if (response.data.token_refreshed && response.data.token) {
+      // 从localStorage中获取最后登录的用户
+      const lastLoggedUser = localStorage.getItem('kunlab_last_user')
+      if (lastLoggedUser) {
+        // 更新该用户的token
+        localStorage.setItem(`kunlab_user_token_${lastLoggedUser}`, response.data.token)
+      }
     }
     return response
   },
   (error) => {
     if (error.response?.status === 401) {
-      // 清除本地存储的token
-      localStorage.removeItem('token')
+      // 获取最后登录的用户，清除其token
+      const lastLoggedUser = localStorage.getItem('kunlab_last_user')
+      if (lastLoggedUser) {
+        localStorage.removeItem(`kunlab_user_token_${lastLoggedUser}`)
+      }
     }
     return Promise.reject(error)
   }

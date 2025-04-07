@@ -158,11 +158,8 @@ const selectLanguage = async (lang: SupportedLocale) => {
   background: var(--gray-100);
 }
 
-/* 深色模式适配 */
-.dark {
-  .features-toggle-button:hover:not(.features-toggle-button-active) {
-    background: var(--gray-700);
-  }
+.dark  .features-toggle-button:hover:not(.features-toggle-button-active) {
+  background: var(--gray-1000);
 }
 
 </style>

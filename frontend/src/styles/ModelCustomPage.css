@@ -7,9 +7,12 @@
 }
 
 .header-content {
+  padding-top: 40px;
   display: flex;
+  margin: 0 auto;
+  gap: 1rem;
+  align-items: flex-end;
   justify-content: space-between;
-  align-items: end;
 }
 
 .title-group {
@@ -18,14 +21,14 @@
 }
 
 .main-title {
-  font-size: 40px;
+  font-size: 28px;
   font-weight: bold;
   color: var(--text-color);
   margin-bottom: 8px;
 }
 
 .sub-title {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-color-lighter);
   margin: 0;
 }
@@ -736,17 +739,10 @@
 
 /* 媒体查询 - 中等屏幕 (1024px) */
 @media screen and (min-width: 1024px) {
-  .page-header {
-    padding-top: 60px;
+  .header-content {
     margin-bottom: 1.75rem;
     max-width: 1024px;
     margin: 0 auto;
-
-  }
-  
-  .header-content {
-    flex-direction: row; /* 中等屏幕改为行布局 */
-    align-items: flex-end;
     gap: 1.5rem;
   }
 
@@ -779,14 +775,10 @@
 
 /* 媒体查询 - 大屏幕 (1920px) */
 @media screen and (min-width: 1920px) {
-  .page-header {
-    padding-top: 72px;
+  .header-content {
     margin-bottom: 2rem;
     max-width: 1200px;
     margin: 0 auto;
-  }
-  
-  .header-content {
     gap: 2rem;
   }
 

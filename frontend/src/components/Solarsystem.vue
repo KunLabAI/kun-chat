@@ -487,7 +487,7 @@ canvas {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  z-index: 10;
+  z-index: 1;
   color: white;
   animation: fadeIn 1.5s ease-in-out;
   width: 80%;

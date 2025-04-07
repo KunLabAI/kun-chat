@@ -22,36 +22,48 @@
           <DotLoader />
         </div>
         <div v-else-if="favoriteModels.length > 0" class="models-grid">
-          <ModelCard
-            v-for="model in limitedFavoriteModels"
-            :key="model.name"
-            :model="model"
-            @view-details="viewModelDetails"
-            @start-chat="startChat"
-            @delete="deleteModel"
-          />
+          <RouterLink v-for="model in limitedFavoriteModels" :key="model.name" :to="{ name: 'model-detail', params: { id: model.id }, query: { from: 'home' } }" class="model-card-link">
+            <ModelCard
+              :model="model"
+              @view-details="viewModelDetails"
+              @start-chat="startChat"
+              @delete="deleteModel"
+            />
+          </RouterLink>
         </div>
         <div v-else class="empty-state">
-          <div class="icons-container">
-            <a 
-              href="https://ollama.com/search" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              class="icon-circle"
-            >
-              <img src="@/assets/modelslogo/Ollama_icon.svg" alt="Ollama" class="model-icon" />
-            </a>
-            <span class="plus-icon">+</span>
-            <a 
-              href="https://huggingface.co/models" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              class="icon-circle"
-            >
-              <img src="@/assets/modelslogo/Huggingface_icon.svg" alt="HuggingFace" class="model-icon" />
-            </a>
+          <div class="onboarding-container">
+            <div class="welcome-illustration">
+              <img src="@/assets/illustration/welcome.png" alt="Welcome" class="welcome-image">
+            </div>
+            <div class="onboarding-steps">
+              <a href="https://ollama.com/download" target="_blank" rel="noopener noreferrer" class="onboarding-button" 
+                 :data-tooltip="t('home.onboarding.install_ollama')"
+                 @mouseenter="updateTooltipPosition">
+                <div class="step-content">
+                  <div class="step-icon">
+                    <img src="@/assets/modelslogo/Ollama_icon.svg" alt="Ollama" class="icon-image" />
+                  </div>
+                </div>
+              </a>
+              
+              <div class="step-connector">
+                <div class="connector-line">
+                  <img src="@/assets/icons/sys_arrowright.svg" alt="箭头" class="arrow-icon" />
+                </div>
+              </div>
+              
+              <RouterLink to="/models/pull" class="onboarding-button" 
+                           :data-tooltip="t('home.onboarding.pull_models')"
+                           @mouseenter="updateTooltipPosition">
+                <div class="step-content">
+                  <div class="step-icon">
+                    <img src="@/assets/icons/sys_download.svg" alt="下载" class="icon-image" />
+                  </div>
+                </div>
+              </RouterLink>
+            </div>
           </div>
-          <h3 class="empty-state-title">{{ t('home.favorite_models.empty_state.title') }}</h3>
         </div>
       </section>
 
@@ -65,16 +77,16 @@
         </button>
       </div>
     </div>
+    <Dialog
+      v-model="showDeleteDialog"
+      :title="t('home.delete_model.title')"
+      :confirm-text="t('common.actions.delete')"
+      :cancel-text="t('common.actions.cancel')"
+      @confirm="confirmDelete"
+    >
+      <p>{{ t('home.delete_model.confirm_message', [modelToDelete?.name]) }}</p>
+    </Dialog>
   </MainLayout>
-  <Dialog
-    v-model="showDeleteDialog"
-    :title="t('home.delete_model.title')"
-    :confirm-text="t('common.actions.delete')"
-    :cancel-text="t('common.actions.cancel')"
-    @confirm="confirmDelete"
-  >
-    <p>{{ t('home.delete_model.confirm_message', [modelToDelete?.name]) }}</p>
-  </Dialog>
 </template>
 
 <script setup>
@@ -180,7 +192,7 @@ async function startChat(model) {
 function viewModelDetails(model) {
   router.push({
     name: 'model-detail',
-    params: { id: model.id, modelName: model.name },
+    params: { id: model.id },
     query: { from: 'home' }
   })
 }
@@ -198,12 +210,23 @@ async function confirmDelete() {
     await modelsStore.fetchModels()
     await fetchFavoriteModels()
     notificationStore.showSuccess(t('status.success'))
+    
     showDeleteDialog.value = false
     modelToDelete.value = null
   } catch (error) {
     console.error('删除模型失败:', error)
     notificationStore.showError(t('status.error'))
   }
+}
+
+// 添加工具提示位置更新方法
+function updateTooltipPosition(event) {
+  // 当前悬停的按钮元素
+  const button = event.currentTarget;
+  
+  // 计算工具提示的位置，确保在所有设备上都正确显示
+  // 这个函数可以根据需要扩展，例如检测边缘情况
+  // 目前只是一个辅助函数，用于未来可能的扩展
 }
 
 // 开始新对话
@@ -263,25 +286,4 @@ onMounted(async () => {
 
 <style scoped>
 @import '@/styles/HomePage.css';
-
-/* 移动端适配样式 */
-@media (max-width: 768px) {
-  .new-chat-button-container {
-    margin-top: auto;
-    padding-bottom: 1rem;
-  }
-  
-  .btn {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
-/* 确保按钮在小屏幕上有足够的触摸区域 */
-@media (max-width: 480px) {
-  .btn {
-    padding: 0.75rem 1rem;
-    min-height: 48px;
-  }
-}
 </style>

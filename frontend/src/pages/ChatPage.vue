@@ -1,6 +1,6 @@
 <template>
   <MainLayout>
-    <div ref="chatContainer" class="chat-container">
+    <div class="chat-container" ref="chatContainer" :class="{ 'with-drawer': isNoteDrawerOpen }">
       <!-- 消息列表 -->
       <div class="messages-container">
         <div
@@ -44,23 +44,23 @@
               />
             </div>
             <!-- 显示文档 -->
-              <div v-if="message.document" class="message-file-preview">
-                <div class="file-info">
-                  <div class="file-icon" :class="getDocumentTypeClass(message.document.type)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                      <polyline points="14 2 14 8 20 8"/>
-                      <line x1="9" y1="15" x2="15" y2="15"/>
-                    </svg>
-                  </div>
-                  <div class="file-details">
-                    <div class="file-name">{{ message.document.name }}</div>
-                    <div class="file-meta">
-                      <span class="file-type">{{ getFileType(message.document.type) }}</span>
-                    </div>
+            <div v-if="message.document" class="message-file-preview">
+              <div class="file-info">
+                <div class="file-icon" :class="getDocumentTypeClass(message.document.type)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="9" y1="15" x2="15" y2="15"/>
+                  </svg>
+                </div>
+                <div class="file-details">
+                  <div class="file-name">{{ message.document.name }}</div>
+                  <div class="file-meta">
+                    <span class="file-type">{{ getFileType(message.document.type) }}</span>
                   </div>
                 </div>
               </div>
+            </div>
             <div v-if="message.document && message.showDocument" class="document-content">
               <MarkdownRenderer :content="message.document.content" />
             </div>
@@ -132,7 +132,6 @@
             </div>
           </div>
         </div>
-
       </div>
       
       <!-- 滚动到底部按钮 -->
@@ -181,7 +180,25 @@
           {{ t('chat.confirm_refresh.message') }}
         </p>
       </Dialog>
+      
+      <!-- 选中文本操作按钮 -->
+      <SelectionActionButton 
+        container=".message-bubble, .markdown-content" 
+        @save-to-note="handleSaveToNote"
+      />
     </div>
+    
+    <!-- 笔记抽屉组件 - 移到MainLayout下，但在chat-container外部 -->
+    <template #drawer>
+      <NoteDrawer
+        ref="noteDrawerRef"
+        :is-open="isNoteDrawerOpen"
+        :initial-content="selectedTextForNote"
+        :conversation-id="route.params.conversationId"
+        @close="isNoteDrawerOpen = false"
+        @saved="handleNoteSaved"
+      />
+    </template>
   </MainLayout>
 </template>
 
@@ -198,9 +215,11 @@ import MainLayout from '@/layouts/MainLayout.vue'
 import ChatInput from '@/components/chat/InputArea/ChatInput.vue'
 import { BubbleAvatar } from '@/components/AIavatar.ts'
 import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue'
-import PlainTextRenderer from '@/components/common/PlainTextRenderer.vue'
+import PlainTextRenderer from '@/components/chat/PlainTextRenderer.vue'
 import HtmlRenderer from '@/components/common/HtmlRenderer.vue'
 import Dialog from '@/components/common/Dialog.vue'
+import SelectionActionButton from '@/components/chat/SelectionActionButton.vue'
+import NoteDrawer from '@/components/notes/NoteDrawer.vue'
 import { API_BASE_URL } from '@/api/config'
 
 const route = useRoute()
@@ -224,7 +243,9 @@ const userAvatarUrl = computed(() => {
       return `${API_BASE_URL}${authStore.user.avatar}`
     }
   }
-  return `${API_BASE_URL}/static/default-avatar.jpg`
+  
+  // 直接使用本地静态资源，这样在Electron和Web环境都能正常工作
+  return new URL('../assets/default-avatar.jpg', import.meta.url).href
 })
 
 // 使用 storeToRefs 获取响应式状态
@@ -236,6 +257,11 @@ const autoScroll = ref(true)
 const showConfirmDialog = ref(false)
 const showRefreshConfirmDialog = ref(false)
 const refreshConfirmed = ref(false)
+
+// 笔记抽屉状态
+const isNoteDrawerOpen = ref(false)
+const selectedTextForNote = ref('')
+const noteDrawerRef = ref(null)
 
 // 处理发送消息
 async function handleSendMessage(message) {
@@ -767,8 +793,30 @@ function handleBeforeUnload(event) {
     return '';
   }
 }
+
+// 处理保存到笔记
+function handleSaveToNote(text) {
+  if (!text.trim()) return
+  
+  // 如果笔记抽屉已经打开，则追加内容
+  if (isNoteDrawerOpen.value && noteDrawerRef.value) {
+    // 使用appendContent方法追加内容
+    noteDrawerRef.value.appendContent(text)
+  } else {
+    // 如果笔记抽屉未打开，则设置初始内容并打开抽屉
+    selectedTextForNote.value = text
+    isNoteDrawerOpen.value = true
+  }
+}
+
+// 笔记保存成功回调
+function handleNoteSaved() {
+  selectedTextForNote.value = ''
+  isNoteDrawerOpen.value = false
+}
 </script>
 
 <style scoped>
 @import '@/styles/ChatPage.css';
 </style>
+

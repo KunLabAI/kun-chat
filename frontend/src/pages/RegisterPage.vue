@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-container">
+  <div class="auth-container" :class="{ 'electron-mode': isElectron }">
     <!-- 添加星空背景 -->
     <div class="auth-starry-background">
       <StarryBackground />
@@ -154,7 +154,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { UserPlusIcon } from '@heroicons/vue/24/solid'
 import { useAuthStore } from '@/stores/auth'
@@ -177,6 +177,12 @@ const passwordErrors = ref([])
 const emailError = ref('')
 const confirmPasswordError = ref('')
 const usernameError = ref('')
+const isElectron = ref(false)
+
+// 检测是否在 Electron 环境中
+onMounted(() => {
+  isElectron.value = window && 'electronAPI' in window
+})
 
 const validatePasswordInput = () => {
   const result = authApi.validatePassword(password.value)
@@ -255,8 +261,13 @@ const handleRegister = async () => {
       password: password.value
     })
     
+    console.log('注册响应:', response)
+    
     // 注册成功后自动登录
-    authStore.setToken(response.access_token || response.token)
+    const access_token = response.access_token || response.token
+    
+    // 保存token到store
+    authStore.setToken(access_token)
     authStore.setUser({
       username: response.username,
       nickname: response.nickname || response.username,
@@ -264,8 +275,16 @@ const handleRegister = async () => {
       avatar: response.avatar || ''
     })
     
-    // 确保token被正确存储到localStorage
-    localStorage.setItem('token', response.access_token || response.token)
+    // 确保token被正确存储到localStorage (同时保存到新老两种格式)
+    localStorage.setItem('token', access_token)
+    localStorage.setItem(`kunlab_user_token_${response.username}`, access_token)
+    localStorage.setItem('kunlab_last_user', response.username)
+    
+    console.log('注册后token已保存:', 
+      '旧格式:', !!localStorage.getItem('token'), 
+      '新格式:', !!localStorage.getItem(`kunlab_user_token_${response.username}`),
+      '最后登录用户:', localStorage.getItem('kunlab_last_user')
+    )
     
     notificationStore.showSuccess('注册成功，欢迎使用kun-lab')
     

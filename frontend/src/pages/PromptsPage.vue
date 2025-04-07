@@ -29,28 +29,16 @@
         {{ promptStore.error }}
       </div>
       <div v-else-if="prompts.length === 0" class="empty-state">
-        {{ t('prompt.empty_state.subtitle') }}
+        <img src="@/assets/illustration/promptempty.png" alt="Empty Prompts" class="empty-state-image">
+        <p class="empty-state-text">{{ t('prompt.empty_state.subtitle') }}</p>
       </div>
       <div v-else class="prompts-grid">
         <div v-for="prompt in prompts" :key="prompt.id" class="prompt-grid-item">
           <PromptCard
             :prompt="prompt"
             @edit="router.push(`/prompts/${prompt.id}/edit`)"
-          >
-            <template #actions>
-              <button
-                @click="confirmDeletePrompt(prompt)"
-                class="prompt-delete"
-              >
-                <img 
-                  src="@/assets/icons/model_delete.svg" 
-                  class="h-5 w-5 filter" 
-                  :class="{'hover-red': true}"
-                  alt="删除" 
-                />
-              </button>
-            </template>
-          </PromptCard>
+            @delete="confirmDeletePrompt(prompt)"
+          />
         </div>
       </div>
     </div>

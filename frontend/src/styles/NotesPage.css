@@ -1,0 +1,392 @@
+/* 页面布局 */
+.notes-page {
+  position: relative;
+  max-width: 100%;
+  margin: auto;
+}
+
+/* 页面头部 */
+.page-header {
+  margin: auto;
+  padding-top: 40px;
+  margin-bottom: 1.5rem;
+  max-width: 768px;
+}
+
+.header-content {
+  display: flex;
+  margin: 0 auto;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.title-group {
+  flex: 1;
+  width: 100%;
+}
+
+.main-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--el-text-color-primary);
+  margin-bottom: 6px;
+}
+
+.sub-title {
+  font-size: 16px;
+  color: var(--text-color-lighter);
+  font-weight: normal;
+  line-height: 1.5;
+  max-width: 100%;
+  margin: 0.25rem 0 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* 搜索框 */
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.search-input {
+  padding: 10px 12px;
+  padding-left: 32px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text-color);
+  background: var(--bg-color-light);
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--text-color-light);
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: var(--text-color-lighter);
+  pointer-events: none;
+}
+
+/* 笔记按钮图标 */
+.btn-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 4px;
+}
+
+/* 笔记网格 */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  max-width: 768px;
+  margin: 0 auto;
+}
+
+.note-grid-item {
+  height: 100%;
+}
+
+/* 笔记卡片 */
+.note-card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-color-light);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  height: 100%;
+  transition: all 0.2s ease;
+}
+
+.note-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+  border-color: var(--border-color-hover);
+}
+
+.note-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color-light);
+}
+
+.note-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.note-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.note-action-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  padding: 0;
+  transition: all 0.2s;
+}
+
+.note-action-button:hover {
+  background-color: var(--bg-color-hover);
+}
+
+.note-action-button img {
+  width: 16px;
+  height: 16px;
+}
+
+.note-card-content {
+  flex: 1;
+  padding: 12px 16px;
+}
+
+.note-preview {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-color-light);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.note-card-footer {
+  padding: 10px 16px;
+  border-top: 1px solid var(--border-color-light);
+}
+
+.note-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.note-time {
+  font-size: 12px;
+  color: var(--text-color-lighter);
+}
+
+.note-conversation-badge {
+  display: flex;
+  align-items: center;
+}
+
+.conversation-icon {
+  width: 14px;
+  height: 14px;
+  opacity: 0.6;
+}
+
+/* 加载状态 */
+.loading-indicator {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  margin: 24px auto;
+  max-width: 768px;
+  text-align: center;
+  color: var(--el-text-color-secondary);
+  font-size: 14px;
+}
+
+/* 错误状态 */
+.error-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  margin: 24px auto;
+  max-width: 768px;
+  text-align: center;
+  color: var(--el-color-danger);
+  font-size: 14px;
+  background: var(--el-bg-color-overlay);
+  border-radius: 8px;
+  border: 1px dashed var(--el-border-color-lighter);
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  margin: 24px auto;
+  max-width: 768px;
+  text-align: center;
+}
+
+.empty-state-image {
+  width: 240px;
+  margin-bottom: 20px;
+}
+
+.empty-state-text {
+  font-size: 20px;
+  color: var(--text-color);
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+/* 没有匹配结果的状态 */
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 200px;
+  margin: 24px auto;
+  max-width: 768px;
+}
+
+.empty-icon {
+  width: 40px;
+  height: 40px;
+  opacity: 0.5;
+  margin-bottom: 16px;
+}
+
+.empty-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 8px;
+}
+
+.empty-message {
+  font-size: 14px;
+  color: var(--text-color-light);
+  margin-bottom: 20px;
+}
+
+/* 刷新按钮容器 */
+.refresh-container {
+  display: flex;
+  justify-content: center;
+  margin: 24px auto;
+  max-width: 768px;
+}
+
+/* 删除确认对话框内容 */
+.delete-confirm-content {
+  padding: 8px 0;
+}
+
+/* 悬停效果 */
+.hover-red:hover {
+  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+}
+
+/* 媒体查询 - 中等屏幕 (1024px) */
+@media screen and (min-width: 1024px) {
+  .page-header {
+    margin-bottom: 1.75rem;
+    max-width: 1024px;
+  }
+  
+  .main-title {
+    font-size: 34px;
+    margin-bottom: 7px;
+  }
+  
+  .sub-title {
+    font-size: 16px;
+    max-width: 550px;
+    margin: 0.4rem 0 0;
+  }
+  
+  .notes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    max-width: 1024px;
+  }
+  
+  .loading-indicator,
+  .error-message,
+  .empty-state,
+  .empty-container,
+  .refresh-container {
+    min-height: 250px;
+    margin: 28px auto;
+    max-width: 1024px;
+    font-size: 16px;
+  }
+}
+
+/* 媒体查询 - 大屏幕 (1920px) */
+@media screen and (min-width: 1920px) {
+  .page-header {
+    margin-bottom: 2rem;
+    max-width: 1200px;
+  }
+  
+  .main-title {
+    font-size: 40px;
+    margin-bottom: 8px;
+  }
+  
+  .sub-title {
+    font-size: 16px;
+    max-width: 600px;
+    margin: 0.5rem 0 0;
+  }
+  
+  .header-actions {
+    gap: 1rem;
+  }
+  
+  .notes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+  }
+  
+  .loading-indicator,
+  .error-message,
+  .empty-state,
+  .empty-container,
+  .refresh-container {
+    min-height: 300px;
+    margin: 32px auto;
+    max-width: 1200px;
+    font-size: 16px;
+  }
+
+} 

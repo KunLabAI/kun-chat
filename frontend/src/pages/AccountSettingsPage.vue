@@ -271,7 +271,7 @@ const notificationStore = useNotificationStore()
 const { t } = useI18n()
 
 // 默认头像
-const defaultAvatar = `${API_BASE_URL}/static/default-avatar.jpg`
+const defaultAvatar = new URL('../assets/default-avatar.jpg', import.meta.url).href
 
 // 标签页配置
 const tabs = [
@@ -531,7 +531,6 @@ const fetchUserInfo = async () => {
     username.value = userData.username
     nickname.value = userData.nickname || ''
     email.value = userData.email || ''
-    avatarUrl.value = userData.avatar || defaultAvatar
     
     // 获取用户偏好设置
     try {

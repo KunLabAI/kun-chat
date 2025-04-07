@@ -1,10 +1,8 @@
-
 /* 基础容器样式 */
 .home-container {
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 1rem;
   overflow: hidden;
   width: 100%;
   max-width: 768px; /* 默认小屏幕最大宽度 */
@@ -14,7 +12,7 @@
 /* 标题区域响应式调整 */
 .home-header {
   flex-shrink: 0;
-  padding-top: 16px;
+  padding-top: 40px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -105,7 +103,7 @@
 .models-title {
   font-size: 18px; /* 小屏幕默认大小 */
   font-weight: 500;
-  color: var(--color-text-primary);
+  color: var(--text-color);
 }
 
 /* 模型网格响应式布局 */
@@ -212,8 +210,8 @@
 .new-chat-button-container {
   display: flex;
   justify-content: center;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin-top: 48px;
+  margin-bottom: 72px;
 }
 
 .btn {
@@ -296,86 +294,309 @@
   padding: 32px;
   margin-top: 20px;
   background: var(--bg-color-light);
-  border: 1px solid var(--border-color);
   border-radius: 8px;
+  overflow: hidden;
 }
 
-.empty-state .icons-container {
+/* 新手引导容器 */
+.onboarding-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
+  width: 100%;
+  max-width: 648px;
+  margin: 0 auto;
 }
 
-.empty-state .icon-circle {
+/* 步骤区域 */
+.onboarding-steps {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  gap: 1.5rem;
+}
+
+.onboarding-step {
+  position: relative; /* 为绝对定位的步骤数字做准备 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: linear-gradient(163deg, var(--gradient-color-1) 0%, var(--gradient-color-5) 100%);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.5s ease-out forwards;
+  opacity: 0;
+  flex: 1;
+  min-width: 0; /* 防止内容溢出 */
+}
+
+.onboarding-step:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.onboarding-step:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+/* 连接器 */
+.step-connector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 0.5rem;
+  align-self: center;
+}
+
+.connector-line {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  animation: pulse 2s infinite;
+}
+
+.arrow-icon {
+  width: 32px;
+  height: 32px;
+  filter: var(--filter-gray-dark-900);
+  animation: slideRight 1.5s ease-in-out infinite;
+}
+
+.dark .arrow-icon {
+  filter: var(--filter-gray-dark-100);
+}
+
+@keyframes slideRight {
+  0% {
+    transform: translateX(-5px);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateX(5px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-5px);
+    opacity: 0.7;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+/* 欢迎插画样式 */
+.welcome-illustration {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.welcome-image {
+  width: 240px;
+  height: auto;
+  animation: float 6s ease-in-out infinite;
+}
+
+/* 步骤按钮样式 */
+.onboarding-button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--bg-color);
+  border-radius: 50%;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  width: 72px;
+  height: 72px;
+  justify-content: center;
+}
+
+.onboarding-button:hover {
+  transform: translateY(-2px);
+}
+
+
+/* 提示框样式 */
+.onboarding-button[data-tooltip]::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  transform: translateX(-50%);
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  white-space: nowrap;
+  border-radius: 4px;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.2s ease;
+  z-index: 1100;
+  pointer-events: none;
+}
+
+.onboarding-button[data-tooltip]::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 6px);
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--bg-color);
+  border-bottom-color: transparent;
+  border-top: 5px solid var(--bg-color);
+  border-bottom: none;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.2s ease;
+  z-index: 1100;
+  pointer-events: none;
+}
+
+.onboarding-button[data-tooltip]:hover::before,
+.onboarding-button[data-tooltip]:hover::after {
+  visibility: visible;
+  opacity: 1;
+}
+
+.dark .onboarding-button[data-tooltip]::before {
+  background-color: var(--gray-500);
+  color: var(--gray-100);
+}
+
+.dark .onboarding-button[data-tooltip]::after {
+  border-top-color: var(--gray-500);
+  border-bottom-color: transparent;
+}
+
+.onboarding-button .step-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.onboarding-button .step-icon {
   width: 56px;
   height: 56px;
-  border-radius: 50%;
-  background: var(--bg-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--border-color);
-  text-decoration: none;
-  transition: all 0.2s ease;
+  border-radius: 50%;
 }
 
-.empty-state .icon-circle:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.dark .onboarding-button .step-icon {
+  filter: var(--filter-gray-dark-100);
 }
 
-.empty-state .model-icon {
-  width: 28px;
-  height: 28px;
+.onboarding-button .icon-image {
+  width: 36px;
+  height: 36px;
+  transition: transform 0.3s ease;
+  filter: var(--filter-gray);
 }
 
-.empty-state .plus-icon {
-  font-size: 20px;
-  color: var(--text-color);
-  font-weight: bold;
+.onboarding-button:hover .icon-image {
+  transform: scale(1.1);
+  filter: var(--filter-gray-900);
 }
 
-.empty-state-title {
-  font-size: 16px;
+.onboarding-button .step-title {
+  font-size: 14px;
   font-weight: 500;
   color: var(--text-color);
-  margin: 0 0 6px 0;
+  margin: 0;
 }
 
-.empty-state-description {
-  font-size: 13px;
-  color: var(--text-color-light);
-  margin: 0 0 20px 0;
-  max-width: 280px;
+@keyframes slideRight {
+  0% {
+    transform: translateX(-5px);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateX(5px);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(-5px);
+    opacity: 0.3;
+  }
 }
 
-.empty-state-action {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 14px;
-  background: var(--gradient-color-6);
-  color: white;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 500;
-  text-decoration: none;
-  transition: background-color 0.2s ease;
-}
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .home-header {
+    gap: 0.75rem;
+    margin-bottom: 1.75rem;
+  }
+  
+  .onboarding-step {
+    max-width: 100%;
+  }
+  
+  .step-connector {
+    transform: none;
+    padding: 0 8px;
+  }
+  
+  .connector-line {
+    width: 40px;
+  }
+  
+  .empty-state-title {
+    font-size: 1.3rem;
+  }
+  
+  .empty-state-description {
+    font-size: 0.9rem;
+  }
 
-.empty-state-action:hover {
-  background: var(--button-special-gradient-1);
+  .welcome-image {
+    width: 240px;
+  }
+
+  .onboarding-steps {
+    flex-direction: row;
+    gap: 24px;
+    justify-content: center;
+    margin-top: 12px;
+  }
+
+  .step-connector {
+    transform: none;
+    padding: 0 8px;
+  }
 }
 
 /* 媒体查询 - 中等屏幕 (1024px) */
 @media screen and (min-width: 1024px) {
   .home-container {
     max-width: 1024px;
-    padding: 1.5rem;
   }
   
   .home-header {
-    padding-top: 20px;
     gap: 0.75rem;
     margin-bottom: 1.75rem;
   }
@@ -412,10 +633,6 @@
     font-size: 0.9375rem;
   }
   
-  .empty-state {
-    padding: 40px;
-  }
-  
   .empty-state .icon-circle {
     width: 60px;
     height: 60px;
@@ -431,11 +648,9 @@
 @media screen and (min-width: 1920px) {
   .home-container {
     max-width: 1200px;
-    padding: 2rem;
   }
   
   .home-header {
-    padding-top: 24px;
     gap: 1rem;
     margin-bottom: 2rem;
   }
@@ -471,10 +686,6 @@
   
   .text {
     font-size: 1rem;
-  }
-  
-  .empty-state {
-    padding: 48px;
   }
   
   .empty-state .icon-circle {

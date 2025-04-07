@@ -123,7 +123,15 @@ export const chatApi = {
 
     const connectWebSocket = () => {
       const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-      const wsUrl = `${protocol}//${window.location.host}/api/chat/conversations/${conversationId}/stream`
+      
+      // 获取认证token
+      const authHeaders = getAuthHeaders()
+      const token = authHeaders.Authorization 
+        ? authHeaders.Authorization.replace('Bearer ', '') 
+        : ''
+      
+      // 添加认证token到WebSocket URL
+      const wsUrl = `${protocol}//${window.location.host}/api/chat/conversations/${conversationId}/stream?token=${encodeURIComponent(token)}`
       
       const ws = new WebSocket(wsUrl)
       

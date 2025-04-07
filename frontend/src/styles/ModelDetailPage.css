@@ -179,6 +179,76 @@
   border: 1px solid var(--border-color);
 }
 
+/* 系统提示词样式 */
+.system-prompt {
+  max-height: 3em;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+/* 系统提示词内容样式 */
+.system-prompt-dialog-content {
+  display: flex;
+  width: 100%;
+  padding: 16px;
+}
+
+.system-prompt-content {
+  flex: 1;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+  line-height: 1.8;
+  overflow-y: auto;
+  max-height: 60vh;
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  background: var(--bg-color);
+  border-radius: 8px;
+  color: var(--text-color);
+  padding: 16px;
+}
+
+/* 系统提示词对话框样式 */
+:deep(.system-prompt-dialog .kun-dialog-content) {
+  width: 80% !important;
+  max-width: 900px !important;
+  min-width: 600px !important;
+  height: auto !important;
+  max-height: 80vh !important;
+  padding: 0 !important;
+  border-radius: 12px !important;
+  background-color: var(--bg-color-light) !important;
+}
+
+:deep(.system-prompt-dialog .kun-dialog-body) {
+  padding: 0 !important;
+}
+
+:deep(.system-prompt-dialog .kun-dialog-header) {
+  padding: 16px 24px !important;
+}
+
+:deep(.system-prompt-dialog .kun-dialog-footer) {
+  padding: 12px 24px !important;
+}
+
+/* 隐藏系统提示词对话框的取消按钮 */
+:deep(.system-prompt-dialog .kun-dialog-cancel-btn) {
+  display: none !important;
+}
+
+/* 修复暗色模式的样式 */
+.dark .system-prompt-content {
+  background: var(--gray-1000);
+  border-color: var(--gray-700);
+}
+
+.dark .system-prompt:hover {
+  background-color: rgba(var(--primary-400-rgb), 0.15);
+}
+
 /* 收藏按钮样式 */
 .favorite-container {
   margin-left: 10px;

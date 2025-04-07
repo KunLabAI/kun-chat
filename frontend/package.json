@@ -1,26 +1,34 @@
 {
-  "name": "frontend",
+  "name": "kun-lab",
   "private": true,
-  "version": "0.0.0",
-  "main": "electron/main.js",
-  "type": "module",
+  "version": "0.0.1",
+  "description": "基于 Ollama 的本地部署轻量级 AI 对话应用",
+  "author": "Kun-Lab Team",
+  "main": "electronpath/main.js",
+  "type": "commonjs",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "electron:dev": "electron ."
+    "electron:dev": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "electron:build": "vite build && electron-builder",
+    "electron:preview": "vite build && electron .",
+    "electron:build:win": "vite build && electron-builder --win",
+    "electron:build:mac": "vite build && electron-builder --mac",
+    "electron:build:linux": "vite build && electron-builder --linux",
+    "electron:build:all": "vite build && electron-builder -mwl"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.16",
     "@heroicons/vue": "^2.0.18",
     "@iframe-resizer/vue": "^5.3.3",
-    "iframe-resizer": "^5.3.3",
     "@vueuse/core": "^10.7.0",
     "autoprefixer": "^10.4.16",
     "axios": "^1.8.2",
     "dompurify": "^3.2.4",
-    "electron": "^28.1.0",
+    "electron-updater": "^6.6.2",
     "highlight.js": "^11.10.0",
+    "iframe-resizer": "^5.3.3",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^4.2.0",
     "postcss": "^8.4.31",
@@ -35,8 +43,83 @@
     "@tailwindcss/forms": "^0.5.9",
     "@types/node": "^22.9.1",
     "@vitejs/plugin-vue": "^5.1.4",
+    "concurrently": "^8.2.2",
+    "electron": "^28.1.0",
+    "electron-builder": "^24.13.3",
     "typescript": "^5.6.3",
     "vite": "^5.4.10",
-    "vite-tsconfig-paths": "^5.1.3"
+    "vite-tsconfig-paths": "^5.1.3",
+    "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "com.kunlab.app",
+    "productName": "Kun-Lab",
+    "directories": {
+      "output": "dist_electron",
+      "buildResources": "public"
+    },
+    "files": [
+      "dist/**/*",
+      "electronpath/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "../backend/buildpath/dist",
+        "to": "backend",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "bahamutww",
+        "repo": "Kun-Lab",
+        "private": false
+      }
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "public/icon.ico",
+      "asar": true,
+      "asarUnpack": [
+        "electronpath/**/*"
+      ]
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "public/icon.icns",
+      "category": "public.app-category.productivity",
+      "darkModeSupport": true
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb",
+        "rpm"
+      ],
+      "icon": "public/icon.png",
+      "category": "Utility",
+      "desktop": {
+        "Name": "Kun-Lab",
+        "Comment": "基于 Ollama 的本地部署轻量级 AI 对话应用",
+        "Categories": "Utility;Development;AI"
+      }
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "installerIcon": "public/icon.ico",
+      "uninstallerIcon": "public/icon.ico",
+      "installerHeaderIcon": "public/icon.ico"
+    },
+    "artifactName": "Kun-Lab.Setup.${version}.exe"
   }
 }

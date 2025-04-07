@@ -3,13 +3,29 @@
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 4px;
+  left: 48px; /* 为侧边栏留出空间 */
   right: 0;
   bottom: 0;
   overflow-y: auto;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+  transition: all 0.3s ease; /* 添加过渡效果 */
+}
+
+/* 抽屉打开时的状态 */
+.chat-container.with-drawer {
+  width: calc(50% - 48px); /* 减去侧边栏宽度 */
+  right: 50%; /* 当抽屉打开时缩小宽度 */
+}
+
+/* 在小屏幕上的响应式处理 */
+@media screen and (max-width: 1023px) {
+  .chat-container.with-drawer {
+    width: calc(100% - 48px); /* 在小屏幕上占据全宽，减去侧边栏宽度 */
+    right: 0;
+    z-index: 1; /* 确保内容在抽屉下方 */
+  }
 }
 
 /* 消息列表容器 */
@@ -18,7 +34,16 @@
   margin: 32px auto;
   padding-bottom: calc(124px + 2px); /* 为输入框留出空间 */
   width: 1024px;
+  max-width: 100%;
   box-sizing: border-box;
+}
+
+/* 抽屉打开时调整消息容器 */
+.chat-container.with-drawer .messages-container {
+  max-width: 100%;
+  width: 100%;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 /* 消息组基础样式 */
@@ -158,8 +183,8 @@
   height: 16px;
   filter: var(--filter-message-action);
   transition: filter 0.2s ease;
-  will-change: filter; /* 提示浏览器这个属性会变化，优化渲染性能 */
-  transform: translateZ(0); /* 启用GPU加速 */
+  will-change: filter;
+  transform: translateZ(0);
 }
 
 .message-actions button:hover img {
@@ -500,7 +525,7 @@ html {
 .scroll-to-bottom {
   position: fixed;
   right: 20px;
-  bottom: 20px;
+  bottom: 8px; /* 修改位置，放在输入框上方 */
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -514,6 +539,11 @@ html {
   opacity: 0;
   transform: translateY(20px);
   z-index: 1000;
+}
+
+/* 调整有抽屉时滚动按钮的位置 */
+.chat-container.with-drawer .scroll-to-bottom {
+  right: calc(50% + 20px); /* 当抽屉打开时，将按钮移到左半部分的右侧 */
 }
 
 .scroll-to-bottom.visible {
@@ -614,11 +644,20 @@ html {
   border-radius: 8px;
 }
 
-/* 媒体查询 - 中等屏幕 (768px) */
-@media screen and (min-width: 512px) {
-  .messages-container {
-    max-width: 512px;
-    margin-top: 32px; 
+
+/* 媒体查询 - 小屏幕 */
+@media screen and (max-width: 768px) {  
+  .scroll-to-bottom {
+    bottom: 150px; 
+  }
+
+  .chat-container.with-drawer .scroll-to-bottom {
+    right: 20px; 
+  }
+
+  .chat-container.with-drawer .messages-container {
+    max-width: 100%;
+    padding-right: 16px;
   }
 }
 
@@ -627,6 +666,10 @@ html {
   .messages-container {
     max-width: 768px;
     margin-top: 32px; 
+  }
+  
+  .chat-container.with-drawer .messages-container {
+    max-width: 100%;
   }
 }
 

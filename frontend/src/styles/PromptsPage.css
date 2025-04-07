@@ -8,18 +8,16 @@
 /* 页面头部 */
 .page-header {
   margin: auto;
-  padding-top: 48px; /* 减小默认上边距 */
+  padding-top: 40px;
   margin-bottom: 1.5rem;
-  max-width: 768px; /* 小屏幕默认宽度 */
+  max-width: 768px;
 }
 
 .header-content {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start; /* 改为顶部对齐，在小屏幕上更合理 */
   margin: 0 auto;
   gap: 1rem;
-  flex-direction: column; /* 默认为列布局，适合小屏幕 */
+  align-items: flex-end;
 }
 
 .title-group {
@@ -28,7 +26,7 @@
 }
 
 .main-title {
-  font-size: 28px; /* 小屏幕默认字体大小 */
+  font-size: 28px;
   font-weight: bold;
   color: var(--el-text-color-primary);
   margin-bottom: 6px;
@@ -50,26 +48,6 @@
   margin-top: 1rem; /* 在列布局中添加上边距 */
 }
 
-.prompt-delete {
-  filter : var(--text-color-light);
-  width: 32px;
-  height: 32px;
-  padding: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px;
-}
-
-.prompt-delete img {
-  width: 32px;
-  filter: brightness(0) saturate(100%) invert(60%) sepia(8%) saturate(382%) hue-rotate(179deg) brightness(94%) contrast(90%);
-}
-
-.prompt-delete:hover img {
-  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
-}
-
 /* 提示词网格 */
 .prompts-grid {
   display: grid;
@@ -81,6 +59,12 @@
 
 .prompt-grid-item {
   height: 100%;
+}
+
+.empty-state-image {
+  width: 240px;
+  margin-top: 64px;
+  margin-bottom: 24px;
 }
 
 /* 加载状态 */
@@ -124,17 +108,20 @@
   margin: 24px auto;
   max-width: 768px;
   text-align: center;
-  color: var(--el-text-color-secondary);
-  font-size: 14px;
-  background: var(--el-bg-color-overlay);
-  border-radius: 8px;
-  border: 1px dashed var(--el-border-color-lighter);
+  flex-direction: column;
 }
+
+.empty-state-text {
+  font-size: 20px;
+  color: var(--text-color);
+  font-weight: 600;
+  line-height: 1.6;
+}
+
 
 /* 媒体查询 - 中等屏幕 (1024px) */
 @media screen and (min-width: 1024px) {
   .page-header {
-    padding-top: 60px;
     margin-bottom: 1.75rem;
     max-width: 1024px;
   }
@@ -172,14 +159,13 @@
     min-height: 250px;
     margin: 28px auto;
     max-width: 1024px;
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 
 /* 媒体查询 - 大屏幕 (1920px) */
 @media screen and (min-width: 1920px) {
   .page-header {
-    padding-top: 72px;
     margin-bottom: 2rem;
     max-width: 1200px;
   }

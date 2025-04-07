@@ -7,9 +7,6 @@
 }
 
 /* 页面头部样式 */
-.pull-model-page .page-header {
-  margin-bottom: 24px;
-}
 
 .pull-model-page .page-header .header-content {
   display: flex;
@@ -22,11 +19,12 @@
 }
 
 .pull-model-page .page-header .main-title {
-  font-size: 40px;
+  font-size: 28px;
   font-weight: 600;
   color: var(--text-color);
   margin: 0;
   margin-bottom: 8px;
+  margin-top: 40px;
 }
 
 .pull-model-page .page-header .sub-title {
@@ -40,7 +38,6 @@
   display: flex;
   gap: 16px;
   align-items: center;
-  padding-top: 72px;
 }
 
 /* 主要内容区域 */
@@ -390,7 +387,6 @@
   color: var(--text-color-light);
 }
 
-/* 响应式设计 */
 /* 媒体查询 - 中等屏幕 (1024px) */
 @media screen and (min-width: 1024px) {
   .pull-model-page .page-header .header-content {
@@ -415,7 +411,6 @@
 
   .pull-model-page .page-header .main-title {
     font-size: 34px;
-    margin-top: 60px;
   }
   
 }
@@ -442,7 +437,6 @@
 
   .pull-model-page .page-header .main-title {
     font-size: 40px;
-    margin-top: 72px;
   }
 
 
