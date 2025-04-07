@@ -881,15 +881,15 @@ const messages: Messages = {
       changelog: '更新日志'
     },
     appInfo: {
-      title: '应用简介',
-      description: 'Kun-Lab 是一款基于 Ollama 的轻量级 AI 对话应用',
+      title: '应用信息',
+      description: 'Kun-Lab 是基于 Ollama 的本地部署轻量级 AI 对话应用',
       details: '应用详情',
       developer: '开发团队',
       developerText: 'Zack、Benny',
       website: '官方网站',
       websiteText: 'lab.kunpuai.com',
       email: '支持邮箱',
-      github: 'GitHub社区',
+      github: 'GitHub 社区',
       githubText: 'github.com/bahamutww/kun-lab.git',
       versionInfo: '版本信息',
       version: '当前版本',
@@ -927,7 +927,11 @@ const messages: Messages = {
       installSuccess: '更新安装成功',
       installFailed: '安装更新失败',
       cancelInstall: '取消安装',
-      installCancelled: '已取消安装更新',
+      installCancelled: '已取消安装',
+      retryDownload: '重试下载',
+      noUpdates: '暂无可用更新',
+      noRelease: '暂无发布版本',
+      checkingFailed: '检查更新失败，请稍后重试'
     },
     license: {
       title: '许可证信息',

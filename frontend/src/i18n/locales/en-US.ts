@@ -923,7 +923,11 @@ const messages: Messages = {
       installSuccess: 'Update installed successfully',
       installFailed: 'Failed to install update',
       cancelInstall: 'Cancel Install',
-      installCancelled: 'Install cancelled'
+      installCancelled: 'Install cancelled',
+      retryDownload: 'Retry Download',
+      noUpdates: 'No updates available',
+      noRelease: 'No published versions',
+      checkingFailed: 'Failed to check for updates, please try again later'
     },
     license: {
       title: 'License Information',

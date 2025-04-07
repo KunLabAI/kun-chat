@@ -38,7 +38,7 @@ kun-lab 是一款基于 Ollama 的轻量级 AI 对话应用，旨在为您提供
 ### 桌面应用安装（推荐）
 
 1. **下载安装包**：
-   - 访问 [Release 页面](https://github.com/your-repo/kun-lab/releases) 下载对应平台的安装包
+   - 访问 [Release 页面](https://github.com/bahamutww/kun-lab/releases) 下载对应平台的安装包
    - Windows: `.exe` 安装程序（目前只支持Windows）
    - macOS: `.dmg` 安装包
    - Linux: `.AppImage` 或 `.deb` 包

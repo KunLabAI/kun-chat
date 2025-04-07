@@ -78,9 +78,19 @@ axios.interceptors.response.use(
   (error) => {
     console.error('Axios响应错误:', error.message || error)
     
+    // 检查请求配置是否设置了跳过错误处理
+    if (error.config?.skipErrorHandler) {
+      return Promise.reject(error);
+    }
+    
     // 处理401错误（未认证）
     if (error.response && error.response.status === 401) {
       console.warn('收到401未认证响应，可能需要重新登录')
+      
+      // 如果设置了跳过认证刷新，则不处理
+      if (error.config?.skipAuthRefresh) {
+        return Promise.reject(error);
+      }
       
       // 获取当前页面路径
       const currentPath = window.location.hash.substring(1) // 去掉#号

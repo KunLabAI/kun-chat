@@ -674,10 +674,7 @@
 /* 媒体查询 - 中等屏幕 (768px) */
 @media screen and (min-width: 512px) {
   .input-container {
-    bottom: 24px;
-    left: 48px;
-    right: 32px;
-    max-width: calc(100% - 64px);
+    width: 80%;
   }
   
   .chat-container.with-drawer .input-container {

@@ -867,6 +867,10 @@ export interface AboutMessages {
     installFailed: string;
     cancelInstall: string;
     installCancelled: string;
+    retryDownload: string;
+    noUpdates: string;
+    noRelease: string;
+    checkingFailed: string;
   };
   license: {
     title: string;
