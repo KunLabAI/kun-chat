@@ -27,7 +27,9 @@ const messages: Messages = {
       preview_code: 'Preview Code',
       html_preview: 'HTML Code Preview',
       open_in_new_window: 'Open in New Window',
-      close: 'Close'
+      close: 'Close',
+      expand_code: 'Expand Code',
+      collapse_code: 'Collapse Code'
     },
     notification: {
       close: 'Close Notification'
@@ -37,6 +39,7 @@ const messages: Messages = {
       cancel: 'Cancel',
       confirm: 'Confirm',
       delete: 'Delete',
+      copy:'copy',
       edit: 'Edit',
       add: 'Add',
       test: 'Test',
@@ -53,7 +56,8 @@ const messages: Messages = {
       learn_more: 'Learn More',
       update: 'Update',
       create: 'Create',
-      finish: 'Finish'
+      finish: 'Finish',
+      ok: 'OK'
     },
     status: {
       success: 'Success',
@@ -63,7 +67,8 @@ const messages: Messages = {
       loading: 'Loading...',
       enabled: 'Enabled',
       disabled: 'Disabled'
-    }
+    },
+    not_available: 'Not available'
   },
   settings: {
     title: 'Settings',
@@ -163,11 +168,9 @@ const messages: Messages = {
     general: {
       language: {
         title: 'Language Settings',
-        description: 'Select the application interface language'
       },
       theme: {
         title: 'Theme',
-        description: 'Choose the application theme',
         options: {
           light: 'Light',
           dark: 'Dark',
@@ -178,7 +181,7 @@ const messages: Messages = {
     tools: {
       tavily: {
         title: 'Tavily Search Settings',
-        description: 'Tavily is a powerful web search API that allows AI assistants to access the latest internet information.',
+        description: 'Tavily search requires users to register an account and obtain an API key.',
         api_key: {
           label: 'API Key',
           placeholder: 'Enter your Tavily API key',
@@ -188,6 +191,11 @@ const messages: Messages = {
         test_button: 'Test Connection',
         test_success: 'Connection successful',
         test_error: 'Connection failed',
+        connecting: 'Connecting...',
+        hide_key: 'Hide Key',
+        show_key: 'Show Key',
+        delete_key: 'Delete Key',
+        domain_format_error: 'Please enter a valid domain format',
         search_depth: {
           label: 'Search Depth',
           basic: 'Basic',
@@ -203,6 +211,29 @@ const messages: Messages = {
           label: 'Exclude Domains',
           description: 'Search results will exclude content from these domains',
           placeholder: 'Enter domain and press Enter to add (e.g. example.com)'
+        },
+        messages: {
+          api_key_cleared: 'API key cleared',
+          api_key_saved: 'API key saved, please click the "Test Connection" button to verify its validity',
+          search_depth_updated: 'Search depth updated successfully',
+          include_domains_updated: 'Include domains updated successfully',
+          exclude_domains_updated: 'Exclude domains updated successfully',
+          connection_test_success: 'Connection test successful, API key is valid',
+          api_key_verified: 'API key verification successful'
+        },
+        errors: {
+          clear_api_key_failed: 'Failed to clear API key',
+          get_settings_failed: 'Failed to get Tavily settings, please try again later',
+          invalid_api_key: 'Please enter a valid API key',
+          save_api_key_failed: 'Failed to save API key, please try again later',
+          update_search_depth_failed: 'Failed to update search depth',
+          update_include_domains_failed: 'Failed to update include domains',
+          update_exclude_domains_failed: 'Failed to update exclude domains',
+          connection_test_failed: 'Connection test failed'
+        },
+        warnings: {
+          domain_exists: 'This domain already exists',
+          set_api_key_first: 'Please set an API key first'
         }
       }
     },
@@ -214,7 +245,6 @@ const messages: Messages = {
           placeholder: 'Enter Ollama host address (e.g. http://localhost:11434)',
           description: 'Configure the connection address of the Ollama service'
         },
-        test_button: 'Test Connection',
         test_success: 'Connection successful',
         test_error: 'Connection failed',
         status: {
@@ -252,9 +282,10 @@ const messages: Messages = {
     favorite_models: {
       title: 'Favorite Models',
       view_more: 'More Models',
-      empty_state: {
-        title: 'No Favorite Models'
-      }
+    },
+    onboarding: {
+      install_ollama: 'Install Ollama',
+      pull_models: 'Pull Models',
     },
     new_chat: 'Start New Chat',
     delete_model: {
@@ -263,8 +294,9 @@ const messages: Messages = {
     }
   },
   history: {
-    title: 'Chat History',
-    subtitle: 'View and manage all your conversation history',
+    title: 'Conversation History',
+    subtitle: 'Browse and manage your conversation history',
+    loading: 'Loading conversation history...',
     select_all: 'Select All',
     delete_selected: 'Delete Selected',
     search_placeholder: 'Search conversations...',
@@ -272,7 +304,6 @@ const messages: Messages = {
     conversation_count: 'You have {0} conversations in total',
     empty_state: {
       title: 'No Conversations Yet',
-      subtitle: 'Start a new conversation to explore the possibilities of AI',
       start_chat: 'Start Conversation'
     },
     time_groups: {
@@ -297,7 +328,8 @@ const messages: Messages = {
       continue_chat: 'Continue Chat',
       image_message: '[Image Message]',
       images_message: '[{0} Images]',
-      pdf_document: '[PDF Document]'
+      pdf_document: '[PDF Document]',
+      loading_message: 'Loading conversation content...'
     },
     delete_dialog: {
       title: 'Confirm Deletion',
@@ -361,7 +393,9 @@ const messages: Messages = {
     create_model: 'Create Model',
     custom_model: 'Customize',
     pull_model: 'Pull Model',
-    empty_state: 'No models available. Please pull a new model.',
+    empty_state: {
+      title: 'No models available. Please pull a new model.',
+    },
     loading: "Loading models..." ,
     delete_dialog: {
       title: 'Confirm Deletion',
@@ -415,6 +449,7 @@ const messages: Messages = {
         expand: 'Expand',
         collapse: 'Collapse'
       },
+      system_prompt_title: 'System Prompt',
       info_labels: {
         name: 'Name',
         family: 'Family',
@@ -424,7 +459,8 @@ const messages: Messages = {
         created_at: 'Created At',
         modified_at: 'Modified At',
         format: 'Format',
-        system_prompt: 'System Prompt'
+        system_prompt: 'System Prompt',
+        system: 'System Prompt'
       },
       advanced_params: {
         architecture_type: 'Architecture Type',
@@ -462,7 +498,12 @@ const messages: Messages = {
         prefix: 'Prefix',
         type: 'Type',
         model: 'Model',
-        tokens: 'Tokens'
+        tokens: 'Tokens',
+        sliding_window: 'Sliding Window',
+        key_length: 'Key Length',
+        value_length: 'Value Length',
+        version: 'Version',
+        languages: 'Supported Languages'
       }
     },
     pull_page: {
@@ -658,6 +699,7 @@ const messages: Messages = {
     chat: 'Chat',
     models: 'Models',
     prompts: 'Prompts',
+    notes: 'Notes',
     history: 'History',
     user_menu: 'User Menu',
     login: 'Login',
@@ -666,9 +708,84 @@ const messages: Messages = {
     features_settings: 'System',
     community: 'Community',
     help_docs: 'Help',
+    about: 'About',
     logout: 'Logout',
     logo_tooltip: 'kun-lab',
     user_avatar: 'User Avatar'
+  },
+  notes: {
+    title: 'Notes',
+    subtitle: 'Manage and browse your notes',
+    create_note: 'Create Note',
+    edit_note: 'Edit Note',
+    create_subtitle: 'Record your thoughts, insights and inspirations',
+    edit_subtitle: 'Update your note content',
+    quick_note: 'Quick Note',
+    preview: 'Preview',
+    saved_from_chat: 'Successfully saved to notes',
+    toggle_preview: 'Toggle Preview',
+    back_to_edit: 'Back to Edit',
+    preview_empty: 'Nothing to preview',
+    preview_requires_content: 'Please enter some content to preview',
+    stats: {
+      lines: 'lines',
+      chars: 'chars'
+    },
+    empty_state: {
+      title: 'No Notes',
+      subtitle: 'Create your first note'
+    },
+    search_placeholder: 'Search notes...',
+    search_empty: {
+      title: 'No matching notes',
+      subtitle: 'Try a different search term',
+      clear_button: 'Clear Search'
+    },
+    delete_dialog: {
+      title: 'Delete Note',
+      confirm_message: 'Are you sure you want to delete this note? This action cannot be undone.'
+    },
+    cancel_dialog: {
+      title: 'Discard Changes',
+      message: 'You have unsaved changes. Are you sure you want to discard them?',
+      confirm: 'Discard',
+      cancel: 'Continue Editing'
+    },
+    notifications: {
+      create_success: 'Note created successfully',
+      create_error: 'Failed to create note',
+      update_success: 'Note updated successfully',
+      update_error: 'Failed to update note',
+      delete_success: 'Note deleted',
+      delete_error: 'Failed to delete note',
+      load_error: 'Failed to load notes',
+      export_success: 'Note exported successfully',
+      export_error: 'Failed to export note'
+    },
+    card: {
+      time_format: {
+        today: 'Today',
+        yesterday: 'Yesterday',
+        this_week: 'This Week',
+        date: 'Date'
+      },
+      conversation_note: 'Conversation Note',
+      edit: 'Edit',
+      delete: 'Delete'
+    },
+    form: {
+      title_label: 'Title',
+      title_placeholder: 'Enter note title',
+      title_required: 'Title is required',
+      content_label: 'Content',
+      content_placeholder: 'Enter note content...',
+      content_required: 'Content is required'
+    },
+    export: {
+      button: 'Export',
+      tooltip: 'Export as Markdown file',
+      empty_content: 'Note content is empty, cannot export'
+    }
   },
   chat: {
     confirm_clear: {
@@ -685,10 +802,6 @@ const messages: Messages = {
       expand: 'Expand',
       collapse: 'Collapse'
     },
-    message_actions: {
-      copy: 'Copy',
-      delete: 'Delete'
-    },
     file_preview: {
       pdf_document: 'PDF Document',
       show_content: 'Show Content',
@@ -702,6 +815,7 @@ const messages: Messages = {
         excel: 'Excel Spreadsheet',
         csv: 'CSV Spreadsheet',
         ppt: 'PowerPoint Presentation',
+        html: 'HTML Document'
       },
       file_size: 'File Size'
     },
@@ -721,9 +835,17 @@ const messages: Messages = {
       },
       remove_file: 'Remove File'
     },
+    message_actions: {
+      copy: 'Copy',
+      delete: 'Delete',
+      selected_copy: 'Copy Selected Text',
+      save_to_note: 'Save to Notes',
+      selected_save: 'Save Selection to Notes'
+    },
     notifications: {
       copy_success: 'Copied successfully',
       copy_error: 'Copy failed: ',
+      saved_to_note: 'Content saved to notes',
       clear_success: 'Chat cleared successfully',
       clear_error: 'Failed to clear chat: ',
       image_upload_success: 'Image uploaded successfully',
@@ -744,6 +866,76 @@ const messages: Messages = {
       connection_timeout: 'WebSocket connection timeout, please try again later',
       retry_connecting: 'WebSocket connection timeout, retrying ({count}/{max})...',
       server_connection_failed: 'Failed to connect to server, please check your network or server status'
+    }
+  },
+  about: {
+    title: 'About',
+    subtitle: 'Learn about Kun-Lab application',
+    tabs: {
+      app: 'Application',
+      license: 'License',
+      changelog: 'Changelog'
+    },
+    appInfo: {
+      title: 'Application Introduction',
+      description: 'Kun-Lab is a lightweight AI chat application based on Ollama',
+      details: 'Application Details',
+      developer: 'Development Team',
+      developerText: 'Zack、Benny',
+      website: 'Official Website',
+      websiteText: 'lab.kunpuai.com',
+      email: 'Support Email',
+      github: 'GitHub Community',
+      githubText: 'github.com/bahamutww/kun-lab.git',
+      versionInfo: 'Version Information',
+      version: 'Current Version',
+      versionDesc: 'Current application version',
+      electronVersion: 'Electron Version',
+      electronVersionDesc: 'The version of Electron framework used by the application',
+      lastCheck: 'Last Update Check',
+      lastCheckDesc: 'Time of the last update check',
+      never: 'Never',
+      checkNow: 'Check for Updates',
+      checking: 'Checking for updates...',
+      checkUpdate: 'Check for Updates',
+      updateSettings: 'Update Settings',
+      autoCheck: 'Auto-check for Updates',
+      autoCheckDesc: 'Automatically check for updates at the specified time',
+      checkFrequency: 'Check Frequency',
+      checkFrequencyDesc: 'Set the frequency for automatic update checks',
+      frequency: {
+        startup: 'At Startup',
+        daily: 'Daily',
+        weekly: 'Weekly',
+        monthly: 'Monthly'
+      },
+      updateStatus: 'Update Status',
+      upToDate: 'Up to date',
+      updateAvailable: 'New version available: v{version}',
+      downloading: 'Downloading update: {progress}%',
+      readyToInstall: 'Update ready to install',
+      updateError: 'Update error: {error}',
+      downloadNow: 'Download Now',
+      installNow: 'Install Now',
+      downloadFailed: 'Failed to download update',
+      checkFailed: 'Failed to check for updates',
+      downloadSuccess: 'Update downloaded successfully',
+      installSuccess: 'Update installed successfully',
+      installFailed: 'Failed to install update',
+      cancelInstall: 'Cancel Install',
+      installCancelled: 'Install cancelled'
+    },
+    license: {
+      title: 'License Information',
+      loading: 'Loading license information...',
+      error: 'Failed to load license information'
+    },
+    changelog: {
+      title: 'Changelog',
+      description: 'View the latest updates and improvements to Kun-Lab',
+      viewOnGithub: 'View full changelog on GitHub',
+      loading: 'Loading changelog...',
+      error: 'Failed to load changelog'
     }
   }
 };

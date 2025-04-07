@@ -21,6 +21,8 @@ export interface CommonMessages {
     html_preview: string;
     open_in_new_window: string;
     close: string;
+    expand_code: string;
+    collapse_code: string;
   };
   notification: {
     close: string;
@@ -30,6 +32,7 @@ export interface CommonMessages {
     cancel: string;
     confirm: string;
     delete: string;
+    copy:string;
     edit: string;
     add: string;
     test: string;
@@ -47,6 +50,7 @@ export interface CommonMessages {
     update: string;
     create: string;
     finish: string;
+    ok: string;
   };
   status: {
     success: string;
@@ -57,6 +61,7 @@ export interface CommonMessages {
     enabled: string;
     disabled: string;
   };
+  not_available: string;
 }
 
 // 设置类型
@@ -158,11 +163,9 @@ export interface SettingsMessages {
   general: {
     language: {
       title: string;
-      description: string;
     };
     theme: {
       title: string;
-      description: string;
       options: {
         light: string;
         dark: string;
@@ -183,6 +186,11 @@ export interface SettingsMessages {
       test_button: string;
       test_success: string;
       test_error: string;
+      connecting: string;
+      hide_key: string;
+      show_key: string;
+      delete_key: string;
+      domain_format_error: string;
       search_depth: {
         label: string;
         basic: string;
@@ -199,6 +207,29 @@ export interface SettingsMessages {
         description: string;
         placeholder: string;
       };
+      messages: {
+        api_key_cleared: string;
+        api_key_saved: string;
+        search_depth_updated: string;
+        include_domains_updated: string;
+        exclude_domains_updated: string;
+        connection_test_success: string;
+        api_key_verified: string;
+      };
+      errors: {
+        clear_api_key_failed: string;
+        get_settings_failed: string;
+        invalid_api_key: string;
+        save_api_key_failed: string;
+        update_search_depth_failed: string;
+        update_include_domains_failed: string;
+        update_exclude_domains_failed: string;
+        connection_test_failed: string;
+      };
+      warnings: {
+        domain_exists: string;
+        set_api_key_first: string;
+      };
     };
   };
   connection: {
@@ -209,7 +240,6 @@ export interface SettingsMessages {
         placeholder: string;
         description: string;
       };
-      test_button: string;
       test_success: string;
       test_error: string;
       status: {
@@ -251,9 +281,10 @@ export interface HomeMessages {
   favorite_models: {
     title: string;
     view_more: string;
-    empty_state: {
-      title: string;
-    };
+  };
+  onboarding: {
+    install_ollama: string;
+    pull_models: string;
   };
   new_chat: string;
   delete_model: {
@@ -266,6 +297,7 @@ export interface HomeMessages {
 export interface HistoryMessages {
   title: string;
   subtitle: string;
+  loading: string;
   select_all: string;
   delete_selected: string;
   search_placeholder: string;
@@ -273,7 +305,6 @@ export interface HistoryMessages {
   conversation_count: string;
   empty_state: {
     title: string;
-    subtitle: string;
     start_chat: string;
   };
   time_groups: {
@@ -299,6 +330,7 @@ export interface HistoryMessages {
     image_message: string;
     images_message: string;
     pdf_document: string;
+    loading_message: string;
   };
   delete_dialog: {
     title: string;
@@ -366,7 +398,9 @@ export interface ModelMessages {
   create_model: string;
   custom_model: string;
   pull_model: string;
-  empty_state: string;
+  empty_state: {
+    title: string;
+  };
   loading: string;
   delete_dialog: {
     title: string;
@@ -420,6 +454,7 @@ export interface ModelMessages {
       expand: string;
       collapse: string;
     };
+    system_prompt_title: string;
     info_labels: {
       name: string;
       family: string;
@@ -430,6 +465,7 @@ export interface ModelMessages {
       modified_at: string;
       format: string;
       system_prompt: string;
+      system: string;
     };
     advanced_params: {
       // 架构参数
@@ -465,6 +501,11 @@ export interface ModelMessages {
       
       // 新版注意力参数
       rope_dimension: string;
+      sliding_window: string;
+      key_length: string;
+      value_length: string;
+      version: string;
+      languages: string;
       
       // 分词器参数
       tokenizer_type: string;
@@ -690,10 +731,6 @@ export interface ChatMessages {
     expand: string;
     collapse: string;
   };
-  message_actions: {
-    copy: string;
-    delete: string;
-  };
   file_preview: {
     pdf_document: string;
     show_content: string;
@@ -707,6 +744,7 @@ export interface ChatMessages {
       excel: string;
       csv: string;
       ppt: string;
+      html: string;
     };
     file_size: string;
 
@@ -727,9 +765,17 @@ export interface ChatMessages {
     };
     remove_file: string;
   };
+  message_actions: {
+    copy: string;
+    delete: string;
+    selected_copy: string;
+    save_to_note: string;
+    selected_save: string;
+  };
   notifications: {
     copy_success: string;
     copy_error: string;
+    saved_to_note: string;
     clear_success: string;
     clear_error: string;
     image_upload_success: string;
@@ -764,12 +810,85 @@ export interface StatusMessages {
   disabled: string;
 }
 
+// 关于页面消息类型
+export interface AboutMessages {
+  title: string;
+  subtitle: string;
+  tabs: {
+    app: string;
+    license: string;
+    changelog: string;
+  };
+  appInfo: {
+    title: string;
+    description: string;
+    details: string;
+    developer: string;
+    developerText: string;
+    website: string;
+    websiteText: string;
+    email: string;
+    github: string;
+    githubText: string;
+    versionInfo: string;
+    version: string;
+    versionDesc: string;
+    electronVersion: string;
+    electronVersionDesc: string;
+    lastCheck: string;
+    lastCheckDesc: string;
+    never: string;
+    checkNow: string;
+    checking: string;
+    checkUpdate: string;
+    updateSettings: string;
+    autoCheck: string;
+    autoCheckDesc: string;
+    checkFrequency: string;
+    checkFrequencyDesc: string;
+    frequency: {
+      startup: string;
+      daily: string;
+      weekly: string;
+      monthly: string;
+    };
+    updateStatus: string;
+    upToDate: string;
+    updateAvailable: string;
+    downloading: string;
+    readyToInstall: string;
+    updateError: string;
+    downloadNow: string;
+    installNow: string;
+    downloadFailed: string;
+    checkFailed: string;
+    downloadSuccess: string;
+    installSuccess: string;
+    installFailed: string;
+    cancelInstall: string;
+    installCancelled: string;
+  };
+  license: {
+    title: string;
+    loading: string;
+    error: string;
+  };
+  changelog: {
+    title: string;
+    description: string;
+    viewOnGithub: string;
+    loading: string;
+    error: string;
+  };
+}
+
 // 侧边栏消息类型
 export interface SidebarMessages {
   home: string;
   chat: string;
   models: string;
   prompts: string;
+  notes: string;
   history: string;
   user_menu: string;
   login: string;
@@ -778,9 +897,86 @@ export interface SidebarMessages {
   features_settings: string;
   community: string;
   help_docs: string;
+  about: string;
   logout: string;
   logo_tooltip: string;
   user_avatar: string;
+}
+
+// 笔记类型
+export interface NotesMessages {
+  title: string;
+  subtitle: string;
+  create_note: string;
+  edit_note: string;
+  create_subtitle: string;
+  edit_subtitle: string;
+  quick_note: string;
+  preview: string;
+  saved_from_chat: string;
+  toggle_preview: string;
+  back_to_edit: string;
+  preview_empty: string;
+  preview_requires_content: string;
+  stats: {
+    lines: string;
+    chars: string;
+  };
+  empty_state: {
+    title: string;
+    subtitle: string;
+  };
+  search_placeholder: string;
+  search_empty: {
+    title: string;
+    subtitle: string;
+    clear_button: string;
+  };
+  delete_dialog: {
+    title: string;
+    confirm_message: string;
+  };
+  cancel_dialog: {
+    title: string;
+    message: string;
+    confirm: string;
+    cancel: string;
+  };
+  notifications: {
+    create_success: string;
+    create_error: string;
+    update_success: string;
+    update_error: string;
+    delete_success: string;
+    delete_error: string;
+    load_error: string;
+    export_success: string;
+    export_error: string;
+  };
+  card: {
+    time_format: {
+      today: string;
+      yesterday: string;
+      this_week: string;
+      date: string;
+    };
+    conversation_note: string;
+    edit: string;
+    delete: string;
+  };
+  form: {
+    title_label: string;
+    title_placeholder: string;
+    title_required: string;
+    content_label: string;
+    content_placeholder: string;
+    content_required: string;
+  };
+  export: {
+    button: string;
+    tooltip: string;
+    empty_content: string;
+  };
 }
 
 // 完整的消息类型
@@ -792,9 +988,11 @@ export interface Messages {
   history: HistoryMessages;
   prompt: PromptMessages;
   model: ModelMessages;
+  notes: NotesMessages;
   status: StatusMessages;
   sidebar: SidebarMessages;
   chat: ChatMessages;
+  about: AboutMessages;
 }
 
 // 声明模块扩展 vue-i18n

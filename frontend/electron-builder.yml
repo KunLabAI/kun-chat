@@ -1,0 +1,38 @@
+appId: com.kunlab.app
+productName: Kun-Lab
+directories:
+  output: dist_electron
+files:
+  - dist/**/*
+  - electron/**/*
+extraResources:
+  - from: ../backend/dist
+    to: backend
+    filter:
+      - "**/*"
+    on:
+      mac:
+        permissions: 755
+publish:
+  provider: github
+  owner: bahamutww
+  repo: KunyuAI
+  private: false
+win:
+  target:
+    - nsis
+  icon: public/icon.ico
+mac:
+  target:
+    - dmg
+    - zip
+  icon: public/icon.icns
+  category: public.app-category.productivity
+  darkModeSupport: true
+linux:
+  target:
+    - AppImage
+    - deb
+    - rpm
+  icon: public/icon.png
+  category: Office 

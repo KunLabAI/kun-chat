@@ -113,9 +113,12 @@
 
           <!-- 空状态 -->
           <div v-else class="empty-state">
-            <ChatBubbleLeftRightIcon class="empty-icon" />
+            <img 
+              src="@/assets/illustration/chathistoryempty.png" 
+              alt="No chat history"
+              class="empty-state-image"
+            />
             <h3 class="empty-title">{{ t('history.empty_state.title') }}</h3>
-            <p class="empty-subtitle">{{ t('history.empty_state.subtitle') }}</p>
             <Button
               variant="secondary"
               size="lg"

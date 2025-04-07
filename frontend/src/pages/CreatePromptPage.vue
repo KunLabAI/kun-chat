@@ -227,7 +227,6 @@ async function handleSubmit() {
         updated_at: new Date().toISOString()
       }
       await promptStore.updatePrompt(updateData)
-      notification.success(t('prompt.notifications.update_success'))
     } else {
       await promptStore.createPrompt(promptData)
       notification.success(t('prompt.notifications.create_success'))

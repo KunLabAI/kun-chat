@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-container">
+  <div class="auth-container" :class="{ 'electron-mode': isElectron }">
     <!-- 星空背景 -->
     <div class="auth-starry-background">
       <StarryBackground />
@@ -77,7 +77,7 @@
       </div>
     </div>
     <footer class="auth-footer">
-      2025 <a href="https://kunpuai.com" target="_blank" rel="noopener">KunpuAI</a>, Inc. All rights reserved.
+      2025 <a href="https://lab.kunpuai.com/" target="_blank" rel="noopener">KunpuAI</a>, Inc. All rights reserved.
     </footer>
   </div>
 </template>
@@ -99,12 +99,22 @@ const notificationStore = useNotificationStore()
 const username = ref('')
 const password = ref('')
 const loading = ref(false)
+const isElectron = ref(false)
+
+// 检测是否在 Electron 环境中
+onMounted(() => {
+  isElectron.value = window && 'electronAPI' in window
+  tryAutoLogin()
+})
 
 const isFormValid = computed(() => username.value && password.value)
 
 // 尝试自动登录
 const tryAutoLogin = async () => {
-  const token = localStorage.getItem('token')
+  // 获取最后登录的用户名
+  const lastLoggedUser = localStorage.getItem('kunlab_last_user')
+  // 如果有最后登录用户，则尝试读取对应token
+  const token = lastLoggedUser ? localStorage.getItem(`kunlab_user_token_${lastLoggedUser}`) : null
   // 检查是否是第一次启动应用，如果是，则不进行自动登录
   const isFirstLaunch = localStorage.getItem('firstLaunch') !== 'false'
   
@@ -125,7 +135,10 @@ const tryAutoLogin = async () => {
       router.push('/')
     } catch (err) {
       console.error('自动登录失败:', err)
-      localStorage.removeItem('token')
+      // 如果自动登录失败，则清除该用户的token
+      if (lastLoggedUser) {
+        localStorage.removeItem(`kunlab_user_token_${lastLoggedUser}`)
+      }
     } finally {
       loading.value = false
     }
@@ -134,11 +147,6 @@ const tryAutoLogin = async () => {
     localStorage.setItem('firstLaunch', 'false')
   }
 }
-
-// 组件加载时尝试自动登录
-onMounted(() => {
-  tryAutoLogin()
-})
 
 async function handleLogin() {
   if (!isFormValid.value) {
@@ -150,17 +158,30 @@ async function handleLogin() {
   try {
     const response = await authApi.login(username.value, password.value)
     
-    // 保存token和用户信息到store
-    authStore.setToken(response.access_token)
+    console.log('登录响应:', response)
+    
+    // 提取token
+    const access_token = response.access_token
+    
+    // 保存用户信息和token到store
     authStore.setUser({
       username: response.username,
       nickname: response.nickname || response.username,
       email: response.email || '',
       avatar: response.avatar || ''
     })
+    authStore.setToken(access_token)
 
-    // 确保token被正确存储到localStorage
-    localStorage.setItem('token', response.access_token)
+    // 确保token同时保存在新旧两种格式
+    localStorage.setItem('token', access_token)
+    localStorage.setItem(`kunlab_user_token_${response.username}`, access_token)
+    localStorage.setItem('kunlab_last_user', response.username)
+    
+    console.log('登录后token已保存:', 
+      '旧格式:', !!localStorage.getItem('token'), 
+      '新格式:', !!localStorage.getItem(`kunlab_user_token_${response.username}`),
+      '最后登录用户:', localStorage.getItem('kunlab_last_user')
+    )
 
     // 显示成功消息
     notificationStore.showSuccess('登录成功')
@@ -184,7 +205,6 @@ async function handleLogin() {
         errorMessage = '用户不存在'
       }
     }
-
 
     notificationStore.showError(errorMessage)
   } finally {

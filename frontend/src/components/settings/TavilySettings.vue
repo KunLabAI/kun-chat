@@ -1,30 +1,30 @@
 <!-- Tavily搜索设置组件 -->
 <template>
   <div class="tavily-settings-section">
-    <h3 class="tavily-section-title">{{ $t('settings.tools.tavily.title') }}</h3>
+    <h3 class="tavily-section-title">{{ t('settings.tools.tavily.title') }}</h3>
     <div class="tavily-section-content">
       <p class="tavily-setting-description mb-4">
-        {{ $t('settings.tools.tavily.description') }}
-        <a href="https://tavily.com" target="_blank" class="text-primary-600 hover:underline">{{ $t('common.actions.learn_more') }}</a>
+        {{ t('settings.tools.tavily.description') }}
+        <a href="https://tavily.com" target="_blank" class="text-primary-600 hover:underline">{{ t('common.actions.learn_more') }}</a>
       </p>
 
       <!-- API密钥 -->
       <div class="tavily-features-form-group">
-        <label class="tavily-features-form-label">{{ $t('settings.tools.tavily.api_key.label') }}</label>
+        <label class="tavily-features-form-label">{{ t('settings.tools.tavily.api_key.label') }}</label>
         <div class="tavily-features-api-key-container">
           <input 
             :type="showApiKey ? 'text' : 'password'" 
             v-model="tavilyApiKey"
             class="tavily-features-form-input"
             :disabled="loading.tavilyApiKey"
-            :placeholder="$t('settings.tools.tavily.api_key.placeholder')"
+            :placeholder="t('settings.tools.tavily.api_key.placeholder')"
           >
           <div class="tavily-features-api-key-actions">
             <button
               @click="toggleShowApiKey"
               class="tavily-features-api-key-action"
               type="button"
-              :title="showApiKey ? '隐藏密钥' : '显示密钥'"
+              :title="showApiKey ? t('settings.tools.tavily.hide_key') : t('settings.tools.tavily.show_key')"
               :disabled="!tavilyApiKey || tavilyApiKey.trim() === ''"
               :class="{ 'tavily-features-api-key-action-disabled': !tavilyApiKey || tavilyApiKey.trim() === '' }"
             >
@@ -34,7 +34,7 @@
               @click="clearApiKey"
               class="tavily-features-api-key-action"
               type="button"
-              title="删除密钥"
+              :title="t('settings.tools.tavily.delete_key')"
               :disabled="!tavilyApiKey || tavilyApiKey.trim() === ''"
               :class="{ 'tavily-features-api-key-action-disabled': !tavilyApiKey || tavilyApiKey.trim() === '' }"
             >
@@ -44,7 +44,7 @@
               @click="updateTavilyApiKey"
               class="tavily-features-api-key-action"
               :disabled="loading.tavilyApiKey"
-              :title="$t('common.actions.save')"
+              :title="t('common.actions.save')"
             >
               <img v-if="!loading.tavilyApiKey" :src="saveIcon" alt="save" />
               <div v-else class="tavily-loader-container">
@@ -54,7 +54,7 @@
           </div>
         </div>
         <p class="tavily-features-form-hint">
-          {{ $t('settings.tools.tavily.apiKeyHint') }}
+          {{ t('settings.tools.tavily.apiKeyHint') }}
         </p>
       </div>
       
@@ -69,12 +69,13 @@
           size="sm"
         >
           <template v-if="loading.tavilyTest">
-            <div class="tavily-button-loader">
-              <DotLoader />
+            <div class="tavily-refresh-icon-container">
+              <img :src="refreshIcon" alt="refresh" class="tavily-refresh-icon" />
+              {{ t('settings.tools.tavily.connecting') || '连接中...' }}
             </div>
           </template>
           <template v-else>
-            {{ $t('settings.tools.tavily.test_button') }}
+            {{ t('settings.tools.tavily.test_button') }}
           </template>
         </Button>
         <p v-if="tavilyTestResult" 
@@ -86,7 +87,7 @@
 
       <!-- 搜索深度 -->
       <div class="tavily-features-form-group">
-        <label class="tavily-features-form-label">{{ $t('settings.tools.tavily.search_depth.label') }}</label>
+        <label class="tavily-features-form-label">{{ t('settings.tools.tavily.search_depth.label') }}</label>
         <div class="tavily-features-toggle-group">
           <button 
             @click="selectSearchDepth('basic')"
@@ -94,7 +95,7 @@
             :class="{ 'tavily-features-toggle-button-active': tavilySearchDepth === 'basic' }"
             :disabled="loading.tavilySettings"
           >
-            {{ $t('settings.tools.tavily.search_depth.basic') }}
+            {{ t('settings.tools.tavily.search_depth.basic') }}
           </button>
           <button 
             @click="selectSearchDepth('advanced')"
@@ -102,14 +103,14 @@
             :class="{ 'tavily-features-toggle-button-active': tavilySearchDepth === 'advanced' }"
             :disabled="loading.tavilySettings"
           >
-            {{ $t('settings.tools.tavily.search_depth.advanced') }}
+            {{ t('settings.tools.tavily.search_depth.advanced') }}
           </button>
         </div>
       </div>
 
       <!-- 包含域名 -->
       <div class="tavily-features-form-group">
-        <label class="tavily-features-form-label">{{ $t('settings.tools.tavily.include_domains.label') }}</label>
+        <label class="tavily-features-form-label">{{ t('settings.tools.tavily.include_domains.label') }}</label>
         
         <div class="tavily-features-tags-container">
           <div 
@@ -135,19 +136,19 @@
             class="tavily-features-form-input"
             :class="{ 'border-red-500': newIncludeDomain && !isValidDomain(newIncludeDomain) }"
             :disabled="loading.tavilySettings"
-            :placeholder="$t('settings.tools.tavily.include_domains.placeholder')"
+            :placeholder="t('settings.tools.tavily.include_domains.placeholder')"
             @keyup.enter="addIncludeDomainAndSave"
             @input="validateIncludeDomain"
           >
           <p v-if="newIncludeDomain && !isValidDomain(newIncludeDomain)" class="text-red-500 text-xs mt-1">
-            请输入有效的域名格式
+            {{ t('settings.tools.tavily.domain_format_error') }}
           </p>
         </div>
       </div>
 
       <!-- 排除域名 -->
       <div class="tavily-features-form-group mt-4">
-        <label class="tavily-features-form-label">{{ $t('settings.tools.tavily.exclude_domains.label') }}</label>
+        <label class="tavily-features-form-label">{{ t('settings.tools.tavily.exclude_domains.label') }}</label>
         
         <div class="tavily-features-tags-container">
           <div 
@@ -173,12 +174,12 @@
             class="tavily-features-form-input"
             :class="{ 'border-red-500': newExcludeDomain && !isValidDomain(newExcludeDomain) }"
             :disabled="loading.tavilySettings"
-            :placeholder="$t('settings.tools.tavily.exclude_domains.placeholder')"
+            :placeholder="t('settings.tools.tavily.exclude_domains.placeholder')"
             @keyup.enter="addExcludeDomainAndSave"
             @input="validateExcludeDomain"
           >
           <p v-if="newExcludeDomain && !isValidDomain(newExcludeDomain)" class="text-red-500 text-xs mt-1">
-            请输入有效的域名格式
+            {{ t('settings.tools.tavily.domain_format_error') }}
           </p>
         </div>
       </div>
@@ -197,6 +198,7 @@ import eyeOnIcon from '@/assets/icons/sys_eyeon.svg'
 import eyeOffIcon from '@/assets/icons/sys_eyeoff.svg'
 import deleteIcon from '@/assets/icons/model_delete.svg'
 import saveIcon from '@/assets/icons/sys_save.svg'
+import refreshIcon from '@/assets/icons/sys_refresh.svg'
 
 const { t } = useI18n()
 const notificationStore = useNotificationStore()
@@ -236,10 +238,10 @@ const clearApiKey = async () => {
     await toolsApi.updateTavilySettings({
       api_key: ''
     })
-    notificationStore.success('API密钥已清除')
+    notificationStore.success(t('settings.tools.tavily.messages.api_key_cleared'))
   } catch (error) {
     console.error('清除API密钥失败:', error)
-    notificationStore.error('清除API密钥失败')
+    notificationStore.error(t('settings.tools.tavily.errors.clear_api_key_failed'))
     
     // 恢复原值
     await fetchTavilySettings()
@@ -264,7 +266,7 @@ const fetchTavilySettings = async () => {
     }
   } catch (error) {
     console.error('获取Tavily设置失败:', error)
-    notificationStore.error('获取Tavily设置失败，请稍后重试')
+    notificationStore.error(t('settings.tools.tavily.errors.get_settings_failed'))
     
     // 设置默认值，避免界面显示异常
     tavilyApiKey.value = ''
@@ -277,7 +279,7 @@ const fetchTavilySettings = async () => {
 // 更新Tavily API密钥
 const updateTavilyApiKey = async () => {
   if (!tavilyApiKey.value || tavilyApiKey.value.trim() === '') {
-    notificationStore.error('请输入有效的API密钥')
+    notificationStore.error(t('settings.tools.tavily.errors.invalid_api_key'))
     return
   }
   
@@ -290,14 +292,14 @@ const updateTavilyApiKey = async () => {
       api_key: tavilyApiKey.value
     })
     console.log('API密钥保存成功:', result)
-    notificationStore.success('API密钥已保存，请点击"测试连接"按钮验证其有效性')
+    notificationStore.success(t('settings.tools.tavily.messages.api_key_saved'))
     showApiKey.value = false
     
     // 更新完成后重新加载设置
     await fetchTavilySettings()
   } catch (error) {
     console.error('保存API密钥失败:', error)
-    notificationStore.error('保存API密钥失败，请稍后重试')
+    notificationStore.error(t('settings.tools.tavily.errors.save_api_key_failed'))
   } finally {
     loading.value.tavilyApiKey = false
   }
@@ -316,10 +318,10 @@ const selectSearchDepth = async (depth) => {
     await toolsApi.updateTavilySettings({
       search_depth: depth
     })
-    notificationStore.success('搜索深度更新成功')
+    notificationStore.success(t('settings.tools.tavily.messages.search_depth_updated'))
   } catch (error) {
     console.error('更新搜索深度失败:', error)
-    notificationStore.error('更新搜索深度失败')
+    notificationStore.error(t('settings.tools.tavily.errors.update_search_depth_failed'))
     
     // 恢复原值
     tavilySearchDepth.value = originalDepth
@@ -333,6 +335,18 @@ const isValidDomain = (domain) => {
   // 域名格式验证正则表达式
   const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/i;
   return domainRegex.test(domain);
+}
+
+// 验证包含域名
+const validateIncludeDomain = () => {
+  // 此方法仅用于触发界面更新
+  // 实际验证逻辑在isValidDomain中
+}
+
+// 验证排除域名
+const validateExcludeDomain = () => {
+  // 此方法仅用于触发界面更新
+  // 实际验证逻辑在isValidDomain中
 }
 
 // 添加包含域名
@@ -350,7 +364,7 @@ const addIncludeDomainAndSave = async () => {
   if (!newIncludeDomain.value) return
   
   if (includeDomains.value.includes(newIncludeDomain.value)) {
-    notificationStore.warning('该域名已存在')
+    notificationStore.warning(t('settings.tools.tavily.warnings.domain_exists'))
     return
   }
   
@@ -363,11 +377,11 @@ const addIncludeDomainAndSave = async () => {
     await toolsApi.updateTavilySettings({
       include_domains: includeDomains.value
     })
-    notificationStore.success('包含域名更新成功')
+    notificationStore.success(t('settings.tools.tavily.messages.include_domains_updated'))
     newIncludeDomain.value = ''
   } catch (error) {
     console.error('更新包含域名失败:', error)
-    notificationStore.error('更新包含域名失败')
+    notificationStore.error(t('settings.tools.tavily.errors.update_include_domains_failed'))
     
     // 恢复原值
     includeDomains.value.pop()
@@ -390,10 +404,10 @@ const removeIncludeDomain = async (index) => {
     await toolsApi.updateTavilySettings({
       include_domains: includeDomains.value
     })
-    notificationStore.success('包含域名更新成功')
+    notificationStore.success(t('settings.tools.tavily.messages.include_domains_updated'))
   } catch (error) {
     console.error('更新包含域名失败:', error)
-    notificationStore.error('更新包含域名失败')
+    notificationStore.error(t('settings.tools.tavily.errors.update_include_domains_failed'))
     
     // 恢复原值
     await fetchTavilySettings()
@@ -417,7 +431,7 @@ const addExcludeDomainAndSave = async () => {
   if (!newExcludeDomain.value) return
   
   if (excludeDomains.value.includes(newExcludeDomain.value)) {
-    notificationStore.warning('该域名已存在')
+    notificationStore.warning(t('settings.tools.tavily.warnings.domain_exists'))
     return
   }
   
@@ -430,11 +444,11 @@ const addExcludeDomainAndSave = async () => {
     await toolsApi.updateTavilySettings({
       exclude_domains: excludeDomains.value
     })
-    notificationStore.success('排除域名更新成功')
+    notificationStore.success(t('settings.tools.tavily.messages.exclude_domains_updated'))
     newExcludeDomain.value = ''
   } catch (error) {
     console.error('更新排除域名失败:', error)
-    notificationStore.error('更新排除域名失败')
+    notificationStore.error(t('settings.tools.tavily.errors.update_exclude_domains_failed'))
     
     // 恢复原值
     excludeDomains.value.pop()
@@ -457,10 +471,10 @@ const removeExcludeDomain = async (index) => {
     await toolsApi.updateTavilySettings({
       exclude_domains: excludeDomains.value
     })
-    notificationStore.success('排除域名更新成功')
+    notificationStore.success(t('settings.tools.tavily.messages.exclude_domains_updated'))
   } catch (error) {
     console.error('更新排除域名失败:', error)
-    notificationStore.error('更新排除域名失败')
+    notificationStore.error(t('settings.tools.tavily.errors.update_exclude_domains_failed'))
     
     // 恢复原值
     await fetchTavilySettings()
@@ -472,7 +486,7 @@ const removeExcludeDomain = async (index) => {
 // 测试Tavily API连接
 const testTavilyConnection = async () => {
   if (!tavilyApiKey.value) {
-    notificationStore.warning('请先设置API密钥')
+    notificationStore.warning(t('settings.tools.tavily.warnings.set_api_key_first'))
     return
   }
   
@@ -486,14 +500,14 @@ const testTavilyConnection = async () => {
     
     tavilyTestResult.value = {
       success: true,
-      message: '连接测试成功，API密钥有效'
+      message: t('settings.tools.tavily.messages.connection_test_success')
     }
-    notificationStore.success('API密钥验证成功')
+    notificationStore.success(t('settings.tools.tavily.messages.api_key_verified'))
   } catch (error) {
     console.error('测试Tavily API连接失败:', error)
     
     // 提取详细的错误信息
-    let errorMessage = '连接测试失败'
+    let errorMessage = t('settings.tools.tavily.errors.connection_test_failed')
     
     if (error.response && error.response.data && error.response.data.detail) {
       // 直接使用后端返回的友好错误消息

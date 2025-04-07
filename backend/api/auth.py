@@ -17,12 +17,14 @@ from pathlib import Path
 # 添加父目录到Python路径
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import ERROR_MESSAGES, SECURITY_CONFIG
+from data_path import get_avatars_dir
 
 logger = logging.getLogger(__name__)
 
 # 密码验证规则
 PASSWORD_RULES = {
-    "length": 6,
+    "min_length": 6,
+    "max_length": 20,
     "allowed_chars": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 }
 
@@ -207,8 +209,8 @@ def validate_password_strength(password: str) -> tuple[bool, str]:
     验证密码强度
     返回: (是否通过验证, 错误信息)
     """
-    if len(password) != PASSWORD_RULES["length"]:
-        return False, f"密码长度必须为{PASSWORD_RULES['length']}个字符"
+    if len(password) < PASSWORD_RULES["min_length"] or len(password) > PASSWORD_RULES["max_length"]:
+        return False, f"密码长度必须为{PASSWORD_RULES['min_length']}-{PASSWORD_RULES['max_length']}个字符"
     
     if not all(c in PASSWORD_RULES["allowed_chars"] for c in password):
         return False, "密码只能包含英文字母和数字"
@@ -605,14 +607,14 @@ async def update_avatar(
                 detail="只允许上传图片文件"
             )
         
-        # 创建上传目录
-        upload_dir = Path("static/avatars")
-        upload_dir.mkdir(parents=True, exist_ok=True)
+        # 获取头像目录并确保目录存在
+        avatars_dir = get_avatars_dir()
+        os.makedirs(avatars_dir, exist_ok=True)
         
         # 生成唯一文件名
         file_extension = avatar.filename.split(".")[-1] if "." in avatar.filename else "jpg"
         unique_filename = f"{current_user['username']}_{uuid.uuid4()}.{file_extension}"
-        file_path = upload_dir / unique_filename
+        file_path = avatars_dir / unique_filename
         
         # 保存文件
         with file_path.open("wb") as buffer:

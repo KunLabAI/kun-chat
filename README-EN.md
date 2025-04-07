@@ -15,7 +15,7 @@
 
 **Your Local Intelligent Conversation Partner**
 
-kun-lab is a lightweight AI conversation application based on Ollama, designed to provide you with a simple, efficient, and feature-rich local AI conversation experience. Without complicated configuration, you can easily enjoy powerful AI capabilities, with all data under your local control, ensuring your privacy and security.
+kun-lab is a lightweight AI conversation application based on Ollama, designed to provide you with a simple, efficient, and feature-rich local AI conversation experience. With no complicated configuration required, it's ready to use out of the box, allowing you to easily enjoy powerful AI capabilities while keeping all your data under local control, ensuring your privacy and security.
 
 ## ✨ Core Highlights
 
@@ -30,8 +30,22 @@ kun-lab is a lightweight AI conversation application based on Ollama, designed t
 - **🔒 Local Data Storage**: All data is stored locally, focusing on user privacy, secure and reliable.
 - **🌍 Multilingual Support**: Support for Chinese, English and other language interfaces to meet the needs of different users.
 - **👥 Multi-user Concurrent Support**: Support for multiple users to log in independently and be online simultaneously, with each user having their own conversation space and personalized settings, meeting the needs of families, small teams or organizations for shared use, improving resource utilization efficiency.
+- **✍️ Quick Note Feature**: Supports Markdown syntax, provides real-time preview, and enables one-click export, making knowledge organization more efficient.
+
 
 ## 🚀 Quick Start
+
+### Desktop Application Installation (Recommended)
+
+1. **Download the Installation Package**:
+   - Visit the [Release Page](https://github.com/your-repo/kun-lab/releases) to download the installation package for your platform
+   - Windows: `.exe` installer (currently only Windows is supported)
+   - macOS: `.dmg` package
+   - Linux: `.AppImage` or `.deb` package
+
+2. **Install and Run**:
+   - Double-click the installation package and follow the prompts to complete the installation
+   - After installation, you can run it directly without any additional configuration
 
 ### Installation Guide
 
@@ -126,6 +140,11 @@ kun-lab is a lightweight AI conversation application based on Ollama, designed t
 - **Language Setting Persistence**: Language preferences are saved and automatically applied on your next visit.
 - **Global Translation**: All text elements in the application support multilingual display, including buttons, prompts, labels, etc.
 
+### ✍️ Quick Note Feature
+
+- **Markdown Support**: Full support for Markdown syntax, including headings, lists, code blocks, tables, and more.
+- **Real-time Preview**: Preview rendering effects in real-time while editing, what you see is what you get.
+- **One-click Export**: Support for exporting to MD format, making it convenient to share and archive your notes.
 
 ## 🔮 Future Plans (Roadmap)
 

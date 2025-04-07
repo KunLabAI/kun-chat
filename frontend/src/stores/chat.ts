@@ -71,7 +71,18 @@ export const useChatStore = defineStore('chat', () => {
     let ws: WebSocket | null = null;
     try {
       console.log('Connecting to WebSocket...');
-      const token = localStorage.getItem('token');
+      
+      // 使用新的存储方式获取token
+      const lastLoggedUser = localStorage.getItem('kunlab_last_user')
+      let token = null
+      
+      if (lastLoggedUser) {
+        token = localStorage.getItem(`kunlab_user_token_${lastLoggedUser}`)
+      } else {
+        // 兼容旧版存储方式
+        token = localStorage.getItem('token')
+      }
+      
       if (!token) {
         console.error('No authentication token found');
         error.value = '未找到认证token';
@@ -79,7 +90,10 @@ export const useChatStore = defineStore('chat', () => {
         return;
       }
 
-      const wsUrl = `${WS_BASE_URL}/api/chat/conversations/${currentConversationId.value}/ws?token=${token}`;
+      // 确保移除Bearer前缀
+      const cleanToken = token.startsWith('Bearer ') ? token.substring(7) : token;
+      
+      const wsUrl = `${WS_BASE_URL}/api/chat/conversations/${currentConversationId.value}/ws?token=${encodeURIComponent(cleanToken)}`;
       console.log('WebSocket URL:', wsUrl);
       ws = new WebSocket(wsUrl);
       currentWebSocket.value = ws;

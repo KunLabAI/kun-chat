@@ -1,22 +1,36 @@
 import aiosqlite
+import sys
 from pathlib import Path
 import json
 from typing import Optional, Any, Dict, List
 import logging
 import uuid
 from datetime import datetime
+from data_path import get_db_path
 
 # 配置日志
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# 获取应用基础路径
+def get_base_dir():
+    """获取应用程序基础目录"""
+    # 如果是打包后的应用，使用应用所在目录
+    if getattr(sys, 'frozen', False):
+        base_dir = Path(sys._MEIPASS)
+    else:
+        # 否则使用脚本所在目录
+        base_dir = Path(__file__).parent
+    
+    return base_dir
+
 # 确保data目录存在
-BACKEND_DIR = Path(__file__).parent
+BACKEND_DIR = get_base_dir()
 DATA_DIR = BACKEND_DIR / "data"
 DATA_DIR.mkdir(exist_ok=True)
 
 # 数据库文件路径
-DB_PATH = DATA_DIR / "kun-lab.db"
+DB_PATH = get_db_path()
 
 class Database:
     def __init__(self, db_path: Path = DB_PATH):
@@ -220,6 +234,31 @@ class Database:
                         FOREIGN KEY (user_id) REFERENCES users(username) ON DELETE CASCADE,
                         UNIQUE(key, user_id)
                     )
+                """)
+                
+                # 创建笔记表
+                await self._connection.execute("""
+                    CREATE TABLE IF NOT EXISTS notes (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        user_id TEXT NOT NULL,
+                        title TEXT NOT NULL,
+                        content TEXT,
+                        conversation_id TEXT,
+                        is_deleted INTEGER DEFAULT 0,
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        FOREIGN KEY (user_id) REFERENCES users(username) ON DELETE CASCADE,
+                        FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE SET NULL
+                    )
+                """)
+                
+                # 为笔记表创建更新时间触发器
+                await self._connection.execute("""
+                    CREATE TRIGGER IF NOT EXISTS update_notes_timestamp 
+                    AFTER UPDATE ON notes
+                    BEGIN
+                        UPDATE notes SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
+                    END;
                 """)
                 
                 await self._connection.commit()
@@ -802,6 +841,167 @@ class Database:
 
         except Exception as e:
             logger.error(f"删除模型配置失败: {str(e)}")
+            raise
+            
+    # 笔记相关方法
+    async def create_note(self, user_id: str, title: str, content: str = "", conversation_id: Optional[str] = None) -> Dict[str, Any]:
+        """创建新笔记"""
+        await self.ensure_connected()
+        
+        try:
+            now = datetime.utcnow().isoformat()
+            
+            # 检查conversation_id是否存在
+            if conversation_id:
+                cursor = await self._connection.execute(
+                    "SELECT 1 FROM conversations WHERE id = ?", 
+                    (conversation_id,)
+                )
+                conv_exists = await cursor.fetchone()
+                if not conv_exists:
+                    # 如果对话不存在，设置为None
+                    conversation_id = None
+                    
+            query = """
+                INSERT INTO notes (user_id, title, content, conversation_id, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """
+            
+            async with self._connection.execute(
+                query, (user_id, title, content, conversation_id, now, now)
+            ) as cursor:
+                await self._connection.commit()
+                note_id = cursor.lastrowid
+            
+            # 返回创建的笔记数据
+            return await self.get_note(note_id)
+        except Exception as e:
+            logger.error(f"创建笔记失败: {str(e)}")
+            raise
+    
+    async def get_note(self, note_id: int) -> Optional[Dict[str, Any]]:
+        """获取单个笔记的详情"""
+        await self.ensure_connected()
+        
+        query = """
+            SELECT id, user_id, title, content, conversation_id, created_at, updated_at
+            FROM notes 
+            WHERE id = ? AND is_deleted = 0
+        """
+        
+        async with self._connection.execute(query, (note_id,)) as cursor:
+            row = await cursor.fetchone()
+            if row:
+                columns = [column[0] for column in cursor.description]
+                return dict(zip(columns, row))
+            return None
+    
+    async def get_user_notes(self, user_id: str, limit: int = 50, offset: int = 0) -> List[Dict[str, Any]]:
+        """获取用户的所有笔记"""
+        await self.ensure_connected()
+        
+        query = """
+            SELECT id, user_id, title, content, conversation_id, created_at, updated_at
+            FROM notes
+            WHERE user_id = ? AND is_deleted = 0
+            ORDER BY updated_at DESC
+            LIMIT ? OFFSET ?
+        """
+        
+        async with self._connection.execute(query, (user_id, limit, offset)) as cursor:
+            rows = await cursor.fetchall()
+            columns = [column[0] for column in cursor.description]
+            return [dict(zip(columns, row)) for row in rows]
+    
+    async def get_conversation_notes(self, conversation_id: str) -> List[Dict[str, Any]]:
+        """获取与特定对话关联的笔记"""
+        await self.ensure_connected()
+        
+        query = """
+            SELECT id, user_id, title, content, created_at, updated_at
+            FROM notes
+            WHERE conversation_id = ? AND is_deleted = 0
+            ORDER BY updated_at DESC
+        """
+        
+        async with self._connection.execute(query, (conversation_id,)) as cursor:
+            rows = await cursor.fetchall()
+            columns = [column[0] for column in cursor.description]
+            return [dict(zip(columns, row)) for row in rows]
+    
+    async def update_note(self, note_id: int, data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        """更新笔记"""
+        await self.ensure_connected()
+        
+        # 首先获取当前笔记
+        note = await self.get_note(note_id)
+        if not note:
+            return None
+        
+        # 准备更新数据
+        update_fields = []
+        params = []
+        
+        # 标题
+        if "title" in data and data["title"] is not None:
+            update_fields.append("title = ?")
+            params.append(data["title"])
+        
+        # 内容
+        if "content" in data and data["content"] is not None:
+            update_fields.append("content = ?")
+            params.append(data["content"])
+        
+        # 关联对话
+        if "conversation_id" in data:
+            # 检查conversation_id是否存在
+            if data["conversation_id"]:
+                cursor = await self._connection.execute(
+                    "SELECT 1 FROM conversations WHERE id = ?", 
+                    (data["conversation_id"],)
+                )
+                conv_exists = await cursor.fetchone()
+                if not conv_exists:
+                    # 如果对话不存在，设置为None
+                    data["conversation_id"] = None
+                    
+            update_fields.append("conversation_id = ?")
+            params.append(data["conversation_id"])
+        
+        # 如果没有要更新的字段，直接返回当前笔记
+        if not update_fields:
+            return note
+        
+        # 构建更新查询
+        update_str = ", ".join(update_fields)
+        query = f"UPDATE notes SET {update_str} WHERE id = ?"
+        params.append(note_id)
+        
+        try:
+            await self._connection.execute(query, tuple(params))
+            await self._connection.commit()
+            return await self.get_note(note_id)
+        except Exception as e:
+            logger.error(f"更新笔记失败: {str(e)}")
+            raise
+    
+    async def delete_note(self, note_id: int, user_id: str) -> bool:
+        """删除笔记（软删除）"""
+        await self.ensure_connected()
+        
+        try:
+            # 验证笔记所有者
+            note = await self.get_note(note_id)
+            if not note or note["user_id"] != user_id:
+                return False
+            
+            # 软删除
+            query = "UPDATE notes SET is_deleted = 1 WHERE id = ?"
+            await self._connection.execute(query, (note_id,))
+            await self._connection.commit()
+            return True
+        except Exception as e:
+            logger.error(f"删除笔记失败: {str(e)}")
             raise
 
 # 创建全局数据库实例

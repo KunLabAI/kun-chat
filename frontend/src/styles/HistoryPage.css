@@ -9,7 +9,7 @@
 .page-header {
   max-width: 768px; /* 小屏幕默认宽度 */
   margin: 0 auto;
-  padding-top: 48px; /* 减小默认上边距 */
+  padding-top: 40px; /* 减小默认上边距 */
 }
 
 .header-content {
@@ -277,13 +277,16 @@ input[type="checkbox"]:hover {
   text-align: center;
   padding: 32px 0;
   color: var(--text-color-lighter);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.empty-icon {
-  width: 40px;
-  height: 40px;
-  color: var(--text-color-lighter);
-  margin: 0 auto 12px;
+.empty-state-image {
+  width: 240px;
+  height: auto;
+  animation: float 6s ease-in-out infinite;
 }
 
 .empty-title {
@@ -293,23 +296,10 @@ input[type="checkbox"]:hover {
   margin-bottom: 6px;
 }
 
-.empty-subtitle {
-  color: var(--text-color-lighter);
-  margin-bottom: 16px;
-  font-size: 14px;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 /* 媒体查询 - 中等屏幕 (1024px) */
 @media screen and (min-width: 1024px) {
   .page-header {
     max-width: 1024px;
-    padding-top: 60px;
   }
   
   .header-content {
@@ -333,13 +323,6 @@ input[type="checkbox"]:hover {
     width: auto;
     padding-bottom: 14px;
     gap: 10px;
-  }
-  
-  .search-input {
-    padding: 12px 14px;
-    padding-left: 36px;
-    font-size: 15px;
-    width: 100%;
   }
   
   .page-content {
@@ -382,17 +365,12 @@ input[type="checkbox"]:hover {
   .empty-title {
     font-size: 20px;
   }
-  
-  .empty-subtitle {
-    font-size: 15px;
-  }
 }
 
 /* 媒体查询 - 大屏幕 (1920px) */
 @media screen and (min-width: 1920px) {
   .page-header {
     max-width: 1200px;
-    padding-top: 72px;
   }
   
   .header-content {
@@ -416,19 +394,6 @@ input[type="checkbox"]:hover {
   
   .search-wrapper {
     width: 1200px;
-  }
-  
-  .search-input {
-    padding: 0.75rem 1rem;
-    padding-left: 2.5rem;
-    font-size: 16px;
-    width: 100%;
-  }
-  
-  .search-icon {
-    left: 0.75rem;
-    width: 1.25rem;
-    height: 1.25rem;
   }
   
   .page-content {
@@ -474,9 +439,5 @@ input[type="checkbox"]:hover {
   .empty-title {
     font-size: 1.25rem;
     margin-bottom: 0.5rem;
-  }
-  
-  .empty-subtitle {
-    margin-bottom: 1.5rem;
   }
 }

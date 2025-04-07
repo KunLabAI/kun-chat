@@ -36,6 +36,8 @@ ENV/
 build/
 develop-eggs/
 dist/
+dist_electron/
+resources/
 downloads/
 eggs/
 .eggs/
@@ -50,6 +52,7 @@ var/
 .pytest_cache/
 .coverage
 htmlcov/
+kunlab/
 
 # IDE specific files
 .idea/
@@ -86,7 +89,9 @@ jspm_packages/
 .env.development.local
 .env.test.local
 .env.production.local
-backend/data/kun-lab.db
+backend/data
 backend/static/avatars/*.png
 backend/static/avatars/*.jpg
 backend/static/avatars/*.jpeg
+backend/buildpath
+frontend/electronpath

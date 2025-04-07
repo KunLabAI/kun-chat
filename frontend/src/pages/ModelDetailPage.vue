@@ -51,7 +51,12 @@
               <div class="info-grid">
                 <div v-for="(value, key) in basicInfo" :key="key" class="info-item">
                   <span class="info-label">{{ key }}</span>
-                  <span class="info-value">{{ value || '-' }}</span>
+                  <span v-if="typeof value === 'object' && value.type === 'system_prompt'" 
+                        class="info-value system-prompt" 
+                        @click="showSystemPromptDialog(value.value)">
+                    {{ truncateSystemPrompt(value.value) }}
+                  </span>
+                  <span v-else class="info-value">{{ value || '-' }}</span>
                 </div>
               </div>
             </div>
@@ -64,8 +69,21 @@
                   {{ showModelFileConfig ? t('model.detail.actions.collapse') : t('model.detail.actions.expand') }}
                 </button>
               </div>
-              <div v-show="showModelFileConfig" class="section-content">
-                <pre class="code-block">{{ modelDetails.advanced_parameters.modelfile }}</pre>
+              <div v-if="showModelFileConfig" class="section-content">
+                <pre class="code-block">{{ getModelfileWithoutLicense }}</pre>
+              </div>
+            </div>
+
+            <!-- License信息 -->
+            <div v-if="modelDetails.advanced_parameters?.license" class="model-section">
+              <div class="section-header">
+                <h3 class="section-title">{{ t('model.detail.sections.license') }}</h3>
+                <button class="toggle-btn" @click="toggleLicense">
+                  {{ showLicense ? t('model.detail.actions.collapse') : t('model.detail.actions.expand') }}
+                </button>
+              </div>
+              <div v-if="showLicense" class="section-content">
+                <pre class="code-block">{{ modelDetails.advanced_parameters.license }}</pre>
               </div>
             </div>
           </div>
@@ -107,6 +125,19 @@
           </div>
         </div>
       </div>
+
+      <!-- 系统提示词对话框 -->
+      <Dialog
+        v-model="isSystemPromptDialogVisible"
+        :title="t('model.detail.system_prompt_title')"
+        :confirmText="t('common.actions.close')"
+        @confirm="closeSystemPromptDialog"
+        class="system-prompt-dialog"
+      >
+        <div class="system-prompt-dialog-content">
+          <pre class="system-prompt-content">{{ formatSystemPrompt(currentSystemPrompt) }}</pre>
+        </div>
+      </Dialog>
     </div>
   </MainLayout>
 </template>
@@ -119,6 +150,7 @@ import { useModelsStore } from '@/stores/models'
 import { useAuthStore } from '@/stores/auth'
 import MainLayout from '@/layouts/MainLayout.vue'
 import Button from '@/components/common/Button.vue'
+import Dialog from '@/components/common/Dialog.vue'
 import { getModelLogo } from '@/utils/ModelsLogoMap'
 import { useLocalization } from '@/i18n/composables'
 import emptyStarIcon from '@/assets/icons/sys_emptystar.svg'
@@ -134,10 +166,15 @@ const { t } = useLocalization()
 const modelDetails = ref<any>(null)
 const currentTab = ref('basic')
 const showModelFileConfig = ref(false)
+const showLicense = ref(false)
 
 // 收藏相关
 const isFavorite = ref(false)
 const favoriteLoading = ref(false)
+
+// 系统提示词相关
+const isSystemPromptDialogVisible = ref(false)
+const currentSystemPrompt = ref('')
 
 // 检查收藏状态
 async function checkFavoriteStatus() {
@@ -185,144 +222,144 @@ const formatFileSize = (size: number): string => {
   return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`
 }
 
+// 添加从modelfile提取系统提示词的计算属性
+const systemPromptFromModelfile = computed(() => {
+  if (!modelDetails.value?.advanced_parameters?.modelfile) return null
+  
+  const modelfile = modelDetails.value.advanced_parameters.modelfile
+  
+  const systemMatch = modelfile.match(/SYSTEM\s+"([^"]*)"/)
+  
+  const systemMultilineMatch = modelfile.match(/SYSTEM\s+"""([\s\S]*?)"""/)
+  
+  return systemMultilineMatch ? systemMultilineMatch[1] : 
+         systemMatch ? systemMatch[1] : null
+})
+
 const basicInfo = computed(() => {
   if (!modelDetails.value) return {}
   
-  return {
+  const info: Record<string, any> = {
     [t('model.detail.info_labels.name')]: modelDetails.value.display_name || modelDetails.value.name,
     [t('model.detail.info_labels.family')]: modelDetails.value.family || '-',
     [t('model.detail.info_labels.parameter_size')]: modelDetails.value.parameter_size || '-',
-    [t('model.detail.info_labels.quantization')]: modelDetails.value.quantization_level || '-',
-    [t('model.detail.info_labels.file_size')]: modelDetails.value.size ? formatFileSize(modelDetails.value.size) : '-',
-    [t('model.detail.info_labels.created_at')]: modelDetails.value.created_at ? formatDate(modelDetails.value.created_at) : '-',
-    [t('model.detail.info_labels.modified_at')]: modelDetails.value.modified_at ? formatDate(modelDetails.value.modified_at) : '-',
+    [t('model.detail.info_labels.quantization')]: modelDetails.value.quantization || '-',
     [t('model.detail.info_labels.format')]: modelDetails.value.format || '-',
-    [t('model.detail.info_labels.system_prompt')]: modelDetails.value.system_prompt || '-',
+    [t('model.detail.info_labels.created_at')]: modelDetails.value.created_at ? formatDate(modelDetails.value.created_at) : '-',
+    [t('model.detail.info_labels.modified_at')]: modelDetails.value.modified_at ? formatDate(modelDetails.value.modified_at) : '-'
   }
+  
+  // 添加文件大小
+  if (modelDetails.value.size) {
+    info[t('model.detail.info_labels.file_size')] = formatFileSize(modelDetails.value.size)
+  }
+  
+  // 添加系统提示词 - 优先使用从modelfile提取的系统提示词
+  const systemPrompt = systemPromptFromModelfile.value || modelDetails.value.system_prompt
+  if (systemPrompt) {
+    info[t('model.detail.info_labels.system')] = {
+      type: 'system_prompt',
+      value: systemPrompt
+    }
+  }
+  
+  // 添加最后使用时间(如果有)
+  if (modelDetails.value.last_used_at) {
+    info[t('model.detail.info_labels.last_used')] = formatDate(modelDetails.value.last_used_at)
+  }
+  
+  return info
 })
 
 const architectureInfo = computed(() => {
   if (!modelDetails.value || !modelDetails.value.advanced_parameters) return {}
   
-  // 尝试从 model_info 获取数据，如果没有则使用 architecture
-  const modelInfo = modelDetails.value.advanced_parameters.model_info || {}
   const architecture = modelDetails.value.advanced_parameters.architecture || {}
   
-  if (Object.keys(modelInfo).length > 0) {
-    // 使用旧版本的数据结构
-    return {
-      [t('model.detail.advanced_params.architecture_type')]: modelInfo['general.architecture'],
-      [t('model.detail.advanced_params.base_model')]: modelInfo['general.base_model.0.name'],
-      [t('model.detail.advanced_params.organization')]: modelInfo['general.base_model.0.organization'],
-      [t('model.detail.advanced_params.repo_url')]: modelInfo['general.base_model.0.repo_url'],
-      [t('model.detail.advanced_params.model_name')]: modelInfo['general.basename'],
-      [t('model.detail.advanced_params.parameter_count')]: formatNumber(modelInfo['general.parameter_count']),
-      [t('model.detail.advanced_params.quantization_version')]: modelInfo['general.quantization_version'],
-      [t('model.detail.advanced_params.size_label')]: modelInfo['general.size_label'],
-      [t('model.detail.advanced_params.finetune_type')]: modelInfo['general.finetune'],
-      [t('model.detail.advanced_params.tags')]: Array.isArray(modelInfo['general.tags']) ? modelInfo['general.tags'].join(', ') : '-'
-    }
-  } else {
-    // 使用新版本的数据结构
-    return {
-      [t('model.detail.advanced_params.context_length')]: formatNumber(architecture.context_length),
-      [t('model.detail.advanced_params.embedding_length')]: formatNumber(architecture.embedding_length),
-      [t('model.detail.advanced_params.feed_forward')]: formatNumber(architecture.feed_forward),
-      [t('model.detail.advanced_params.head_count')]: formatNumber(architecture.head_count),
-      [t('model.detail.advanced_params.kv_head_count')]: formatNumber(architecture.kv_head_count),
-      [t('model.detail.advanced_params.layer_count')]: formatNumber(architecture.layer_count),
-      [t('model.detail.advanced_params.vocabulary_size')]: formatNumber(architecture.vocabulary_size)
-    }
+  // 使用统一的数据结构处理方式，后端现在始终会提供完整的architecture结构
+  const archParams: Record<string, any> = {
+    [t('model.detail.advanced_params.context_length')]: formatNumber(architecture.context_length),
+    [t('model.detail.advanced_params.embedding_length')]: formatNumber(architecture.embedding_length),
+    [t('model.detail.advanced_params.feed_forward')]: formatNumber(architecture.feed_forward),
+    [t('model.detail.advanced_params.head_count')]: formatNumber(architecture.head_count),
+    [t('model.detail.advanced_params.kv_head_count')]: formatNumber(architecture.kv_head_count),
+    [t('model.detail.advanced_params.layer_count')]: formatNumber(architecture.layer_count),
+    [t('model.detail.advanced_params.vocabulary_size')]: formatNumber(architecture.vocabulary_size),
+    [t('model.detail.advanced_params.parameter_count')]: formatNumber(architecture.parameter_count),
+    [t('model.detail.advanced_params.size_label')]: architecture.size_label || '-',
+    [t('model.detail.advanced_params.version')]: architecture.version || '-'
   }
+  
+  // 添加其他模型信息
+  const additionalFields = [
+    { key: 'organization', label: t('model.detail.advanced_params.organization') },
+    { key: 'repository_url', label: t('model.detail.advanced_params.repo_url') },
+    { key: 'base_model', label: t('model.detail.advanced_params.base_model') }
+  ]
+  
+  additionalFields.forEach(field => {
+    if (architecture[field.key]) {
+      archParams[field.label] = architecture[field.key]
+    }
+  })
+  
+  // 处理数组类型的字段
+  const arrayFields = [
+    { key: 'tags', label: t('model.detail.advanced_params.tags') },
+    { key: 'languages', label: t('model.detail.advanced_params.languages') }
+  ]
+  
+  arrayFields.forEach(field => {
+    if (architecture[field.key]) {
+      archParams[field.label] = Array.isArray(architecture[field.key]) ? 
+        architecture[field.key].join(', ') : architecture[field.key]
+    }
+  })
+  
+  return archParams
 })
 
 const attentionParams = computed(() => {
   if (!modelDetails.value || !modelDetails.value.advanced_parameters) return {}
   
-  // 尝试从 model_info 获取数据，如果没有则使用 attention
-  const modelInfo = modelDetails.value.advanced_parameters.model_info || {}
   const attention = modelDetails.value.advanced_parameters.attention || {}
   
-  if (Object.keys(modelInfo).length > 0) {
-    // 获取注意力相关的参数
-    const attentionKeys = Object.keys(modelInfo).filter(key => 
-      key.includes('attention') || 
-      key.includes('context_length') || 
-      key.includes('embedding') || 
-      key.includes('feed_forward') || 
-      key.includes('rope') ||
-      key.includes('block_count')
-    )
-    
-    const params: Record<string, any> = {}
-    attentionKeys.forEach(key => {
-      let displayName = key.split('.').pop() || ''
-      // 格式化显示名称
-      displayName = displayName
-        .replace(/_/g, ' ')
-        .replace(/([A-Z])/g, ' $1')
-        .toLowerCase()
-        .split(' ')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ')
-      
-      params[displayName] = modelInfo[key]
-    })
-    
-    return {
-      [t('model.detail.advanced_params.attention_head_count')]: params['Head Count'],
-      [t('model.detail.advanced_params.kv_head_count_param')]: params['Head Count Kv'],
-      [t('model.detail.advanced_params.layer_norm_epsilon')]: params['Layer Norm Rms Epsilon'],
-      [t('model.detail.advanced_params.block_count')]: params['Block Count'],
-      [t('model.detail.advanced_params.context_length_param')]: formatNumber(params['Context Length']),
-      [t('model.detail.advanced_params.embedding_dimension')]: params['Embedding Length'],
-      [t('model.detail.advanced_params.feed_forward_dimension')]: params['Feed Forward Length'],
-      [t('model.detail.advanced_params.rope_freq_base')]: params['Freq Base']
-    }
-  } else {
-    // 使用新版本的数据结构
-    return {
-      [t('model.detail.advanced_params.rope_dimension')]: formatNumber(attention.rope_dimension),
-      [t('model.detail.advanced_params.rope_freq_base')]: formatNumber(attention.rope_freq_base)
-    }
+  // 使用统一的数据结构处理方式
+  const attParams: Record<string, any> = {
+    [t('model.detail.advanced_params.rope_dimension')]: formatNumber(attention.rope_dimension),
+    [t('model.detail.advanced_params.rope_freq_base')]: formatNumber(attention.rope_freq_base)
   }
+  
+  // 添加可选的注意力参数
+  const optionalFields = [
+    { key: 'sliding_window', label: t('model.detail.advanced_params.sliding_window') },
+    { key: 'key_length', label: t('model.detail.advanced_params.key_length') },
+    { key: 'value_length', label: t('model.detail.advanced_params.value_length') },
+    { key: 'layer_norm_epsilon', label: t('model.detail.advanced_params.layer_norm_epsilon') }
+  ]
+  
+  optionalFields.forEach(field => {
+    if (attention[field.key] !== null && attention[field.key] !== undefined) {
+      attParams[field.label] = formatNumber(attention[field.key])
+    }
+  })
+  
+  return attParams
 })
 
 const tokenizerParams = computed(() => {
   if (!modelDetails.value || !modelDetails.value.advanced_parameters) return {}
   
-  // 尝试从 model_info 获取数据，如果没有则使用 tokenizer
-  const modelInfo = modelDetails.value.advanced_parameters.model_info || {}
   const tokenizer = modelDetails.value.advanced_parameters.tokenizer || {}
   
-  if (Object.keys(modelInfo).length > 0) {
-    const tokenizerKeys = Object.keys(modelInfo).filter(key => key.startsWith('tokenizer.'))
-    
-    const params: Record<string, any> = {}
-    tokenizerKeys.forEach(key => {
-      const value = modelInfo[key]
-      if (value !== null && value !== undefined) {
-        params[key] = value
-      }
-    })
-    
-    return {
-      [t('model.detail.advanced_params.tokenizer_type')]: params['tokenizer.ggml.model'],
-      [t('model.detail.advanced_params.add_bos_token')]: params['tokenizer.ggml.add_bos_token'] ? t('common.yes') : t('common.no'),
-      [t('model.detail.advanced_params.add_eos_token')]: params['tokenizer.ggml.add_eos_token'] ? t('common.yes') : t('common.no'),
-      [t('model.detail.advanced_params.bos_token_id')]: params['tokenizer.ggml.bos_token_id'],
-      [t('model.detail.advanced_params.eos_token_id')]: params['tokenizer.ggml.eos_token_id'],
-      [t('model.detail.advanced_params.padding_token_id')]: params['tokenizer.ggml.padding_token_id'],
-      [t('model.detail.advanced_params.prefix')]: params['tokenizer.ggml.pre']
-    }
-  } else {
-    // 使用新版本的数据结构
-    return {
-      [t('model.detail.advanced_params.type')]: tokenizer.type || '-',
-      [t('model.detail.advanced_params.model')]: tokenizer.model || '-',
-      [t('model.detail.advanced_params.tokens')]: formatNumber(tokenizer.tokens)
-    }
+  // 使用统一的数据结构处理方式
+  const tokParams: Record<string, any> = {
+    [t('model.detail.advanced_params.type')]: tokenizer.type || '-',
+    [t('model.detail.advanced_params.model')]: tokenizer.model || '-',
+    [t('model.detail.advanced_params.tokens')]: formatNumber(tokenizer.tokens)
   }
+  
+  return tokParams
 })
 
 // 添加一个调试函数，帮助我们查看所有可用的参数
@@ -342,10 +379,19 @@ const logModelInfo = () => {
     if (modelDetails.value.advanced_parameters.tokenizer) {
       console.log('Tokenizer:', modelDetails.value.advanced_parameters.tokenizer)
     }
+    
+    // 添加详细结构的日志，以便更好地调试
+    console.log('详细的模型结构:', JSON.stringify(modelDetails.value, null, 2))
   }
 }
 
-const toggleModelFileConfig = () => showModelFileConfig.value = !showModelFileConfig.value
+const toggleModelFileConfig = () => {
+  showModelFileConfig.value = !showModelFileConfig.value
+}
+
+const toggleLicense = () => {
+  showLicense.value = !showLicense.value
+}
 
 const goBack = () => {
   if (window.history.length > 1) {
@@ -417,8 +463,61 @@ watch(modelDetails, (newVal) => {
     logModelInfo()
   }
 }, { immediate: true })
+
+const getModelfileWithoutLicense = computed(() => {
+  if (!modelDetails.value?.advanced_parameters?.modelfile) {
+    return t('common.not_available')
+  }
+  
+  // 如果已经单独显示License，则在modelfile中移除LICENSE相关内容
+  if (modelDetails.value?.advanced_parameters?.license) {
+    const modelfile = modelDetails.value.advanced_parameters.modelfile
+    
+    // 使用正则表达式移除LICENSE部分，包括被"""包裹的情况
+    // 匹配 LICENSE 开头的行到下一个指令开始，包括被"""包裹的情况
+    return modelfile.replace(/LICENSE\s+"""[\s\S]*?"""|LICENSE\s+.*?(?=\n\w+|\s*$)/gs, '')
+      // 清理可能留下的多余空行
+      .replace(/\n{3,}/g, '\n\n')
+      .trim()
+  }
+  
+  return modelDetails.value.advanced_parameters.modelfile
+})
+
+const showSystemPromptDialog = (promptContent: string) => {
+  currentSystemPrompt.value = promptContent
+  isSystemPromptDialogVisible.value = true
+}
+
+const closeSystemPromptDialog = () => {
+  isSystemPromptDialogVisible.value = false
+}
+
+const truncateSystemPrompt = (text: string): string => {
+  if (!text) return '-'
+  
+  // 将系统提示词截断为2行
+  const lines = text.split('\n')
+  if (lines.length <= 2) {
+    return text
+  }
+  
+  return lines.slice(0, 2).join('\n') + ' ...'
+}
+
+const formatSystemPrompt = (text: string): string => {
+  if (!text) return ''
+  
+  // 对文本进行基本格式化，保持段落结构
+  return text.trim()
+    // 确保段落之间有一致的空行
+    .replace(/\n{3,}/g, '\n\n')
+    // 确保代码块和列表有适当的缩进
+    .replace(/^(```[\s\S]*?```)/gm, '\n$1\n')
+}
 </script>
 
 <style scoped>
 @import '@/styles/ModelDetailPage.css';
+
 </style>

@@ -74,7 +74,6 @@
               @click="toggleModelSelect"
               :class="{ 'active': showModelSelect }"
               :data-tooltip="t('chat.input.model_select')"
-              @mouseenter="updateTooltipPosition"
             >
             <img src="@/assets/icons/chat_models.svg" alt="model-select" />
 
@@ -90,7 +89,6 @@
               @click="toggleWebSearch" 
               :class="{ 'active': webSearchEnabled }" 
               :data-tooltip="t('chat.input.web_search')"
-              @mouseenter="updateTooltipPosition"
             >
               <img src="@/assets/icons/chat_websearch.svg" alt="Web Search" />
             </button>
@@ -108,7 +106,6 @@
                 @click="toggleUploadSelect" 
                 :class="{ 'active': showUploadSelect }" 
                 :data-tooltip="t('chat.input.upload_file')"
-                @mouseenter="updateTooltipPosition"
               >
                 <img src="@/assets/icons/sys_fileupload.svg" alt="Upload File" />
               </button>
@@ -126,7 +123,6 @@
               class="upload-option" 
               @click="triggerImageUpload"
               :data-tooltip="t('chat.input.upload_options.image_tooltip')"
-              @mouseenter="updateTooltipPosition"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
@@ -139,7 +135,6 @@
               class="upload-option" 
               @click="triggerDocumentUpload"
               :data-tooltip="t('chat.input.upload_options.document_tooltip')"
-              @mouseenter="updateTooltipPosition"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -184,6 +179,7 @@ import type { Model } from '@/types/models'
 import { useNotificationStore } from '@/stores/notification'
 import { useChatStore } from '@/stores/chat'
 import { useLocalization } from '@/i18n'
+import { API_URL } from '@/api/config'
 
 interface Props {
   models: Model[]
@@ -357,7 +353,7 @@ const removeDocument = () => {
 }
 
 // 处理图片上传
-const handleImageUpload = async (event: Event) => {
+async function handleImageUpload(event: Event) {
   const input = event.target as HTMLInputElement
   if (!input.files?.length) return
 
@@ -369,8 +365,8 @@ const handleImageUpload = async (event: Event) => {
     const formData = new FormData()
     formData.append('file', file)
 
-    // 发送到后端
-    const response = await fetch('/api/images/upload', {
+    // 使用完整的 API URL 而不是相对路径
+    const response = await fetch(`${API_URL}/images/upload`, {
       method: 'POST',
       body: formData
     })
@@ -391,7 +387,8 @@ const handleImageUpload = async (event: Event) => {
     console.error('图片上传错误:', error)
     notificationStore.error(t('chat.notifications.image_upload_error'))
   } finally {
-    if (input) input.value = ''
+    // 重置文件输入，允许重新选择相同的文件
+    fileInput.value = null
   }
 }
 
@@ -408,7 +405,8 @@ const handleDocumentUpload = async (event: Event) => {
     const result = await chatApi.convertDocument(file, props.conversationId)
     uploadedDocument.value = file
     documentContent.value = result.content
-    input.value = '' // 清空input以允许上传相同文件
+    // 重置文件输入，允许重新选择相同的文件
+    documentInput.value = null
     notificationStore.success(t('chat.notifications.document_upload_success'))
   } catch (error) {
     console.error('文档转换失败:', error)
@@ -518,9 +516,8 @@ const clearConversation = () => {
 
 // 添加提示框位置更新函数
 const updateTooltipPosition = (event: MouseEvent) => {
-  const target = event.currentTarget as HTMLElement
-  const rect = target.getBoundingClientRect()
-  target.style.setProperty('--tooltip-y', `${rect.top + rect.height / 2}px`)
+  // 不再需要复杂的定位逻辑
+  // 所有提示框现在都使用相对于父元素的固定位置
 }
 
 // 点击外部区域关闭弹窗
@@ -620,5 +617,5 @@ const formatFileSize = (size: number) => {
 </script>
 
 <style scoped>
-@import '@/styles/ChatInput.css';
+@import './ChatInput.css';
 </style>

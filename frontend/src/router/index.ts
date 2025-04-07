@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
@@ -83,6 +83,24 @@ const routes: RouteRecordRaw[] = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/notes',
+    name: 'notes',
+    component: () => import('@/pages/NotesPage.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/notes/create',
+    name: 'createNote',
+    component: () => import('@/pages/CreateNotePage.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/notes/:id/edit',
+    name: 'editNote',
+    component: () => import('@/pages/CreateNotePage.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/history',
     name: 'history',
     component: () => import('@/pages/HistoryPage.vue'),
@@ -101,24 +119,59 @@ const routes: RouteRecordRaw[] = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/:pathMatch(.*)*',
-    name: 'not-found',
-    component: () => import('@/pages/NotFoundPage.vue')
-  }
+    path: '/about',
+    name: 'about',
+    component: () => import('@/pages/AboutPage.vue'),
+    meta: { requiresAuth: true }
+  },
 ]
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   routes
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
   
-  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    next('/login')
+  // 如果是需要认证的页面
+  if (to.meta.requiresAuth) {
+    // 检查是否已认证
+    if (authStore.isAuthenticated) {
+      next()
+      return
+    }
+    
+    // 如果未认证，检查是否有最后登录的用户
+    const lastLoggedUser = localStorage.getItem('kunlab_last_user')
+    // 根据最后登录用户获取对应token
+    const token = lastLoggedUser 
+      ? localStorage.getItem(`kunlab_user_token_${lastLoggedUser}`) 
+      : null
+    
+    if (!token) {
+      next('/login')
+      return
+    }
+    
+    // 尝试获取用户信息来验证token是否有效
+    try {
+      await authStore.fetchUserInfo()
+      next()
+    } catch (error) {
+      // 如果获取用户信息失败，说明token无效
+      if (lastLoggedUser) {
+        localStorage.removeItem(`kunlab_user_token_${lastLoggedUser}`)
+      }
+      next('/login')
+    }
   } else {
-    next()
+    // 如果已经登录，访问登录/注册页面时重定向到首页
+    if (authStore.isAuthenticated && (to.path === '/login' || to.path === '/register')) {
+      next('/')
+    } else {
+      next()
+    }
   }
 })
 

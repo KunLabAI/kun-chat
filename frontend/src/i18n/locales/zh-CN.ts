@@ -27,7 +27,9 @@ const messages: Messages = {
       preview_code: '预览代码',
       html_preview: 'HTML代码预览',
       open_in_new_window: '在新窗口打开',
-      close: '关闭'
+      close: '关闭',
+      expand_code: '展开代码',
+      collapse_code: '收起代码'
     },
     notification: {
       close: '关闭通知'
@@ -37,6 +39,7 @@ const messages: Messages = {
       cancel: '取消',
       confirm: '确认',
       delete: '删除',
+      copy:'复制',
       edit: '编辑',
       add: '添加',
       test: '测试',
@@ -53,7 +56,8 @@ const messages: Messages = {
       learn_more: '了解更多',
       update: '更新',
       create: '创建',
-      finish: '完成'
+      finish: '完成',
+      ok: '确定'
     },
     status: {
       success: '成功',
@@ -63,7 +67,8 @@ const messages: Messages = {
       loading: '加载中...',
       enabled: '已启用',
       disabled: '已关闭'
-    }
+    },
+    not_available: '不可用'
   },
   settings: {
     title: '设置',
@@ -163,11 +168,9 @@ const messages: Messages = {
     general: {
       language: {
         title: '语言设置',
-        description: '选择应用界面语言'
       },
       theme: {
         title: '主题',
-        description: '选择应用主题',
         options: {
           light: '浅色',
           dark: '深色',
@@ -178,7 +181,7 @@ const messages: Messages = {
     tools: {
       tavily: {
         title: 'Tavily 搜索设置',
-        description: 'Tavily 是一个强大的网络搜索 API，允许 AI 助手访问最新的互联网信息。',
+        description: 'Tavily搜索需要用户自行注册账号，并获取API密钥。',
         api_key: {
           label: 'API 密钥',
           placeholder: '请输入您的 Tavily API 密钥',
@@ -188,6 +191,11 @@ const messages: Messages = {
         test_button: '测试连接',
         test_success: '连接成功',
         test_error: '连接失败',
+        connecting: '连接中...',
+        hide_key: '隐藏密钥',
+        show_key: '显示密钥',
+        delete_key: '删除密钥',
+        domain_format_error: '请输入有效的域名格式',
         search_depth: {
           label: '搜索深度',
           basic: '基础',
@@ -203,6 +211,29 @@ const messages: Messages = {
           label: '排除域名',
           description: '搜索结果将排除这些域名的内容',
           placeholder: '输入域名并按回车添加（例如：example.com）'
+        },
+        messages: {
+          api_key_cleared: 'API密钥已清除',
+          api_key_saved: 'API密钥已保存，请点击"测试连接"按钮验证其有效性',
+          search_depth_updated: '搜索深度更新成功',
+          include_domains_updated: '包含域名更新成功',
+          exclude_domains_updated: '排除域名更新成功',
+          connection_test_success: '连接测试成功，API密钥有效',
+          api_key_verified: 'API密钥验证成功'
+        },
+        errors: {
+          clear_api_key_failed: '清除API密钥失败',
+          get_settings_failed: '获取Tavily设置失败，请稍后重试',
+          invalid_api_key: '请输入有效的API密钥',
+          save_api_key_failed: '保存API密钥失败，请稍后重试',
+          update_search_depth_failed: '更新搜索深度失败',
+          update_include_domains_failed: '更新包含域名失败',
+          update_exclude_domains_failed: '更新排除域名失败',
+          connection_test_failed: '连接测试失败'
+        },
+        warnings: {
+          domain_exists: '该域名已存在',
+          set_api_key_first: '请先设置API密钥'
         }
       }
     },
@@ -214,7 +245,6 @@ const messages: Messages = {
           placeholder: '请输入 Ollama 主机地址（例如：http://localhost:11434）',
           description: '配置 Ollama 服务的连接地址'
         },
-        test_button: '测试连接',
         test_success: '连接成功',
         test_error: '连接失败',
         status: {
@@ -252,9 +282,10 @@ const messages: Messages = {
     favorite_models: {
       title: '已收藏模型',
       view_more: '更多模型',
-      empty_state: {
-        title: '暂无收藏模型'
-      }
+    },
+    onboarding: {
+      install_ollama: '安装Ollama',
+      pull_models: '拉取模型',
     },
     new_chat: '开始新对话',
     delete_model: {
@@ -265,21 +296,20 @@ const messages: Messages = {
   history: {
     title: '对话记录',
     subtitle: '查看和管理您的所有对话历史',
+    loading: '加载历史记录中...',
     select_all: '全选',
     delete_selected: '删除选中',
     search_placeholder: '搜索对话内容...',
-
     retry: '重试',
     conversation_count: '您总共有 {0} 条对话记录',
     empty_state: {
       title: '暂无对话记录',
-      subtitle: '开始新的对话，探索AI的无限可能',
       start_chat: '开始对话'
     },
     time_groups: {
       today: '今天',
       yesterday: '昨天',
-      three_days: '三天内',
+      three_days: '最近3天',
       last_week: '上周',
       earlier: '更早',
       date_range: '{0}',
@@ -298,14 +328,15 @@ const messages: Messages = {
       continue_chat: '继续对话',
       image_message: '[图片消息]',
       images_message: '[{0}张图片]',
-      pdf_document: '[PDF文档]'
+      pdf_document: '[PDF文档]',
+      loading_message: '加载对话内容...'
     },
     delete_dialog: {
       title: '删除确认',
       confirm_single: '确定要删除对话 {0} 吗？',
-      confirm_multiple: '确定要删除选中的 {0} 条对话吗？',
+      confirm_multiple: '确定要删除所选的 {0} 个对话吗？',
       success_single: '对话已删除',
-      success_multiple: '已删除 {0} 条对话',
+      success_multiple: '已删除 {0} 个对话',
       error: '删除失败'
     }
   },
@@ -362,7 +393,9 @@ const messages: Messages = {
     create_model: '创建模型',
     custom_model: '自定义',
     pull_model: '拉取模型',
-    empty_state: '暂无模型，请拉取新模型。',
+    empty_state: {
+      title: '暂无模型,请点击拉取模型按钮，获取模型',
+    },
     loading: "加载中..." ,
     delete_dialog: {
       title: '确认删除',
@@ -374,7 +407,7 @@ const messages: Messages = {
       delete: '删除'
     },
     notifications: {
-      delete_success: '模型删除成功',
+      delete_success: '模型已删除',
       delete_error: '删除模型失败',
       create_success: '模型创建成功',
       create_error: '创建对话失败',
@@ -416,6 +449,7 @@ const messages: Messages = {
         expand: '展开',
         collapse: '收起'
       },
+      system_prompt_title: '系统提示词',
       info_labels: {
         name: '名称',
         family: '系列',
@@ -425,7 +459,8 @@ const messages: Messages = {
         created_at: '创建时间',
         modified_at: '修改时间',
         format: '格式',
-        system_prompt: '系统提示词'
+        system_prompt: '系统提示词',
+        system: '系统提示词'
       },
       advanced_params: {
         architecture_type: '架构类型',
@@ -463,7 +498,12 @@ const messages: Messages = {
         prefix: '前缀',
         type: '类型',
         model: '模型',
-        tokens: '词元数量'
+        tokens: '词元数量',
+        sliding_window: '滑动窗口',
+        key_length: '键向量长度',
+        value_length: '值向量长度',
+        version: '版本',
+        languages: '支持语言'
       }
     },
     
@@ -663,6 +703,7 @@ const messages: Messages = {
     chat: '聊天对话',
     models: '模型库',
     prompts: '提示词',
+    notes: '笔记库',
     history: '对话记录',
     user_menu: '用户菜单',
     login: '登录',
@@ -671,9 +712,84 @@ const messages: Messages = {
     features_settings: '系统设置',
     community: '社区空间',
     help_docs: '帮助文档',
+    about: '关于我们',
     logout: '退出登录',
     logo_tooltip: 'kun-lab',
     user_avatar: '用户头像'
+  },
+  notes: {
+    title: '笔记库',
+    subtitle: '管理和浏览您的笔记',
+    create_note: '创建笔记',
+    edit_note: '编辑笔记',
+    create_subtitle: '记录您的想法、见解和灵感',
+    edit_subtitle: '修改您的笔记内容',
+    quick_note: '快速笔记',
+    preview: '预览',
+    saved_from_chat: '已成功保存到笔记',
+    toggle_preview: '切换预览',
+    back_to_edit: '返回编辑',
+    preview_empty: '无内容可预览',
+    preview_requires_content: '请输入内容后再预览',
+    stats: {
+      lines: '行',
+      chars: '字符'
+    },
+    empty_state: {
+      title: '暂无笔记',
+      subtitle: '创建您的第一个笔记'
+    },
+    search_placeholder: '搜索笔记...',
+    search_empty: {
+      title: '没有匹配的笔记',
+      subtitle: '尝试使用不同的搜索词',
+      clear_button: '清除搜索'
+    },
+    delete_dialog: {
+      title: '删除笔记',
+      confirm_message: '确定要删除此笔记吗？此操作不可撤销。'
+    },
+    cancel_dialog: {
+      title: '放弃更改',
+      message: '您有未保存的更改，确定要放弃吗？',
+      confirm: '放弃',
+      cancel: '继续编辑'
+    },
+    notifications: {
+      create_success: '笔记创建成功',
+      create_error: '创建笔记失败',
+      update_success: '笔记更新成功',
+      update_error: '更新笔记失败',
+      delete_success: '笔记已删除',
+      delete_error: '删除笔记失败',
+      load_error: '加载笔记失败',
+      export_success: '笔记导出成功',
+      export_error: '导出笔记失败'
+    },
+    card: {
+      time_format: {
+        today: '今天',
+        yesterday: '昨天',
+        this_week: '本周',
+        date: '日期'
+      },
+      conversation_note: '对话笔记',
+      edit: '编辑',
+      delete: '删除'
+    },
+    form: {
+      title_label: '标题',
+      title_placeholder: '输入笔记标题',
+      title_required: '请输入标题',
+      content_label: '内容',
+      content_placeholder: '输入笔记内容...',
+      content_required: '请输入内容'
+    },
+    export: {
+      button: '导出',
+      tooltip: '导出为Markdown文件',
+      empty_content: '笔记内容为空，无法导出'
+    }
   },
   chat: {
     confirm_clear: {
@@ -690,10 +806,6 @@ const messages: Messages = {
       expand: '展开',
       collapse: '收起'
     },
-    message_actions: {
-      copy: '复制',
-      delete: '删除'
-    },
     file_preview: {
       pdf_document: 'PDF文档',
       show_content: '查看内容',
@@ -707,6 +819,7 @@ const messages: Messages = {
         excel: 'Excel 表格',
         csv: 'CSV 表格',
         ppt: 'PPT 演示文稿',
+        html: 'HTML 网页文档'
       },
       file_size: '文件大小'
     },
@@ -726,9 +839,17 @@ const messages: Messages = {
       },
       remove_file: '移除文件'
     },
+    message_actions: {
+      copy: '复制',
+      delete: '删除',
+      selected_copy: '复制选中文本',
+      save_to_note: '保存到笔记',
+      selected_save: '保存选中内容到笔记'
+    },
     notifications: {
       copy_success: '复制成功',
       copy_error: '复制失败：',
+      saved_to_note: '内容已保存到笔记',
       clear_success: '对话清空成功',
       clear_error: '对话清空失败：',
       image_upload_success: '图片上传成功',
@@ -749,6 +870,76 @@ const messages: Messages = {
       connection_timeout: 'WebSocket连接超时，请稍后重试',
       retry_connecting: 'WebSocket连接超时，正在重试 ({count}/{max})...',
       server_connection_failed: '连接服务器失败，请检查网络或服务器状态'
+    }
+  },
+  about: {
+    title: '关于我们',
+    subtitle: '了解 Kun-Lab 应用的信息',
+    tabs: {
+      app: '应用信息',
+      license: '许可证',
+      changelog: '更新日志'
+    },
+    appInfo: {
+      title: '应用简介',
+      description: 'Kun-Lab 是一款基于 Ollama 的轻量级 AI 对话应用',
+      details: '应用详情',
+      developer: '开发团队',
+      developerText: 'Zack、Benny',
+      website: '官方网站',
+      websiteText: 'lab.kunpuai.com',
+      email: '支持邮箱',
+      github: 'GitHub社区',
+      githubText: 'github.com/bahamutww/kun-lab.git',
+      versionInfo: '版本信息',
+      version: '当前版本',
+      versionDesc: '当前应用版本',
+      electronVersion: 'Electron 版本',
+      electronVersionDesc: '应用使用的 Electron 框架版本',
+      lastCheck: '上次检查更新',
+      lastCheckDesc: '上次检查更新的时间',
+      never: '从未',
+      checkNow: '检查更新',
+      checking: '正在检查更新...',
+      checkUpdate: '检查更新',
+      updateSettings: '更新设置',
+      autoCheck: '自动检查更新',
+      autoCheckDesc: '在指定时间自动检查更新',
+      checkFrequency: '检查频率',
+      checkFrequencyDesc: '设置自动检查更新的频率',
+      frequency: {
+        startup: '启动时',
+        daily: '每天',
+        weekly: '每周',
+        monthly: '每月'
+      },
+      updateStatus: '更新状态',
+      upToDate: '已是最新版本',
+      updateAvailable: '发现新版本：v{version}',
+      downloading: '正在下载更新：{progress}%',
+      readyToInstall: '更新已就绪，可以安装',
+      updateError: '更新错误：{error}',
+      downloadNow: '立即下载',
+      installNow: '立即安装',
+      downloadFailed: '下载更新失败',
+      checkFailed: '检查更新失败',
+      downloadSuccess: '更新下载成功',
+      installSuccess: '更新安装成功',
+      installFailed: '安装更新失败',
+      cancelInstall: '取消安装',
+      installCancelled: '已取消安装更新',
+    },
+    license: {
+      title: '许可证信息',
+      loading: '正在加载许可证信息...',
+      error: '加载许可证信息失败'
+    },
+    changelog: {
+      title: '更新日志',
+      description: '查看 Kun-Lab 的最新更新和改进',
+      viewOnGithub: '在 GitHub 上查看完整更新日志',
+      loading: '正在加载更新日志...',
+      error: '加载更新日志失败'
     }
   }
 };

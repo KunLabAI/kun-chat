@@ -10,18 +10,16 @@
 /* 页面头部 */
 .page-header {
   margin: auto;
-  padding-top: 48px; /* 减小默认上边距 */
+  padding-top: 40px;
   margin-bottom: 1.5rem;
-  max-width: 768px; /* 小屏幕默认宽度 */
+  max-width: 768px;
 }
 
 .header-content {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start; /* 改为顶部对齐，在小屏幕上更合理 */
   margin: 0 auto;
   gap: 1rem;
-  flex-direction: column; /* 默认为列布局，适合小屏幕 */
+  align-items: flex-end;
 }
 
 .title-group {
@@ -101,22 +99,46 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 200px; /* 减小最小高度 */
+  min-height: 200px;
   margin: 24px auto;
-  max-width: 768px; /* 小屏幕默认宽度 */
+  max-width: 768px;
   text-align: center;
   color: var(--text-color-lighter);
   font-size: 14px;
-  background: var(--el-bg-color-overlay);
-  border-radius: 8px;
-  border: 1px dashed var(--el-border-color-lighter);
+  flex-direction: column;
+  padding: 32px;
 }
 
+.empty-state-image {
+  width: 240px;
+  height: auto;
+  margin-bottom: 24px;
+  animation: float 6s ease-in-out infinite;
+}
+
+.empty-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 8px;
+}
+
+.empty-subtitle {
+  color: var(--text-color-lighter);
+  margin-bottom: 24px;
+  font-size: 14px;
+  max-width: 400px;
+}
+
+.empty-state-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
 
 /* 媒体查询 - 中等屏幕 (1024px) */
 @media screen and (min-width: 1024px) {
   .page-header {
-    padding-top: 60px;
     margin-bottom: 1.75rem;
     max-width: 1024px;
   }
@@ -155,12 +177,19 @@
     max-width: 1024px;
     font-size: 15px;
   }
+  
+  .empty-title {
+    font-size: 20px;
+  }
+  
+  .empty-subtitle {
+    font-size: 15px;
+  }
 }
 
 /* 媒体查询 - 大屏幕 (1920px) */
 @media screen and (min-width: 1920px) {
   .page-header {
-    padding-top: 72px;
     margin-bottom: 2rem;
     max-width: 1200px;
   }
@@ -196,5 +225,14 @@
     margin: 32px auto;
     max-width: 1200px;
     font-size: 16px;
+  }
+  
+  .empty-title {
+    font-size: 22px;
+  }
+  
+  .empty-subtitle {
+    font-size: 16px;
+    max-width: 500px;
   }
 }

@@ -1,25 +1,17 @@
 /* CreatePromptPage.css */
-
-.prompt-create {
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 0 1rem; /* 添加基础内边距 */
-}
-
 /* 页面头部 */
 .page-header {
-  margin-top: 48px; /* 减小默认上边距 */
-  max-width: 768px; /* 小屏幕默认宽度 */
+  margin-top: 40px;
+  max-width: 768px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .header-content {
   display: flex;
-  flex-direction: column; /* 默认为列布局，适合小屏幕 */
-  justify-content: flex-start;
-  align-items: flex-start;
+  margin: 0 auto;
   gap: 1rem;
+  align-items: flex-end;
 }
 
 .title-group {
@@ -29,23 +21,24 @@
 }
 
 .main-title {
-  font-size: 28px; /* 小屏幕默认字体大小 */
+  font-size: 28px;
   font-weight: bold;
   color: var(--text-color);
   margin-bottom: 6px;
 }
 
 .sub-title {
-  font-size: 14px;
-  color: var(--text-color-light);
+  font-size: 16px;
+  color: var(--text-color-lighter);
   margin: 0;
 }
 
 .header-actions {
   display: flex;
-  flex-direction: row; /* 确保按钮始终水平排列 */
   gap: 8px;
   margin-top: 0.5rem;
+  width: 100%;
+  justify-content: flex-end;
 }
 
 .header-right {
@@ -72,7 +65,7 @@
   background: var(--bg-color-light);
   border-radius: 12px;
   margin-top: 20px;
-  max-width: 768px; /* 小屏幕默认宽度 */
+  max-width: 768px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -87,19 +80,19 @@
 .form-section {
   background: var(--bg-color);
   border-radius: 8px;
-  padding: 16px; /* 减小内边距 */
+  padding: 16px;
   border: 1px solid var(--border-color);
 }
 
 .section-header {
   display: flex;
-  flex-direction: column; /* 小屏幕默认列布局 */
+  flex-direction: column;
   gap: 8px;
   margin-bottom: 16px;
 }
 
 .section-title {
-  font-size: 16px; /* 减小字体大小 */
+  font-size: 16px;
   font-weight: 600;
   color: var(--text-color);
   margin: 0;
@@ -199,7 +192,7 @@
 .form-textarea {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   width: 100%;
-  min-height: 320px; /* 减小默认高度 */
+  min-height: 320px;
   padding: 12px;
   background: transparent;
   border: none;
@@ -273,24 +266,19 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 6px 10px; /* 减小内边距 */
+  padding: 6px 10px;
   background: var(--bg-color-light);
   border-bottom: 1px solid var(--border-color);
 }
 
 /* 媒体查询 - 中等屏幕 (1024px) */
 @media screen and (min-width: 1024px) {
-  .prompt-create {
-    padding: 0 1.5rem;
-  }
-  
   .page-header {
-    margin-top: 60px;
     max-width: 1024px;
   }
   
   .header-content {
-    flex-direction: row; /* 中等屏幕改为行布局 */
+    flex-direction: row;
     justify-content: space-between;
     align-items: flex-end;
     gap: 1.5rem;
@@ -298,8 +286,6 @@
   
   .header-actions {
     display: flex;
-    flex-direction: row; /* 即使在小屏幕上也保持水平排列 */
-    justify-content: end;
     width: 100%;
   }
   
@@ -309,7 +295,7 @@
   }
   
   .sub-title {
-    font-size: 15px;
+    font-size: 16px;
   }
   
   .content-card {
@@ -326,7 +312,7 @@
   }
   
   .section-header {
-    flex-direction: row; /* 中等屏幕改为行布局 */
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 18px;
@@ -348,12 +334,7 @@
 
 /* 媒体查询 - 大屏幕 (1920px) */
 @media screen and (min-width: 1920px) {
-  .prompt-create {
-    padding: 0 2rem;
-  }
-  
   .page-header {
-    margin-top: 72px;
     max-width: 1200px;
   }
   

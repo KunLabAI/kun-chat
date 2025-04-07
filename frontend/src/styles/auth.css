@@ -229,9 +229,8 @@ body {
 }
 
 .auth-link:hover {
-  background-color: var(--button-hover-bg);
-  color: var(--link-hover-color);
-  border-color: var(--button-hover-border);
+  background-color: var(--primary-700);
+  color: var(--primary-100);
 }
 
 /* 密码要求提示 */

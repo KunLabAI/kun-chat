@@ -1,4 +1,4 @@
-import { API_BASE_URL, fetchWithRetry } from './config'
+import { API_BASE_URL, fetchWithRetry, getApiUrl } from './config'
 
 // 网络接口类型
 interface NetworkInterface {
@@ -28,7 +28,8 @@ const networkApi = {
    */
   async getNetworkSettings(): Promise<NetworkSettings> {
     try {
-      const response = await fetchWithRetry(`${API_BASE_URL}/api/network/network/settings`, {
+      const apiUrl = await getApiUrl();
+      const response = await fetchWithRetry(`${apiUrl}/network/network/settings`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -55,7 +56,8 @@ const networkApi = {
    */
   async updateLanAccess(enabled: boolean): Promise<{success: boolean}> {
     try {
-      const response = await fetchWithRetry(`${API_BASE_URL}/api/network/network/lan-access`, {
+      const apiUrl = await getApiUrl();
+      const response = await fetchWithRetry(`${apiUrl}/network/network/lan-access`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -76,7 +78,8 @@ const networkApi = {
    */
   async getLanUrls(): Promise<LanUrlsResponse> {
     try {
-      const response = await fetchWithRetry(`${API_BASE_URL}/api/network/network/lan-urls`, {
+      const apiUrl = await getApiUrl();
+      const response = await fetchWithRetry(`${apiUrl}/network/network/lan-urls`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -99,7 +102,8 @@ const networkApi = {
    */
   async getAllNetworkInterfaces(): Promise<NetworkInterface[]> {
     try {
-      const response = await fetchWithRetry(`${API_BASE_URL}/api/network/network/interfaces`, {
+      const apiUrl = await getApiUrl();
+      const response = await fetchWithRetry(`${apiUrl}/network/network/interfaces`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

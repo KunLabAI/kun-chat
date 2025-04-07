@@ -36,8 +36,12 @@
         {{ modelsStore.error }}
       </div>
       <div v-else-if="modelsStore.models.length === 0" class="empty-state">
-        {{ t('model.empty_state') }}
-      </div>
+        <img 
+          src="@/assets/illustration/modelsempty.png" 
+          alt="No models"
+          class="empty-state-image"
+        />
+        <h3 class="empty-title">{{ t('model.empty_state.title') }}</h3>      </div>
       <div v-else class="models-grid">
         <div v-for="model in modelsStore.sortedModels" :key="model.name" class="model-grid-item">
           <ModelCard
@@ -49,16 +53,16 @@
         </div>
       </div>
     </div>
+    <Dialog
+      v-model="showDeleteDialog"
+      :title="t('model.delete_dialog.title')"
+      :confirm-text="t('common.actions.delete')"
+      :cancel-text="t('common.actions.cancel')"
+      @confirm="confirmDelete"
+    >
+      <p>{{ t('model.delete_dialog.confirm_message', { 0: modelToDelete?.name }) }}</p>
+    </Dialog>
   </MainLayout>
-  <Dialog
-    v-model="showDeleteDialog"
-    :title="t('model.delete_dialog.title')"
-    :confirm-text="t('common.actions.delete')"
-    :cancel-text="t('common.actions.cancel')"
-    @confirm="confirmDelete"
-  >
-    <p>{{ t('model.delete_dialog.confirm_message', { 0: modelToDelete?.name }) }}</p>
-  </Dialog>
 </template>
 
 <script setup lang="ts">
