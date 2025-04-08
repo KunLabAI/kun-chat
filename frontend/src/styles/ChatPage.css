@@ -15,23 +15,14 @@
 
 /* 抽屉打开时的状态 */
 .chat-container.with-drawer {
-  width: calc(50% - 48px); /* 减去侧边栏宽度 */
-  right: 50%; /* 当抽屉打开时缩小宽度 */
-}
-
-/* 在小屏幕上的响应式处理 */
-@media screen and (max-width: 1023px) {
-  .chat-container.with-drawer {
-    width: calc(100% - 48px); /* 在小屏幕上占据全宽，减去侧边栏宽度 */
-    right: 0;
-    z-index: 1; /* 确保内容在抽屉下方 */
-  }
+  right: 50%; 
+  left: 40px;
 }
 
 /* 消息列表容器 */
 .messages-container {
   flex: 1;
-  margin: 32px auto;
+  margin: 16px auto;
   padding-bottom: calc(124px + 2px); /* 为输入框留出空间 */
   width: 1024px;
   max-width: 100%;

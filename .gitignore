@@ -93,5 +93,5 @@ backend/data
 backend/static/avatars/*.png
 backend/static/avatars/*.jpg
 backend/static/avatars/*.jpeg
-backend/buildpath/
-frontend/electronpath/
+backend/buildpath
+frontend/electronpath

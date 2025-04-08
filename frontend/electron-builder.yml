@@ -5,6 +5,12 @@ directories:
 files:
   - dist/**/*
   - electron/**/*
+  - public/**/*
+extraFiles:
+  - from: public
+    to: public
+    filter:
+      - "**/*"
 extraResources:
   - from: ../backend/dist
     to: backend

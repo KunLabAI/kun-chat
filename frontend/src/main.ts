@@ -16,9 +16,16 @@ const DEBUG_MODE = import.meta.env.VITE_DEBUG_MODE === 'true';
 // 将调试模式状态挂载到window对象上
 (window as any).DEBUG_MODE = DEBUG_MODE;
 
+// 初始设置主题，避免闪烁
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark') {
+
+  document.documentElement.classList.add('dark');
+}
+
 // 在生产环境中根据DEBUG_MODE决定是否禁用控制台输出
 if (process.env.NODE_ENV === 'production' && !DEBUG_MODE && typeof window.electronAPI === 'undefined') {
-  // 保存原始的console方法
+
   const originalConsole = {
     log: console.log,
     debug: console.debug,
@@ -127,18 +134,25 @@ async function initApp() {
   app.use(router)
   app.use(i18n)
   
-  // 初始化主题
+  // 初始化主题 - 优先级最高，防止闪烁
   const themeStore = useThemeStore()
+  
+  // 立即更新文档类，确保与前面的预加载样式一致
   themeStore.updateDocumentClass()
   themeStore.setupSystemThemeListener()
   
   try {
+    // 尝试加载保存的主题设置，但不改变当前外观
+    // 因为我们已经在页面初始化时应用了暗色主题
     await themeStore.loadThemeFromDatabase()
   } catch (error) {
     console.error('加载主题设置失败:', error)
   }
   
-  // 初始化Ollama服务（如果可用）
+  // 先挂载应用，保证UI体验的流畅性
+  app.mount('#app')
+  
+  // 在应用挂载后执行其他初始化操作
   try {
     await initOllamaService()
   } catch (error) {
@@ -151,9 +165,6 @@ async function initApp() {
   } catch (error) {
     console.error('加载语言设置失败:', error)
   }
-  
-  // 挂载应用
-  app.mount('#app')
 }
 
 // 加载应用

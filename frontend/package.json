@@ -1,7 +1,7 @@
 {
   "name": "kun-lab",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "基于 Ollama 的本地部署轻量级 AI 对话应用",
   "author": "Kun-Lab Team",
   "main": "electronpath/main.js",
@@ -60,7 +60,17 @@
     },
     "files": [
       "dist/**/*",
-      "electronpath/**/*"
+      "electronpath/**/*",
+      "public/**/*"
+    ],
+    "extraFiles": [
+      {
+        "from": "public",
+        "to": "public",
+        "filter": [
+          "**/*"
+        ]
+      }
     ],
     "extraResources": [
       {
