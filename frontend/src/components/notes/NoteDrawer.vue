@@ -87,9 +87,6 @@
           <div class="preview-title-container">
             <h3 class="preview-drawer-title">{{ t('notes.preview') }}</h3>
           </div>
-          <button class="back-to-edit-button" @click="togglePreview" :title="t('notes.back_to_edit')">
-            <img src="@/assets/icons/sys_close.svg" alt="close preview" class="close-icon" />
-          </button>
         </div>
         <div class="preview-drawer-content">
           <div v-if="noteContent" class="preview-content">

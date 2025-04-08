@@ -25,10 +25,14 @@ body {
   margin: 0;
   min-width: 320px;
   height: 100%;
+  background-color: var(--bg-color);
   font-family: var(--font-family);
   -webkit-font-smoothing: var(--font-smoothing);
   -moz-osx-font-smoothing: var(--font-smoothing-firefox);
   text-rendering: var(--text-rendering);
+  
+  /* 添加平滑过渡，减少主题切换时的闪烁 */
+  transition: background-color 0.3s ease, color 0.3s ease;
 
   /* 移除输入框聚焦时的描边 */
 input:focus {
@@ -39,6 +43,11 @@ input:focus {
 input:focus, textarea:focus, select:focus, button:focus {
   outline: none;
 }
+}
+
+/* 平滑主题切换 */
+.h-screen {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 #app {

@@ -26,6 +26,12 @@ interface ElectronAPI {
 
   // GitHub 配置
   getGitHubConfig: () => { owner: string; repo: string; token: string };
+  
+  // 读取本地文件
+  readLocalFile: (filePath: string) => Promise<string | null>;
+  
+  // 打开外部链接
+  openExternalUrl: (url: string) => Promise<{ success: boolean; error?: string }>;
 }
 
 declare global {

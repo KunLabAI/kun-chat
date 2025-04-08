@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>正在加载 Kun-Lab</title>
+<style>
+  /* 页面基本样式 */
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #1a1a1a;
+    margin: 0;
+    overflow: hidden;
+    font-family: sans-serif;
+    -webkit-app-region: drag; /* 允许拖拽窗口 */
+    user-select: none;
+  }
+
+  /* 主容器 */
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 加载动画容器 */
+  .loading-visualizer {
+    display: flex;
+    align-items: flex-end;
+    height: 88px;
+    padding: 10px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* 单个柱子的样式 */
+  .visualizer-bar {
+    width: 8px;
+    min-height: 64px;
+    margin: 0 3px;
+    border-radius: 12px;
+    position: relative;
+    z-index: 3;
+    animation: wave-animation 1.4s ease-in-out infinite;
+    transform: scaleY(0.1);
+    opacity: 0.7;
+    background-size: 100% 200%;
+    background-position: 0 0;
+    transition: background-position 0.5s;
+  }
+
+  /* 柱状图动画 */
+  @keyframes wave-animation {
+    0% { transform: scaleY(0.1); opacity: 0.7; filter: brightness(0.9); }
+    50% { transform: scaleY(1.0); opacity: 1; filter: brightness(1.3); }
+    100% { transform: scaleY(0.1); opacity: 0.7; filter: brightness(0.9); }
+  }
+
+  /* 柱子颜色和延迟，使用渐变色 */
+  .visualizer-bar:nth-child(9) { 
+    animation-delay: 0s; 
+    background: linear-gradient(to bottom,#c084fc, #faf5ff, #c084fc);
+  }
+  .visualizer-bar:nth-child(8), .visualizer-bar:nth-child(10) { 
+    animation-delay: -1.1s; 
+    background: linear-gradient(to bottom, #a855f7, #f3e8ff, #a855f7);
+  }
+  .visualizer-bar:nth-child(7), .visualizer-bar:nth-child(11) { 
+    animation-delay: -1.0s; 
+    background: linear-gradient(to bottom, #9333ea,#e9d5ff, #9333ea);
+  }
+  .visualizer-bar:nth-child(6), .visualizer-bar:nth-child(12) { 
+    animation-delay: -0.9s; 
+    background: linear-gradient(to bottom, #7e22ce, #d8b4fe, #7e22ce);
+  }
+  .visualizer-bar:nth-child(5), .visualizer-bar:nth-child(13) { 
+    animation-delay: -0.8s; 
+    background: linear-gradient(to bottom, #6b21a8, #c084fc, #6b21a8);
+  }
+  .visualizer-bar:nth-child(4), .visualizer-bar:nth-child(14) { 
+    animation-delay: -0.7s; 
+    background: linear-gradient(to bottom, #581c87, #a855f7, #581c87);
+  }
+  .visualizer-bar:nth-child(3), .visualizer-bar:nth-child(15) { 
+    animation-delay: -0.6s; 
+    background: linear-gradient(to bottom, #4c1d95, #9333ea, #4c1d95);
+  }
+  .visualizer-bar:nth-child(2), .visualizer-bar:nth-child(16) { 
+    animation-delay: -0.5s; 
+    background: linear-gradient(to bottom, #4338ca, #7e22ce, #4338ca);
+  }
+  .visualizer-bar:nth-child(1), .visualizer-bar:nth-child(17) { 
+    animation-delay: -0.4s; 
+    background: linear-gradient(to bottom, #3730a3, #6b21a8, #3730a3);
+  }
+
+  /* 应用标题样式 */
+  .app-title {
+    color: #ffffff;
+    font-size: 28px;
+    margin-bottom: 10px;
+    font-weight: normal;
+  }
+
+  /* 加载文字样式 */
+  .loading-text {
+    color: #e0e0e0;
+    font-size: 24px;
+    margin-top: 8px;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* 状态消息样式 */
+  .message {
+    color: #aaaaaa;
+    font-size: 14px;
+    margin-top: 15px;
+    text-align: center;
+    max-width: 80%;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+  <div class="loading-container">
+    <div class="loading-visualizer">
+      <div class="visualizer-bar"></div> <div class="visualizer-bar"></div> <div class="visualizer-bar"></div>
+      <div class="visualizer-bar"></div> <div class="visualizer-bar"></div> <div class="visualizer-bar"></div>
+      <div class="visualizer-bar"></div> <div class="visualizer-bar"></div> <div class="visualizer-bar"></div>
+      <div class="visualizer-bar"></div> <div class="visualizer-bar"></div> <div class="visualizer-bar"></div>
+      <div class="visualizer-bar"></div> <div class="visualizer-bar"></div> <div class="visualizer-bar"></div>
+      <div class="visualizer-bar"></div> <div class="visualizer-bar"></div>
+    </div>
+    <div class="loading-text">Kun-Lab正在启动...</div>
+    <div class="message">正在连接后端服务，请稍候...</div>
+  </div>
+
+  <script>
+    // 加载页面计时器
+    let messages = [
+      "正在连接后端服务，请稍候...",
+      "正在初始化AI模型...",
+      "正在准备对话环境...",
+      "即将完成，马上为您呈现..."
+    ];
+    let currentMsg = 0;
+    let messageElement = document.querySelector('.message');
+    
+    // 循环显示消息
+    setInterval(() => {
+      currentMsg = (currentMsg + 1) % messages.length;
+      messageElement.textContent = messages[currentMsg];
+    }, 3000);
+  </script>
+</body>
+</html>
