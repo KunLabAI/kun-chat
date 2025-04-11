@@ -62,6 +62,12 @@ export interface CommonMessages {
     disabled: string;
   };
   not_available: string;
+  tools?: {
+    gpu_calculator: {
+      title: string;
+      tooltips: string;
+    };
+  };
 }
 
 // 设置类型
@@ -431,6 +437,18 @@ export interface ModelMessages {
       delete: string;
     };
   };
+  
+  // GPU内存计算器相关翻译
+  gpu_calculator?: {
+    title: string;
+    close_button: string;
+    parameter_count: string;
+    parameter_unit: string;
+    quantization_bits: string;
+    memory_required: string;
+    placeholder: string;
+  };
+  
   detail: {
     back: string;
     favorite: string;

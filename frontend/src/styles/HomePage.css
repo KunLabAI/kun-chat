@@ -12,7 +12,7 @@
 /* 标题区域响应式调整 */
 .home-header {
   flex-shrink: 0;
-  padding-top: 40px;
+  padding-top: 64px;
   text-align: center;
   display: flex;
   flex-direction: column;

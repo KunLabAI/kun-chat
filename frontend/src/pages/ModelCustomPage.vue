@@ -782,14 +782,14 @@ const createModel = async (force: boolean = false) => {
     // 处理不同类型的错误
     if (error instanceof ModelApiError) {
       // 处理API错误
-      if (error.status === 409) {
+      if ((error as ModelApiError).status === 409) {
         // 模型名称冲突，显示覆盖确认对话框
         pendingModelData.value = { ...form }
         showOverwriteDialog.value = true
         return
       } else {
         // 其他API错误
-        notificationStore.error(t('model.custom_page.notifications.create_error') + ': ' + error.message)
+        notificationStore.error(t('model.custom_page.notifications.create_error') + ': ' + (error as ModelApiError).message)
       }
     } else if (error instanceof Error) {
       // 一般JavaScript错误

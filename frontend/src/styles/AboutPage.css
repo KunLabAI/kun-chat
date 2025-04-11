@@ -75,7 +75,7 @@
 /* 页面头部 */
 .about-page-header {
   margin-bottom: 24px;
-  margin-top: 40px;
+  margin-top: 64px;
 }
 
 .header-content {
@@ -107,7 +107,6 @@
 .about-main-content {
   display: flex;
   flex-direction: column;
-  gap: 24px;
 }
 
 /* 页签导航样式 */

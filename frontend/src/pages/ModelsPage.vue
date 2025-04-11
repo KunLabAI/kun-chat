@@ -10,9 +10,24 @@
           </div>
           <div class="header-actions">
             <Button
+              variant="secondary"
+              size="md"
+              @click="openGPUCalculator"
+              class="calculator-btn"
+              :icon="true"
+              :title="t('common.tools.gpu_calculator.tooltips')"
+            >
+              <template #icon-left>
+                <img 
+                  src="@/assets/icons/sys_calculator.svg" 
+                  alt="GPU内存计算器"
+                  class="calculator-icon"
+                />
+              </template>
+            </Button>
+            <Button
               variant="primary"
               size="md"
-              class="mr-2"
               @click="router.push('/models/custom')"
             >
               {{ t('model.custom_model') }}
@@ -27,6 +42,9 @@
           </div>
         </div>
       </div>
+
+      <!-- GPU内存计算器弹窗 -->
+      <GPUMemoryCalculator ref="gpuCalculatorRef" />
 
       <!-- 模型列表 -->
       <div v-if="modelsStore.isLoading" class="loading-indicator">
@@ -80,6 +98,7 @@ import { useAuthStore } from '@/stores/auth'
 import { Model } from '@/types/models'
 import { useConversation } from '@/hooks/chat/useConversation'
 import { useLocalization } from '@/i18n/composables'
+import GPUMemoryCalculator from '@/components/common/GPUMemoryCalculator.vue'
 
 const router = useRouter()
 const modelsStore = useModelsStore()
@@ -91,6 +110,9 @@ const { t } = useLocalization()
 
 const showDeleteDialog = ref(false)
 const modelToDelete = ref<Model | null>(null)
+
+// GPU内存计算器引用
+const gpuCalculatorRef = ref(null)
 
 onMounted(async () => {
   await fetchModelsWithFavoriteStatus()
@@ -162,6 +184,11 @@ const confirmDelete = async () => {
     console.error('删除模型失败:', error)
     notificationStore.showError(t('model.notifications.delete_error'))
   }
+}
+
+// 打开GPU内存计算器
+const openGPUCalculator = () => {
+  gpuCalculatorRef.value?.openDialog()
 }
 
 // async function pullModel() {

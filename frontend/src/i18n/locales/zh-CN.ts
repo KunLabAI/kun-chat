@@ -68,7 +68,13 @@ const messages: Messages = {
       enabled: '已启用',
       disabled: '已关闭'
     },
-    not_available: '不可用'
+    not_available: '不可用',
+    tools: {
+      gpu_calculator: {
+        title: 'GPU内存计算器',
+        tooltips: '计算模型所需GPU内存'
+      }
+    }
   },
   settings: {
     title: '设置',
@@ -696,6 +702,17 @@ const messages: Messages = {
         copy_error: '复制失败',
         reset_success: '表单已重置'
       }
+    },
+    
+    // GPU内存计算器翻译
+    gpu_calculator: {
+      title: 'GPU内存计算器',
+      close_button: '关闭',
+      parameter_count: '参数数量（十亿）',
+      parameter_unit: 'B',
+      quantization_bits: '量化位数',
+      memory_required: '所需内存',
+      placeholder: '输入参数数量'
     }
   },
   sidebar: {

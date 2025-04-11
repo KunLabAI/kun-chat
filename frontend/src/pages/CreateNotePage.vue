@@ -101,6 +101,7 @@
                     :class="{ error: formErrors.content }"
                     :placeholder="t('notes.form.content_placeholder')"
                     @input="updateTextStats"
+                    @paste="handlePaste"
                     required
                   ></textarea>
                 </div>
@@ -188,6 +189,7 @@
                 :class="{ error: formErrors.content }"
                 :placeholder="t('notes.form.content_placeholder')"
                 @input="updateTextStats"
+                @paste="handlePaste"
                 required
               ></textarea>
             </div>
@@ -220,6 +222,7 @@ import MainLayout from '@/layouts/MainLayout.vue'
 import Button from '@/components/common/Button.vue'
 import Dialog from '@/components/common/Dialog.vue'
 import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue'
+import TurndownService from 'turndown'
 
 // 多语言
 const { t } = useLocalization()
@@ -262,6 +265,38 @@ const charsCount = ref(0)
 const isValid = computed(() => {
   return noteTitle.value.trim() && noteContent.value.trim()
 })
+
+// 初始化turndown服务
+const turndownService = new TurndownService({
+  headingStyle: 'atx',
+  codeBlockStyle: 'fenced'
+})
+
+// 添加代码块转换规则
+turndownService.addRule('codeBlocks', {
+  filter: function(node: Element) {
+    return (
+      node.nodeName === 'PRE' &&
+      node.firstChild &&
+      node.firstChild.nodeName === 'CODE'
+    );
+  },
+  replacement: function(_content: string, node: Element) {
+    const codeElement = node.firstChild as Element;
+    const language = codeElement?.getAttribute?.('class') || '';
+    const langMatch = language.match(/language-(\w+)/);
+    const lang = langMatch ? langMatch[1] : '';
+    return `\n\`\`\`${lang}\n${node.textContent}\n\`\`\`\n`;
+  }
+});
+
+// 为聊天消息添加特殊规则
+turndownService.addRule('chatMessages', {
+  filter: '.message-bubble, .message-content, .chat-message',
+  replacement: function(content: string) {
+    return content.trim() ? content : '';
+  }
+});
 
 // 加载笔记数据（编辑模式）
 const loadNote = async () => {
@@ -464,6 +499,79 @@ function updateTextStats() {
   // 清除内容错误
   clearError('content')
 }
+
+// 处理粘贴事件，将HTML转换为Markdown
+const handlePaste = (e: ClipboardEvent) => {
+  try {
+    // 如果粘贴的是HTML内容
+    if (e.clipboardData && e.clipboardData.getData('text/html')) {
+      e.preventDefault();
+      const html = e.clipboardData.getData('text/html');
+      
+      // 对HTML进行预处理，增强转换能力
+      let processedHtml = html
+        // 移除可能干扰转换的一些元素和属性
+        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+        .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+        .replace(/ class="[^"]*"/g, '')
+        .replace(/ style="[^"]*"/g, '');
+      
+      // 为聊天消息添加特殊规则
+      turndownService.addRule('chatMessages', {
+        filter: '.message-bubble, .message-content, .chat-message',
+        replacement: function(content: string) {
+          return content.trim() ? content : '';
+        }
+      });
+      
+      // 转换HTML到Markdown
+      const markdown = turndownService.turndown(processedHtml);
+      
+      // 处理特殊转换失败的情况，尝试使用纯文本
+      if (!markdown.trim() && e.clipboardData.getData('text/plain')) {
+        const plainText = e.clipboardData.getData('text/plain');
+        // 获取当前光标位置
+        const textarea = e.target as HTMLTextAreaElement;
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        
+        // 在光标位置插入文本
+        noteContent.value = 
+          noteContent.value.substring(0, start) + 
+          plainText + 
+          noteContent.value.substring(end);
+          
+        // 更新光标位置
+        nextTick(() => {
+          textarea.selectionStart = textarea.selectionEnd = start + plainText.length;
+        });
+        
+        updateTextStats();
+        return;
+      }
+      
+      // 在光标位置插入转换后的markdown
+      const textarea = e.target as HTMLTextAreaElement;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      
+      noteContent.value = 
+        noteContent.value.substring(0, start) + 
+        markdown + 
+        noteContent.value.substring(end);
+        
+      // 更新光标位置
+      nextTick(() => {
+        textarea.selectionStart = textarea.selectionEnd = start + markdown.length;
+      });
+      
+      updateTextStats();
+    }
+  } catch (error) {
+    console.error('处理粘贴内容失败:', error);
+    // 出错时不拦截，让浏览器默认行为处理粘贴
+  }
+};
 
 // 生命周期钩子
 onMounted(() => {

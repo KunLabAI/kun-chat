@@ -31,15 +31,12 @@ body {
   -moz-osx-font-smoothing: var(--font-smoothing-firefox);
   text-rendering: var(--text-rendering);
   
-  /* 添加平滑过渡，减少主题切换时的闪烁 */
   transition: background-color 0.3s ease, color 0.3s ease;
 
-  /* 移除输入框聚焦时的描边 */
 input:focus {
   outline: none;
 }
 
-/* 如果需要移除所有表单元素的聚焦描边 */
 input:focus, textarea:focus, select:focus, button:focus {
   outline: none;
 }

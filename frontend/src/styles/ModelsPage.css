@@ -10,7 +10,7 @@
 /* 页面头部 */
 .page-header {
   margin: auto;
-  padding-top: 40px;
+  padding-top: 64px;
   margin-bottom: 1.5rem;
   max-width: 768px;
 }
@@ -45,9 +45,40 @@
 
 .header-actions {
   display: flex;
-  gap: 0.75rem;
+  gap: 16px;
   align-items: center;
   margin-top: 1rem; /* 在列布局中添加上边距 */
+}
+
+/* 计算器按钮样式 */
+.calculator-btn {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.calculator-icon {
+  width: 20px;
+  height: 20px;
+  filter: var(--filter-gray-600);
+  transition: filter 0.2s ease;
+}
+
+.dark .calculator-icon {
+  filter: var(--filter-gray-400);
+}
+
+.calculator-btn:hover .calculator-icon {
+  filter: var(--filter-primary);
+}
+
+.dark .calculator-btn:hover .calculator-icon {
+  filter: var(--filter-primary-dark);
 }
 
 /* 模型卡片网格布局 */

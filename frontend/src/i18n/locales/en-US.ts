@@ -68,7 +68,13 @@ const messages: Messages = {
       enabled: 'Enabled',
       disabled: 'Disabled'
     },
-    not_available: 'Not available'
+    not_available: 'Not available',
+    tools: {
+      gpu_calculator: {
+        title: 'GPU Memory Calculator',
+        tooltips: 'Calculate GPU memory requirements'
+      }
+    }
   },
   settings: {
     title: 'Settings',
@@ -425,6 +431,15 @@ const messages: Messages = {
         chat: 'Start New Chat',
         delete: 'Delete Model'
       }
+    },
+    gpu_calculator: {
+      title: 'GPU Memory Calculator',
+      close_button: 'Close',
+      parameter_count: 'Parameter Count (billions)',
+      parameter_unit: 'B',
+      quantization_bits: 'Quantization Bits',
+      memory_required: 'Memory Required',
+      placeholder: 'Enter parameter count'
     },
     detail: {
       back: 'Back',

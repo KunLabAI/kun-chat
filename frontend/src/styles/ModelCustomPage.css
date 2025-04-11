@@ -7,7 +7,7 @@
 }
 
 .header-content {
-  padding-top: 40px;
+  padding-top: 64px;
   display: flex;
   margin: 0 auto;
   gap: 1rem;
@@ -35,7 +35,7 @@
 
 .header-actions {
   display: flex;
-  gap: 12px;
+  gap: 16px;
 }
 
 .create-form {

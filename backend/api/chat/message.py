@@ -91,7 +91,7 @@ async def process_chat_messages(
                         file_name = match.group(1)
                     
                     # 如果文档内容太长，可能需要截断
-                    max_doc_length = 20000  # 设置一个合理的最大长度
+                    max_doc_length = 200000  # 设置一个合理的最大长度
                     if len(doc_content) > max_doc_length:
                         doc_content = doc_content[:max_doc_length] + "...\n[文档内容过长，已截断]"
                     
