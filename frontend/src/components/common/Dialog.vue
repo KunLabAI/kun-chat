@@ -19,6 +19,7 @@
         <!-- 底部按钮区域 -->
         <div class="kun-dialog-footer">
           <button
+            v-if="!hideCancelButton"
             @click="$emit('update:modelValue', false)"
             class="kun-dialog-btn kun-dialog-cancel-btn"
           >
@@ -53,6 +54,10 @@ defineProps({
   cancelText: {
     type: String,
     default: 'Cancel'
+  },
+  hideCancelButton: {
+    type: Boolean,
+    default: false
   }
 })
 

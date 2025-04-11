@@ -1,7 +1,7 @@
 {
   "name": "kun-lab",
   "private": true,
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "基于 Ollama 的本地部署轻量级 AI 对话应用",
   "author": "Kun-Lab Team",
   "main": "electronpath/main.js",
@@ -33,6 +33,7 @@
     "pinia-plugin-persistedstate": "^4.2.0",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.5",
+    "turndown": "^7.2.0",
     "uuid": "^11.1.0",
     "vue": "^3.3.4",
     "vue-i18n": "^11.1.2",

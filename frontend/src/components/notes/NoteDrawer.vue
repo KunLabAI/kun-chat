@@ -51,6 +51,7 @@
                   class="form-textarea"
                   :placeholder="t('notes.form.content_placeholder')"
                   @input="updateTextStats"
+                  @paste="handlePaste"
                   required
                 ></textarea>
               </div>
@@ -109,7 +110,7 @@ import { useNotificationStore } from '@/stores/notification'
 import Button from '@/components/common/Button.vue'
 import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue'
 import { useLocalization } from '@/i18n'
-
+import TurndownService from 'turndown'
 
 const props = defineProps({
   isOpen: {
@@ -138,6 +139,29 @@ const isSaving = ref(false)
 const linesCount = ref(0)
 const charsCount = ref(0)
 const isPreviewOpen = ref(false)
+
+// 初始化turndown服务
+const turndownService = new TurndownService({
+  headingStyle: 'atx',
+  codeBlockStyle: 'fenced'
+})
+
+// 添加代码块转换规则
+turndownService.addRule('codeBlocks', {
+  filter: function(node) {
+    return (
+      node.nodeName === 'PRE' &&
+      node.firstChild &&
+      node.firstChild.nodeName === 'CODE'
+    );
+  },
+  replacement: function(content, node) {
+    const language = node.firstChild.getAttribute('class') || '';
+    const langMatch = language.match(/language-(\w+)/);
+    const lang = langMatch ? langMatch[1] : '';
+    return `\n\`\`\`${lang}\n${node.textContent}\n\`\`\`\n`;
+  }
+});
 
 // 表单是否有效
 const isValid = computed(() => {
@@ -169,35 +193,108 @@ const togglePreview = () => {
   }
 }
 
+// 处理粘贴事件，将HTML转换为Markdown
+const handlePaste = (e) => {
+  try {
+    // 如果粘贴的是HTML内容
+    if (e.clipboardData && e.clipboardData.getData('text/html')) {
+      e.preventDefault();
+      const html = e.clipboardData.getData('text/html');
+      
+      // 对HTML进行预处理，增强转换能力
+      let processedHtml = html
+        // 移除可能干扰转换的一些元素和属性
+        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+        .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+        .replace(/ class="[^"]*"/g, '')
+        .replace(/ style="[^"]*"/g, '');
+      
+      // 为聊天消息添加特殊规则
+      turndownService.addRule('chatMessages', {
+        filter: '.message-bubble, .message-content, .chat-message',
+        replacement: function(content) {
+          return content.trim() ? content : '';
+        }
+      });
+      
+      // 转换HTML到Markdown
+      const markdown = turndownService.turndown(processedHtml);
+      
+      // 处理特殊转换失败的情况，尝试使用纯文本
+      if (!markdown.trim() && e.clipboardData.getData('text/plain')) {
+        const plainText = e.clipboardData.getData('text/plain');
+        // 获取当前光标位置
+        const textarea = e.target;
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        
+        // 在光标位置插入文本
+        noteContent.value = 
+          noteContent.value.substring(0, start) + 
+          plainText + 
+          noteContent.value.substring(end);
+          
+        // 更新光标位置
+        nextTick(() => {
+          textarea.selectionStart = textarea.selectionEnd = start + plainText.length;
+        });
+        
+        updateTextStats();
+        return;
+      }
+      
+      // 在光标位置插入转换后的markdown
+      const textarea = e.target;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      
+      noteContent.value = 
+        noteContent.value.substring(0, start) + 
+        markdown + 
+        noteContent.value.substring(end);
+        
+      // 更新光标位置
+      nextTick(() => {
+        textarea.selectionStart = textarea.selectionEnd = start + markdown.length;
+      });
+      
+      updateTextStats();
+    }
+  } catch (error) {
+    console.error('处理粘贴内容失败:', error);
+    // 出错时不拦截，让浏览器默认行为处理粘贴
+  }
+};
+
 // 追加内容到笔记
 const appendContent = (content) => {
-  if (!content.trim()) return
+  if (!content || !content.trim()) return;
   
   // 如果当前内容不为空，添加换行符
   if (noteContent.value.trim()) {
     // 检查当前内容是否已经以换行符结束
     if (!noteContent.value.endsWith('\n') && !noteContent.value.endsWith('\r\n')) {
-      noteContent.value += '\n\n'
+      noteContent.value += '\n\n';
     } else if (!noteContent.value.endsWith('\n\n') && !noteContent.value.endsWith('\r\n\r\n')) {
       // 确保有两个换行符
-      noteContent.value += '\n'
+      noteContent.value += '\n';
     }
   }
   
   // 追加新内容
-  noteContent.value += content
+  noteContent.value += content;
   
   // 内容更新后更新文本统计
-  updateTextStats()
+  updateTextStats();
   
   // 聚焦文本区域并滚动到底部
   nextTick(() => {
-    const textarea = document.getElementById('note-content')
+    const textarea = document.getElementById('note-content');
     if (textarea) {
-      textarea.focus()
-      textarea.scrollTop = textarea.scrollHeight
+      textarea.focus();
+      textarea.scrollTop = textarea.scrollHeight;
     }
-  })
+  });
 }
 
 // 将追加内容方法暴露给父组件
@@ -247,8 +344,8 @@ const saveNote = async () => {
 
 // 清空内容
 const clearContent = () => {
-  noteContent.value = ''
-  updateTextStats()
+  noteContent.value = '';
+  updateTextStats();
 }
 
 // 导出为Markdown文件
@@ -302,28 +399,28 @@ const updateTextStats = () => {
 
 // 监听初始内容的变化
 watch(() => props.initialContent, (newContent) => {
-  if (newContent && !noteContent.value) {
-    noteContent.value = newContent
-    updateTextStats()
+  if (newContent) {
+    noteContent.value = newContent;
+    updateTextStats();
   }
-}, { immediate: true })
+}, { immediate: true });
 
 // 当抽屉打开时，将焦点放在标题输入框上
 watch(() => props.isOpen, (isOpen) => {
   if (isOpen) {
     nextTick(() => {
-      const titleInput = document.getElementById('note-title')
+      const titleInput = document.getElementById('note-title');
       if (titleInput) {
-        titleInput.focus()
+        titleInput.focus();
       }
-    })
+    });
   } else {
     // 关闭抽屉时也关闭预览
-    isPreviewOpen.value = false
+    isPreviewOpen.value = false;
   }
-})
+});
 </script>
 
 <style scoped>
 @import './NoteDrawer.css';
-</style> 
+</style>
