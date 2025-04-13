@@ -89,6 +89,7 @@ jspm_packages/
 .env.development.local
 .env.test.local
 .env.production.local
+.kunlab/
 backend/data
 backend/static/avatars/*.png
 backend/static/avatars/*.jpg
