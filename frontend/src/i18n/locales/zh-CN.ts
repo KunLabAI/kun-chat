@@ -522,7 +522,7 @@ const messages: Messages = {
       pulling: '拉取中...',
       form: {
         model_name: '模型名称',
-        model_name_placeholder: '请输入模型名称，例如：ollama run qwen2.5:0.5b 或 ollama run hf.co/username/model:Q4_K_M'
+        model_name_placeholder: '例如：ollama run qwen2.5:0.5b 或 ollama run modelscope.cn/Qwen/Qwen2.5-3B-Instruct-GGUF'
       },
       validation: {
         model_name_required: '模型名称不能为空',

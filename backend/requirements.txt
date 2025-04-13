@@ -20,3 +20,7 @@ psutil
 tavily-python>=0.5.1
 magika>=0.6.1
 charset-normalizer>=3.3.0
+mcp>=1.6.0
+fastmcp>=2.0.0
+uv>=0.5.4
+jsonrpcclient>=4.0.3

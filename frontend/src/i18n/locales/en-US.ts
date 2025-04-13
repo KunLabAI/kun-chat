@@ -529,7 +529,7 @@ const messages: Messages = {
       pulling: 'Pulling...',
       form: {
         model_name: 'Model Name',
-        model_name_placeholder: 'Enter model name, e.g.: ollama run qwen2.5:0.5b or ollama run hf.co/username/model:Q4_K_M'
+        model_name_placeholder: 'e.g.: ollama run qwen2.5:0.5b or ollama run hf.co/username/model:Q4_K_M'
       },
       validation: {
         model_name_required: 'Model name is required',

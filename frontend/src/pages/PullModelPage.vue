@@ -140,6 +140,15 @@
             >
               <img src="@/assets/modelslogo/Huggingface_icon.svg" alt="HuggingFace" class="model-icon" />
             </a>
+            <span class="plus-icon">+</span>
+            <a 
+              href="https://modelscope.cn/models" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="icon-circle"
+            >
+              <img src="@/assets/modelslogo/ModelScope_icon.svg" alt="ModelScope" class="model-icon" />
+            </a>
           </div>
           <h3>{{ t('model.pull_page.empty_state.default.title') }}</h3>
           <p class="hint-text">{{ t('model.pull_page.empty_state.default.subtitle') }}</p>
@@ -852,7 +861,8 @@ async function validateModelName() {
   // 3. 带用户名的格式：deepseek-140B/DeepSeekAI140B
   // 4. 更复杂的组合：username/model-name:tag-q4_K_M
   // 5. HuggingFace格式：hf.co/username/model:Q4_K_M
-  const validModelPattern = /^(?:(?:hf\.co|huggingface\.co)\/)?[\w.-]+(?:\/[\w.-]+)?(?::[.\w-]+)?$/
+  // 6. 魔搭社区格式：modelscope.cn/username/model
+  const validModelPattern = /^(?:(?:hf\.co|huggingface\.co|modelscope\.cn)\/)?[\w.-]+(?:\/[\w.-]+)?(?::[.\w-]+)?$/
   
   if (!validModelPattern.test(modelNameToValidate)) {
     modelNameError.value = t('model.pull_page.validation.model_name_invalid')

@@ -23,6 +23,9 @@ download_semaphore = asyncio.Semaphore(1)
 # 用于跟踪下载状态
 download_status: Dict[str, Dict[str, Any]] = {}
 
+# 设置是否显示详细日志
+SHOW_DETAILED_LOGS = False
+
 def parse_model_name(name: str) -> str:
     """
     解析和标准化模型名称
@@ -31,6 +34,7 @@ def parse_model_name(name: str) -> str:
     2. 带命名空间的格式：huihui_ai/deepseek-r1-abliterated
     3. HuggingFace格式：hf.co/username/repository 或 huggingface.co/username/repository
     4. 带量化值的格式：hf.co/username/repository:BF16
+    5. 魔搭社区格式：modelscope.cn/username/model 或 ollama run modelscope.cn/username/model
     """
     # 移除可能包含的命令部分
     if "ollama run" in name:
@@ -50,6 +54,11 @@ def parse_model_name(name: str) -> str:
             # 重新组合名称和量化值
             name = f"{base_name}:{quantization}"
         
+        return name
+    
+    # 处理魔搭社区格式
+    if "modelscope.cn/" in name:
+        # 保留完整格式，确保包含域名前缀
         return name
     
     return name
@@ -73,6 +82,7 @@ async def _pull_model(name: str, force: bool = False) -> EventSourceResponse:
                             # 检查模型是否已存在
                             model_exists = await safe_show_model(client, name)
                             if model_exists and not force:
+                                logger.info(f"模型 {name} 已存在，跳过拉取")
                                 yield {
                                     "data": json.dumps({
                                         "name": name,
@@ -93,6 +103,7 @@ async def _pull_model(name: str, force: bool = False) -> EventSourceResponse:
                                 "details": []
                             }
                             download_status[name] = initial_status
+                            logger.info(f"开始拉取模型: {name}")
                             yield {"data": json.dumps(initial_status)}
                             
                             try:
@@ -140,9 +151,13 @@ async def _pull_model(name: str, force: bool = False) -> EventSourceResponse:
                                         if isinstance(response, dict):
                                             response_dict = response
                                         else:
-                                            response_dict = response.dict()
+                                            response_dict = response.model_dump()
                                         
-                                        logger.info(f"Raw response: {response_dict}")
+                                        # 使用debug级别记录详细的响应日志，而不是info级别
+                                        if SHOW_DETAILED_LOGS:
+                                            logger.info(f"Raw response: {response_dict}")
+                                        else:
+                                            logger.debug(f"Raw response: {response_dict}")
                                         
                                         # 检查错误响应
                                         if "error" in response_dict:
@@ -185,6 +200,12 @@ async def _pull_model(name: str, force: bool = False) -> EventSourceResponse:
                                             }
                                         }
                                         
+                                        # 仅在进度发生显著变化时记录日志
+                                        if (progress % 25 == 0 and progress > 0 and 
+                                            (last_status is None or progress > last_status)):
+                                            logger.info(f"模型 {name} 拉取进度: {progress}%")
+                                            last_status = progress
+                                        
                                         download_status[name] = status_update
                                         yield {"data": json.dumps(status_update)}
                                         
@@ -198,6 +219,8 @@ async def _pull_model(name: str, force: bool = False) -> EventSourceResponse:
                                                 "message": "下载完成"
                                             }
                                             download_status[name] = status_update
+                                            # 记录完成状态的日志
+                                            logger.info(f"模型 {name} 拉取完成")
                                             yield {"data": json.dumps(status_update)}
                                             return
 
@@ -212,6 +235,7 @@ async def _pull_model(name: str, force: bool = False) -> EventSourceResponse:
                                     "progress": 100,
                                     "message": "下载完成"
                                 }
+                                logger.info(f"模型 {name} 拉取完成")
                                 yield {"data": json.dumps(final_status)}
                                 return
                                 
@@ -227,6 +251,7 @@ async def _pull_model(name: str, force: bool = False) -> EventSourceResponse:
                                         "status": "failed",
                                         "error": str(e)
                                     }
+                                    logger.error(f"模型 {name} 拉取失败: {str(e)}")
                                     yield {"data": json.dumps(error_status)}
                                     return
                                     
