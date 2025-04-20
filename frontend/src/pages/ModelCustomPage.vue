@@ -538,15 +538,6 @@
         </div>
       </div>
     </div>
-    <Dialog
-      v-model="showOverwriteDialog"
-      :title="t('model.custom_page.overwrite_dialog.title')"
-      :confirm-text="t('model.custom_page.overwrite_dialog.confirm')"
-      :cancel-text="t('model.custom_page.overwrite_dialog.cancel')"
-      @confirm="handleOverwriteConfirm"
-    >
-      <p>{{ t('model.custom_page.overwrite_dialog.message') }}</p>
-    </Dialog>
   </MainLayout>
 </template>
 
@@ -560,8 +551,6 @@ import { usePromptStore } from '@/stores/promptStore'
 import { useLocalization } from '@/i18n'
 import MainLayout from '@/layouts/MainLayout.vue'
 import Button from '@/components/common/Button.vue'
-import Dialog from '@/components/common/Dialog.vue'
-import { modelApi, ModelApiError } from '@/api/models'
 import { convertToModelfile, validateModelConfig } from '@/utils/modelUtils'
 
 const router = useRouter()
@@ -610,7 +599,6 @@ const errors = reactive({
 
 // 提交状态
 const isSubmitting = ref(false)
-const showOverwriteDialog = ref(false)
 
 // 系统提示词的token计数
 const tokenCount = computed(() => {
@@ -623,31 +611,6 @@ const licenseTokenCount = computed(() => {
   // 简单估算，实际应该使用tokenizer计算
   return form.license ? Math.round(form.license.length / 3) : 0
 })
-
-// 对话框相关状态
-interface ModelData {
-  name: string;
-  baseModel: string;
-  systemPrompt: string;
-  parameters: {
-    temperature: number;
-    numCtx: number;
-    topK: number;
-    topP: number;
-    repeatLastN: number;
-    repeatPenalty: number;
-    presencePenalty: number;
-    frequencyPenalty: number;
-    mirostat: number;
-    mirostatEta: number;
-    mirostatTau: number;
-    seed: number;
-    stop: string[];
-  };
-  license: string;
-}
-
-const pendingModelData = ref<ModelData | null>(null)
 
 // 本地存储的key
 const STORAGE_KEY = 'model_custom_form_data'
@@ -738,7 +701,7 @@ watch(selectedPrompt, (newPrompt) => {
 })
 
 // 创建模型的具体逻辑
-const createModel = async (force: boolean = false) => {
+const createModel = async () => {
   isSubmitting.value = true
   try {
     const modelfile = convertToModelfile({
@@ -773,23 +736,26 @@ const createModel = async (force: boolean = false) => {
         mirostatEta: form.parameters.mirostatEta,
         mirostatTau: form.parameters.mirostatTau
       },
-      force
+      force: false
     })
 
-    notificationStore.success(t('model.custom_page.notifications.create_success'))
+    notificationStore.success(t('model.custom_page.notifications.create_success', { name: form.name }))
     router.push('/models')
   } catch (error: unknown) {
     // 处理不同类型的错误
-    if (error instanceof ModelApiError) {
-      // 处理API错误
-      if ((error as ModelApiError).status === 409) {
-        // 模型名称冲突，显示覆盖确认对话框
-        pendingModelData.value = { ...form }
-        showOverwriteDialog.value = true
+    // 尝试将错误视为包含 status 的对象 (我们自定义的 ModelApiError 结构)
+    const apiError = error as any; 
+
+    if (apiError && typeof apiError.status === 'number') {
+      // 确认是包含 status 的错误对象
+      if (apiError.status === 409) {
+        // 模型名称冲突，显示错误通知
+        notificationStore.error(t('model.custom_page.errors.name_conflict', { name: form.name }))
         return
       } else {
         // 其他API错误
-        notificationStore.error(t('model.custom_page.notifications.create_error') + ': ' + (error as ModelApiError).message)
+        const message = apiError.message || 'An unknown API error occurred';
+        notificationStore.error(t('model.custom_page.notifications.create_error') + ': ' + message)
       }
     } else if (error instanceof Error) {
       // 一般JavaScript错误
@@ -815,16 +781,7 @@ function validateForm(): boolean {
 // 提交表单
 const handleSubmit = async () => {
   if (!validateForm()) return
-  await createModel(false)
-}
-
-// 确认覆盖已有模型
-const handleOverwriteConfirm = async () => {
-  showOverwriteDialog.value = false
-  if (pendingModelData.value) {
-    await createModel(true)
-    pendingModelData.value = null
-  }
+  await createModel()
 }
 
 // 复制系统提示词
@@ -899,8 +856,6 @@ onBeforeUnmount(() => {
   document.removeEventListener('keydown', handleKeyDown)
 })
 
-
-// 处理点击外部区域关闭下拉选择栏
 // 处理点击外部区域关闭下拉选择栏
 const handleOutsideClick = (event: MouseEvent) => {
   // 获取点击的元素

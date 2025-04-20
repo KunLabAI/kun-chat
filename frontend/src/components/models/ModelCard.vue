@@ -67,7 +67,7 @@ const emit = defineEmits<{
 }>()
 
 // 导入星星图标
-const starIconSrc = new URL('@/assets/icons/sys_star.svg', import.meta.url).href
+import starIconSrc from '@/assets/icons/sys_star.svg';
 
 const handleStartChat = async () => {
   try {

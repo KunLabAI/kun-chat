@@ -191,7 +191,19 @@ export const modelApi = {
       return await handleApiResponse<Model>(response)
     } catch (error) {
       console.error('Error creating model:', error)
-      throw error
+      if (axios.isAxiosError(error) && error.response) {
+        // 如果是 Axios 错误且有响应，包装成 ModelApiError
+        throw new ModelApiError(
+          error.response.data?.detail || error.message, // 优先使用后端返回的 detail
+          error.response.status
+        );
+      } else if (error instanceof Error) {
+        // 其他 JS 错误
+        throw new ModelApiError(error.message, 500); // 假设为 500
+      } else {
+        // 未知错误
+        throw new ModelApiError('An unknown error occurred', 500);
+      }
     }
   }
 }
