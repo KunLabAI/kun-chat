@@ -730,6 +730,10 @@ export interface ModelMessages {
       copy_error: string;
       reset_success: string;
     };
+    errors: {
+      name_conflict: string;
+      delete_failed: string;
+    };
   };
 }
 

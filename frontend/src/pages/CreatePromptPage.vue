@@ -56,7 +56,7 @@
                   class="form-input"
                   :placeholder="t('prompt.form.tags_placeholder')"
                   @keydown.enter.prevent="handleTagInput"
-                  @keydown.comma.prevent="handleTagInput"
+                  @keydown="e => e.key === ',' && (e.preventDefault(), handleTagInput(e))"
                 />
                 <div v-if="currentTags.length > 0" class="tags-container">
                   <span 
@@ -295,7 +295,11 @@ function detectLanguage() {
   
   // 检测代码块语言
   const codeBlockRegex = /```(\w+)[\s\S]*?```/g
-  const matches = [...content.matchAll(codeBlockRegex)]
+  const matches: RegExpExecArray[] = []
+  let match: RegExpExecArray | null
+  while ((match = codeBlockRegex.exec(content)) !== null) {
+    matches.push(match)
+  }
   
   if (matches.length > 0) {
     // 获取最后一个代码块的语言

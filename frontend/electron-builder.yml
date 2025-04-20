@@ -1,7 +1,32 @@
 appId: com.kunlab.app
 productName: Kun-Lab
+copyright: Copyright © 2023-2025 Kun-Lab Team
+
+# 主进程入口点
+electronDist: electronpath
+electronMain: main.js
+
+# 控制asar打包
+asar: true
+asarUnpack:
+  - "public/**/*"
+
+# 特殊的asar配置
+asarOptions:
+  ordering: electronpath/main.js
+  smartUnpack: true
+
+# 构建配置，与package.json同步
 directories:
   output: dist_electron
+  buildResources: public
+
+# 配置应用图标
+icon: public/icon.ico
+
+# 保护文件选项
+beforePack: scripts/before-pack.js
+
 files:
   - dist/**/*
   - electron/**/*

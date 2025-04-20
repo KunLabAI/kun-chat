@@ -95,4 +95,4 @@ backend/static/avatars/*.png
 backend/static/avatars/*.jpg
 backend/static/avatars/*.jpeg
 backend/buildpath/
-frontend/electronpath/
+electronpath/

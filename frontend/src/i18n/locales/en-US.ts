@@ -706,6 +706,10 @@ const messages: Messages = {
         copy_success: 'Copied successfully',
         copy_error: 'Failed to copy',
         reset_success: 'Form has been reset'
+      },
+      errors: {
+        name_conflict: 'Model name conflict for \'{name}\'. Please delete the existing model first or use a different name.',
+        delete_failed: 'Failed to delete existing model, please try again later'
       }
     }
   },

@@ -265,7 +265,7 @@ onMounted(async () => {
 }
 
 /* 自定义标题样式 */
-.changelog-body >>> .changelog-section-title {
+.changelog-body .changelog-section-title {
   margin: 16px 0 8px;
   font-size: 16px;
   font-weight: 600;
@@ -275,13 +275,13 @@ onMounted(async () => {
 }
 
 /* 自定义列表样式 */
-.changelog-body >>> ul {
+.changelog-body ul {
   margin: 8px 0 16px;
   padding-left: 20px;
   list-style-type: disc;
 }
 
-.changelog-body >>> li {
+.changelog-body li {
   margin-bottom: 8px;
   line-height: 1.5;
   position: relative;
@@ -289,7 +289,7 @@ onMounted(async () => {
 }
 
 /* 自定义文本样式 */
-.changelog-body >>> code {
+.changelog-body code {
   background-color: var(--gray-100);
   padding: 2px 4px;
   border-radius: 4px;
@@ -297,12 +297,12 @@ onMounted(async () => {
   font-size: 0.9em;
 }
 
-.changelog-body >>> strong {
+.changelog-body strong {
   font-weight: 600;
   color: var(--text-color-dark);
 }
 
-.changelog-body >>> em {
+.changelog-body em {
   font-style: italic;
 }
 
@@ -326,15 +326,15 @@ onMounted(async () => {
   color: var(--primary-400);
 }
 
-.dark .changelog-body >>> .changelog-section-title {
+.dark .changelog-body .changelog-section-title {
   color: var(--primary-300);
 }
 
-.dark .changelog-body >>> code {
+.dark .changelog-body code {
   background-color: var(--gray-700);
 }
 
-.dark .changelog-body >>> strong {
+.dark .changelog-body strong {
   color: var(--text-color-light);
 }
 </style>

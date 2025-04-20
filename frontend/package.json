@@ -1,7 +1,7 @@
 {
   "name": "kun-lab",
   "private": true,
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "基于 Ollama 的本地部署轻量级 AI 对话应用",
   "author": "Kun-Lab Team",
   "main": "electronpath/main.js",
@@ -16,7 +16,9 @@
     "electron:build:win": "vite build && electron-builder --win",
     "electron:build:mac": "vite build && electron-builder --mac",
     "electron:build:linux": "vite build && electron-builder --linux",
-    "electron:build:all": "vite build && electron-builder -mwl"
+    "electron:build:all": "vite build && electron-builder -mwl",
+    "obfuscate": "node scripts/obfuscate.js",
+    "electron:build:secure": "vite build && electron-builder --config electron-builder.yml"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.16",
@@ -47,6 +49,8 @@
     "concurrently": "^8.2.2",
     "electron": "^28.1.0",
     "electron-builder": "^24.13.3",
+    "javascript-obfuscator": "^4.1.0",
+    "terser": "^5.29.1",
     "typescript": "^5.6.3",
     "vite": "^5.4.10",
     "vite-tsconfig-paths": "^5.1.3",
@@ -64,6 +68,9 @@
       "electronpath/**/*",
       "public/**/*"
     ],
+    "asar": {
+      "smartUnpack": true
+    },
     "extraFiles": [
       {
         "from": "public",
@@ -96,9 +103,7 @@
       ],
       "icon": "public/icon.ico",
       "asar": true,
-      "asarUnpack": [
-        "electronpath/**/*"
-      ]
+      "asarUnpack": ["public/**/*"]
     },
     "mac": {
       "target": [
@@ -107,7 +112,9 @@
       ],
       "icon": "public/icon.icns",
       "category": "public.app-category.productivity",
-      "darkModeSupport": true
+      "darkModeSupport": true,
+      "asar": true,
+      "asarUnpack": ["public/**/*"]
     },
     "linux": {
       "target": [
@@ -117,6 +124,8 @@
       ],
       "icon": "public/icon.png",
       "category": "Utility",
+      "asar": true,
+      "asarUnpack": ["public/**/*"],
       "desktop": {
         "Name": "Kun-Lab",
         "Comment": "基于 Ollama 的本地部署轻量级 AI 对话应用",

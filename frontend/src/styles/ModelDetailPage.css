@@ -18,10 +18,17 @@
 }
 
 .title-group {
-  display: flex  ;
+  display: flex;
   justify-content: flex-start;
   align-items: center;
   gap: 24px;
+  overflow: hidden;
+}
+
+.title-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .main-title {
@@ -29,6 +36,10 @@
   font-weight: bold;
   color: var(--text-color);
   margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 700px;
 }
 
 .sub-title {
@@ -298,6 +309,22 @@
 }
 
 /* 响应式设计 */
+/* 媒体查询 - 小屏幕 (768px以下) */
+@media screen and (max-width: 768px) {
+  .main-title {
+    font-size: 28px;
+    max-width: 300px;
+  }
+  
+  .title-group {
+    gap: 16px;
+  }
+  
+  .model-icon-wrapper {
+    flex-shrink: 0;
+  }
+}
+
 /* 媒体查询 - 中等屏幕 (1024px) */
 @media screen and (min-width: 1024px) {
   .model-details-page {

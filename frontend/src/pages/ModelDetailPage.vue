@@ -9,7 +9,7 @@
               <img :src="getModelLogo(modelDetails?.family || '')" :alt="modelDetails?.family" class="model-icon">
             </div>
             <div class="title-text">
-              <h1 class="main-title">{{ modelDetails?.display_name || modelDetails?.name }}</h1>
+              <h1 class="main-title" :title="modelDetails?.display_name || modelDetails?.name">{{ modelDetails?.display_name || modelDetails?.name }}</h1>
             </div>
           </div>
           <div class="header-actions">

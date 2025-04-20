@@ -690,9 +690,9 @@ const messages: Messages = {
         }
       },
       overwrite_dialog: {
-        title: '确认覆盖模型',
-        message: '已存在同名模型，是否覆盖？',
-        confirm: '确认覆盖',
+        title: '模型名称冲突',
+        message: '已存在同名模型，是否覆盖现有模型？',
+        confirm: '覆盖',
         cancel: '取消'
       },
       notifications: {
@@ -701,6 +701,10 @@ const messages: Messages = {
         copy_success: '复制成功',
         copy_error: '复制失败',
         reset_success: '表单已重置'
+      },
+      errors: {
+        name_conflict: '发现同名模型 \'{name}\'. 请删除后再创建或使用其他名称。',
+        delete_failed: '删除同名模型失败，请稍后重试'
       }
     },
     
