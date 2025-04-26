@@ -20,6 +20,12 @@
             <BubbleAvatar />
           </div>
           <div class="message-bubble">
+            <!-- 如果是最后一条AI消息且模型正在加载，显示立方体动画 -->
+            <div v-if="isLastAssistantMessage(message) && chatStore.aiStatus.model === 'loading'" class="loading-container">
+              <div class="spinner">
+                <div></div><div></div><div></div><div></div><div></div><div></div>
+              </div>
+            </div>
             <!-- PDF预览 -->
             <div v-if="message.pdf" class="message-file-preview">
               <div class="file-icon pdf">
@@ -40,6 +46,7 @@
               <img 
                 :src="getMessageImageSrc(message)"
                 @load="scrollToBottom"
+                @click="openImagePreview(getMessageImageSrc(message))"
                 alt="Message image"
               />
             </div>
@@ -64,13 +71,27 @@
             <div v-if="message.document && message.showDocument" class="document-content">
               <MarkdownRenderer :content="message.document.content" />
             </div>
+            <!-- 网页搜索指示器 - 当工具状态为网页搜索且消息内容为空时显示 -->
+            <!-- 注意：只有当模型不在加载中且网页搜索功能已启用时才显示网页搜索动画 -->
+            <WebSearchIndicator 
+              v-if="message.role === 'assistant' && isLastAssistantMessage(message) && 
+                    chatStore.aiStatus.tool === ToolStatus.WEB_SEARCH && 
+                    chatStore.aiStatus.model !== ModelStatus.LOADING && 
+                    chatStore.aiStatus.webSearchEnabled && 
+                    (!message.content || message.content.trim() === '')"
+              ref="webSearchIndicatorRef"
+            />
+            
             <!-- 显示文本内容 -->
             <template v-if="message.content">
               <!-- 思考过程 -->
               <div 
                 v-if="message.role === 'assistant' && hasThinkingContent(message.content)" 
                 class="thinking-process"
-                :class="{ 'thinking-process-active': isActiveThinking(message) }"
+                :class="{ 
+                  'thinking-process-active': isActiveThinking(message) || chatStore.aiStatus.thinking === 'thinking',
+                  'thinking-process-completed': chatStore.aiStatus.thinking === 'completed'
+                }"
               >
                 <div class="thinking-process-header">
                   <span class="thinking-title">
@@ -79,7 +100,7 @@
                       {{ t('chat.thinking_process.time', [getThinkingTime(message)]) }}
                     </span>
                   </span>
-                  <span v-if="isActiveThinking(message)" class="thinking-dots"></span>
+                  <span v-if="isActiveThinking(message) || chatStore.aiStatus.thinking === 'thinking'" class="thinking-dots"></span>
                   <div class="thinking-toggle" @click="toggleThinkingProcess(message)">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" :class="{ 'rotate-180': message.showThinking }">
                       <path d="M19 9l-7 7-7-7"/>
@@ -92,31 +113,24 @@
               </div>
               <div v-if="!hasThinkingContent(message.content) || extractFinalContent(message.content)">
                 <!-- 用户消息使用纯文本渲染器 -->
-                <PlainTextRenderer v-if="message.role === 'user'" :content="message.content" :max-lines="5" />
+                <PlainTextRenderer 
+                  v-if="message.role === 'user'" 
+                  :content="message.content" 
+                  :max-lines="5" 
+                  @contentRendered="handleContentRendered"
+                />
                 <!-- AI消息使用Markdown渲染器 -->
                 <div v-else>
-                  <!-- 使用key绑定，避免内容更新时重新渲染整个组件 -->
+                  <!-- 正常显示内容 -->
                   <MarkdownRenderer 
                     :content="extractFinalContent(message.content) || message.content" 
                     :key="`content-${message.id}`"
+                    @contentRendered="handleContentRendered"
                   />
                 </div>
               </div>
             </template>
-            <!-- 生成中状态指示器 -->
-            <div 
-              v-if="chatStore.isGenerating && message === chatStore.messages[chatStore.messages.length - 1] && message.role === 'assistant'"
-              class="loading-container"
-            >
-              <div class="spinner">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-              </div>
-            </div>
+            
             <!-- 消息操作区域 -->
             <div v-if="message.role === 'assistant'" class="message-footer">
               <span class="message-time">{{ formatTime(message.timestamp) }}</span>
@@ -133,6 +147,7 @@
           </div>
         </div>
       </div>
+      
       
       <!-- 滚动到底部按钮 -->
       <div 
@@ -186,6 +201,16 @@
         container=".message-bubble, .markdown-content" 
         @save-to-note="handleSaveToNote"
       />
+
+      <!-- 图片预览模态框 -->
+      <div v-if="showImagePreview" class="image-preview-modal" @click="closeImagePreview">
+        <div class="modal-content" @click.stop>
+          <img :src="previewImageUrl" alt="图片预览" class="full-size-image" />
+          <button class="close-button" @click="closeImagePreview">
+            <img src="@/assets/icons/sys_close.svg" alt="关闭" class="close-icon" />
+          </button>
+        </div>
+      </div>
     </div>
     
     <!-- 笔记抽屉组件 - 移到MainLayout下，但在chat-container外部 -->
@@ -206,11 +231,12 @@
 import { ref, onMounted, watch, nextTick, onUnmounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { useChatStore } from '@/stores/chat'
+import { useChatStore, GenerationStatus, ThinkingStatus, ToolStatus, ModelStatus } from '@/stores/chat'
 import { useModelsStore } from '@/stores/models'
 import { useNotificationStore } from '@/stores/notification'
 import { useAuthStore } from '@/stores/auth'
 import { useLocalization } from '@/i18n'
+import { hasThinkingContent, extractThinkContent, extractFinalContent, formatThinkContent } from '@/states/aiStates'
 import MainLayout from '@/layouts/MainLayout.vue'
 import ChatInput from '@/components/chat/InputArea/ChatInput.vue'
 import { BubbleAvatar } from '@/components/AIavatar.ts'
@@ -220,6 +246,7 @@ import HtmlRenderer from '@/components/common/HtmlRenderer.vue'
 import Dialog from '@/components/common/Dialog.vue'
 import SelectionActionButton from '@/components/chat/SelectionActionButton.vue'
 import NoteDrawer from '@/components/notes/NoteDrawer.vue'
+import WebSearchIndicator from '@/components/chat/WebSearchIndicator.vue'
 import { API_BASE_URL } from '@/api/config'
 
 const route = useRoute()
@@ -262,6 +289,13 @@ const refreshConfirmed = ref(false)
 const isNoteDrawerOpen = ref(false)
 const selectedTextForNote = ref('')
 const noteDrawerRef = ref(null)
+
+// 图片预览相关
+const showImagePreview = ref(false)
+const previewImageUrl = ref('')
+
+// 网页搜索指示器引用
+const webSearchIndicatorRef = ref(null)
 
 // 处理发送消息
 async function handleSendMessage(message) {
@@ -309,16 +343,7 @@ onMounted(() => {
   scrollToBottom(true, false);
   
   // 加载当前对话
-  loadCurrentConversation().then(() => {
-    // 加载所有消息的思考时间数据
-    if (chatStore.messages && chatStore.messages.length > 0) {
-      chatStore.messages.forEach(message => {
-        if (message.role === 'assistant') {
-          loadThinkingTimesFromLocalStorage(message);
-        }
-      });
-    }
-  });
+  loadCurrentConversation();
   
   const handleScroll = () => {
     const { scrollTop, scrollHeight, clientHeight } = container;
@@ -340,32 +365,72 @@ onMounted(() => {
   container.addEventListener('scroll', handleScroll, { passive: true });
 });
 
+// 滚动防抖变量
+let scrollDebounceTimer = null;
+let isScrolling = false;
+
 // 自动滚动到底部
 const scrollToBottom = (force = false, smooth = true) => {
-  nextTick(() => {
+  // 如果正在滚动，则取消之前的滚动请求
+  if (scrollDebounceTimer) {
+    clearTimeout(scrollDebounceTimer);
+  }
+  
+  // 如果正在滚动，则不执行新的滚动
+  if (isScrolling && !force) return;
+  
+  // 使用防抖处理，减少短时间内的多次滚动
+  scrollDebounceTimer = setTimeout(() => {
     const container = chatContainer.value;
     if (!container) return;
     
+    // 强制滚动或根据用户滚动状态决定
     if (force || shouldAutoScroll.value) {
+      // 标记正在滚动
+      isScrolling = true;
+      
+      // 设置滚动行为
+      container.style.scrollBehavior = smooth ? 'smooth' : 'auto';
+      
+      // 滚动到底部
       container.scrollTop = container.scrollHeight;
+      
+      // 滚动结束后重置标记
+      setTimeout(() => {
+        isScrolling = false;
+      }, smooth ? 300 : 50); // 平滑滚动需要更长的时间
     }
-  });
+  }, 20); // 短延迟，防抖处理
 };
 
+// 记录最后一条AI消息的行数
+let lastAssistantMessageLineCount = 0;
+
 // 监听消息变化
-watch(() => chatStore.messages, (newMessages) => {
-  nextTick(() => {
-    scrollToBottom();
+watch(() => chatStore.messages, (newMessages, oldMessages) => {
+  // 如果是新增消息，直接滚动到底部
+  if (!oldMessages || newMessages.length > oldMessages.length) {
+    scrollToBottom(true, true);
+    // 重置行数计数
+    lastAssistantMessageLineCount = 0;
+    return;
+  }
+  
+  // 检查最后一条消息是否是AI消息且内容变化
+  if (newMessages.length > 0 && oldMessages.length > 0 && 
+      newMessages[newMessages.length - 1].role === 'assistant' &&
+      newMessages[newMessages.length - 1].content !== oldMessages[oldMessages.length - 1].content) {
     
-    // 保存所有AI消息的思考时间数据
-    if (newMessages && newMessages.length > 0) {
-      newMessages.forEach(message => {
-        if (message.role === 'assistant') {
-          saveThinkingTimesToLocalStorage(message);
-        }
-      });
+    // 获取当前消息内容和行数
+    const currentContent = newMessages[newMessages.length - 1].content || '';
+    const currentLineCount = (currentContent.match(/\n/g) || []).length + 1;
+    
+    // 如果行数增加了4行或更多，滚动到底部
+    if (currentLineCount - lastAssistantMessageLineCount >= 4) {
+      scrollToBottom(true, true);
+      lastAssistantMessageLineCount = currentLineCount;
     }
-  });
+  }
 }, { deep: true });
 
 // 加载当前对话
@@ -457,6 +522,11 @@ onMounted(() => {
   modelsStore.fetchChatModels()
   window.addEventListener('keydown', handleKeyDown)
   window.addEventListener('beforeunload', handleBeforeUnload)
+  
+  // 监听模型状态变化
+  watch(() => chatStore.aiStatus.model, (newValue, oldValue) => {
+    console.log(`[ChatPage] 模型状态变化: ${oldValue} -> ${newValue}`);
+  });
 })
 
 // 监听模型变化
@@ -476,36 +546,7 @@ onUnmounted(() => {
   window.removeEventListener('beforeunload', handleBeforeUnload)
 });
 
-// 检查是否有思考内容
-const hasThinkingContent = (content) => {
-  if (!content) return false;
-  // 如果正在生成中且包含未闭合的think标签，显示思考过程
-  if (content.includes('<think>') && !content.includes('</think>')) {
-    return true;
-  }
-  // 如果思考过程已完成，检查内容是否为空
-  const thinkMatch = content.match(/<think>([\s\S]*?)<\/think>/);
-  return thinkMatch && thinkMatch[1].trim().length > 0;
-};
-
-// 提取思考过程内容
-const extractThinkContent = (content) => {
-  if (!content) return '';
-  const match = content.match(/<think>([\s\S]*?)(?:<\/think>|$)/);
-  return match ? match[1].trim() : '';
-};
-
-// 提取最终回答内容
-const extractFinalContent = (content) => {
-  if (!content) return content;
-  // 如果没有结束标签，说明还在思考中，不显示最终内容
-  if (content.includes('<think>') && !content.includes('</think>')) {
-    return '';
-  }
-  return content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
-};
-
-// 检查是否正在思考中
+// 替换isActiveThinking方法，删除重复逻辑
 const isActiveThinking = (message) => {
   if (!message.content) return false;
   
@@ -513,153 +554,28 @@ const isActiveThinking = (message) => {
   const hasOpenThink = message.content.includes('<think>');
   const hasCloseThink = message.content.includes('</think>');
   
-  if (hasOpenThink && !hasCloseThink && chatStore.isGenerating) {
-    // 如果是新的思考过程，记录开始时间
+  if (hasOpenThink && !hasCloseThink && chatStore.aiStatus.thinking === 'thinking') {
+    // 确保已开始思考计时
     if (!message.currentThinkStartTime) {
-      message.currentThinkStartTime = Date.now();
-      // 保存到消息的元数据中
-      message.metadata = message.metadata || {};
-      message.metadata.thinkTimes = message.metadata.thinkTimes || [];
-      message.metadata.thinkTimes.push({
-        startTime: message.currentThinkStartTime
-      });
-      
-      // 保存更新后的消息到store
-      chatStore.updateMessage(message);
-      
-      // 保存思考时间到localStorage
-      saveThinkingTimesToLocalStorage(message);
+      chatStore.startMessageThinking(message);
     }
     return true;
   }
   
-  // 当思考结束时（检测到</think>标签），记录结束时间
+  // 思考结束时
   if (hasOpenThink && hasCloseThink && message.currentThinkStartTime && !message.currentThinkEndTime) {
-    message.currentThinkEndTime = Date.now();
-    // 更新消息元数据中的思考时间
-    if (message.metadata?.thinkTimes?.length > 0) {
-      const currentThink = message.metadata.thinkTimes[message.metadata.thinkTimes.length - 1];
-      if (!currentThink.endTime) {
-        currentThink.endTime = message.currentThinkEndTime;
-        currentThink.duration = message.currentThinkEndTime - currentThink.startTime;
-        // 保存更新后的消息到store
-        chatStore.updateMessage(message);
-        
-        // 保存思考时间到localStorage
-        saveThinkingTimesToLocalStorage(message);
-      }
-    }
-    // 重置当前思考时间，为下一次思考做准备
-    message.currentThinkStartTime = null;
-    message.currentThinkEndTime = null;
+    chatStore.endMessageThinking(message);
   }
   
   return false;
 };
 
-// 计算思考时间
+// 计算思考时间 - 使用store方法
 const getThinkingTime = (message) => {
-  if (!message.content) return '';
-  
-  // 尝试从localStorage加载思考时间
-  loadThinkingTimesFromLocalStorage(message);
-  
-  // 如果正在思考中
-  if (isActiveThinking(message)) {
-    const currentTime = Date.now();
-    const currentThinkTime = Math.floor((currentTime - message.currentThinkStartTime) / 1000);
-    // 计算历史思考时间总和
-    const historicalTime = message.metadata?.thinkTimes?.reduce((total, think) => {
-      if (think.endTime) {
-        return total + Math.floor((think.endTime - think.startTime) / 1000);
-      }
-      return total;
-    }, 0) || 0;
-    return `${historicalTime + currentThinkTime}秒`;
-  } 
-  // 如果思考已结束
-  else if (message.metadata?.thinkTimes?.length > 0) {
-    // 计算所有思考时间的总和
-    const totalTime = message.metadata.thinkTimes.reduce((total, think) => {
-      if (think.endTime) {
-        return total + Math.floor((think.endTime - think.startTime) / 1000);
-      }
-      return total;
-    }, 0);
-    return `${totalTime}秒`;
-  }
-  
-  return '';
+  return chatStore.getThinkingTime(message);
 };
 
-// 保存思考时间到localStorage
-const saveThinkingTimesToLocalStorage = (message) => {
-  try {
-    if (!message.metadata?.thinkTimes) return;
-    
-    // 获取当前对话ID
-    const conversationId = route.params.conversationId?.toString();
-    if (!conversationId) return;
-    
-    // 使用消息内容的前100个字符作为标识符
-    const contentIdentifier = message.content ? message.content.substring(0, 100) : '';
-    
-    // 构建存储键
-    const storageKey = `thinkTimes_${conversationId}_${contentIdentifier}`;
-    
-    // 保存思考时间数据
-    localStorage.setItem(storageKey, JSON.stringify(message.metadata.thinkTimes));
-    console.log('已保存思考时间数据:', storageKey);
-  } catch (error) {
-    console.error('保存思考时间到localStorage失败:', error);
-  }
-};
-
-// 从localStorage加载思考时间
-const loadThinkingTimesFromLocalStorage = (message) => {
-  try {
-    // 获取当前对话ID
-    const conversationId = route.params.conversationId?.toString();
-    if (!conversationId) return;
-    
-    // 使用消息内容的前100个字符作为标识符
-    const contentIdentifier = message.content ? message.content.substring(0, 100) : '';
-    
-    // 构建存储键
-    const storageKey = `thinkTimes_${conversationId}_${contentIdentifier}`;
-    
-    // 从localStorage获取数据
-    const storedData = localStorage.getItem(storageKey);
-    if (!storedData) return;
-    
-    console.log('已加载思考时间数据:', storageKey);
-    
-    // 解析数据并更新消息
-    const thinkTimes = JSON.parse(storedData);
-    if (Array.isArray(thinkTimes) && thinkTimes.length > 0) {
-      // 只有当消息没有思考时间数据或数据不完整时才更新
-      if (!message.metadata) {
-        message.metadata = {};
-      }
-      if (!message.metadata.thinkTimes || message.metadata.thinkTimes.length < thinkTimes.length) {
-        message.metadata.thinkTimes = thinkTimes;
-      }
-    }
-  } catch (error) {
-    console.error('从localStorage加载思考时间失败:', error);
-  }
-};
-
-// 格式化思考内容，处理换行和缩进
-const formatThinkContent = (content) => {
-  return content
-    .split('\n')
-    .map(line => line.trim())
-    .filter(line => line)
-    .join('\n');
-};
-
-// 切换显示/隐藏思考过程
+// 删除这两个重复的localStorage操作方法，改为使用以下更简单的方法
 const toggleThinkingProcess = (message) => {
   message.showThinking = !message.showThinking;
 };
@@ -794,6 +710,34 @@ function handleBeforeUnload(event) {
   }
 }
 
+// 判断是否是最后一条消息
+function isLastMessage(message) {
+  if (!chatStore.messages || chatStore.messages.length === 0) {
+    return false;
+  }
+  
+  const lastMessage = chatStore.messages[chatStore.messages.length - 1];
+  return message.id === lastMessage.id;
+}
+
+// 判断是否是最后一条AI消息
+function isLastAssistantMessage(message) {
+  if (!chatStore.messages || chatStore.messages.length === 0 || message.role !== 'assistant') {
+    return false;
+  }
+  
+  // 从后向前遍历消息，找到第一条AI消息
+  for (let i = chatStore.messages.length - 1; i >= 0; i--) {
+    if (chatStore.messages[i].role === 'assistant') {
+      return message.id === chatStore.messages[i].id;
+    }
+  }
+  
+  return false;
+}
+
+
+
 // 处理保存到笔记
 function handleSaveToNote(text) {
   if (!text.trim()) return
@@ -814,6 +758,50 @@ function handleNoteSaved() {
   selectedTextForNote.value = ''
   isNoteDrawerOpen.value = false
 }
+
+// 打开图片预览
+const openImagePreview = (imageSrc) => {
+  previewImageUrl.value = imageSrc;
+  showImagePreview.value = true;
+  // 防止滚动
+  document.body.style.overflow = 'hidden';
+};
+
+// 关闭图片预览
+const closeImagePreview = () => {
+  showImagePreview.value = false;
+  // 恢复滚动
+  document.body.style.overflow = '';
+};
+
+// 获取工具状态文本
+const getToolStatusText = (toolStatus) => {
+  if (toolStatus === ToolStatus.WEB_SEARCH) return t('chat.tool_status.web_search')
+  return ''
+}
+
+// 内容渲染完成计数器
+let contentRenderedCount = 0;
+let contentRenderedTimer = null;
+
+// 处理 Markdown 内容渲染完成事件
+const handleContentRendered = () => {
+  // 增加计数器
+  contentRenderedCount++;
+  
+  // 清除之前的定时器
+  if (contentRenderedTimer) {
+    clearTimeout(contentRenderedTimer);
+  }
+  
+  // 使用定时器收集短时间内的多次渲染完成事件，只滚动一次
+  contentRenderedTimer = setTimeout(() => {
+    // 重置计数器
+    contentRenderedCount = 0;
+    // 滚动到底部，使用平滑滚动
+    scrollToBottom(true, true);
+  }, 100); // 等待短时间，收集可能的多次渲染完成事件
+};
 </script>
 
 <style scoped>

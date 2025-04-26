@@ -41,6 +41,9 @@ const props = defineProps({
   }
 });
 
+// 定义事件
+const emit = defineEmits(['contentRendered']);
+
 const isCollapsed = ref(true);
 const lineCount = ref(0);
 
@@ -59,6 +62,9 @@ onMounted(() => {
   // 使用换行符数量加1来估算行数
   const newlineCount = (props.content.match(/\n/g) || []).length;
   lineCount.value = newlineCount + 1;
+  
+  // 触发内容渲染完成事件
+  emit('contentRendered');
 });
 </script>
 

@@ -356,28 +356,68 @@ const exportToMarkdown = () => {
   }
   
   try {
-    // 创建Blob对象
-    const blob = new Blob([noteContent.value], { type: 'text/markdown;charset=utf-8' })
-    
-    // 创建下载链接
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    
     // 设置文件名
     const fileName = noteTitle.value.trim() 
       ? `${noteTitle.value.trim()}.md` 
       : `note_${new Date().toISOString().slice(0, 10)}.md`
     
-    link.download = fileName
-    document.body.appendChild(link)
+    // 检测是否在Electron环境中
+    const isElectron = () => {
+      // 在Electron中，userAgent通常包含Electron字样
+      return navigator.userAgent.toLowerCase().indexOf('electron') !== -1
+    }
     
-    // 触发下载
-    link.click()
+    // 创建Blob对象
+    const blob = new Blob([noteContent.value], { type: 'text/markdown;charset=utf-8' })
     
-    // 清理
-    URL.revokeObjectURL(url)
-    document.body.removeChild(link)
+    if (isElectron()) {
+      console.log('在Electron环境中导出文件')
+      
+      // 对于Electron环境，使用dataURL来避免file://协议问题
+      const dataUrl = URL.createObjectURL(blob)
+      
+      // 创建一个不可见的a元素，但不添加到DOM
+      const a = document.createElement('a')
+      a.style.position = 'absolute'
+      a.style.opacity = '0'
+      a.style.visibility = 'hidden'
+      a.style.pointerEvents = 'none'  
+      a.href = dataUrl
+      a.download = fileName
+      a.setAttribute('target', '_self') // 重要：确保在当前窗口打开
+      
+      // 使用click事件而不是直接点击DOM元素
+      const clickEvent = new MouseEvent('click', {
+        view: window,
+        bubbles: false,
+        cancelable: true
+      })
+      a.dispatchEvent(clickEvent)
+      
+      // 立即销毁URL
+      setTimeout(() => {
+        URL.revokeObjectURL(dataUrl)
+      }, 100)
+    } else {
+      // 浏览器环境 - 标准下载方式
+      const url = URL.createObjectURL(blob)
+      
+      // 使用新的a元素进行下载
+      const a = document.createElement('a')
+      a.style.display = 'none'
+      a.href = url
+      a.download = fileName
+      document.body.appendChild(a)
+      a.click()
+      
+      // 立即从DOM中移除
+      document.body.removeChild(a)
+      
+      // 延迟释放URL对象
+      setTimeout(() => {
+        URL.revokeObjectURL(url)
+      }, 100)
+    }
     
     notificationStore.success(t('notes.notifications.export_success'))
   } catch (error) {

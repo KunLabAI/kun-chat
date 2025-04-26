@@ -1,5 +1,20 @@
 from typing import List, Dict, Any, Optional
 from pydantic import BaseModel
+from enum import Enum
+
+class ModelLoadingStatus(str, Enum):
+    """模型加载状态"""
+    LOADING = "loading"
+    READY = "ready"
+    ERROR = "error"
+
+class ModelLoadingEvent(BaseModel):
+    """模型加载事件"""
+    type: str = "model_loading"
+    status: ModelLoadingStatus
+    message: Optional[str] = None
+    progress: Optional[float] = None
+    model: str
 
 class Document(BaseModel):
     name: str

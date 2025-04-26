@@ -712,11 +712,33 @@ const messages: Messages = {
     gpu_calculator: {
       title: 'GPU内存计算器',
       close_button: '关闭',
-      parameter_count: '参数数量（十亿）',
-      parameter_unit: 'B',
-      quantization_bits: '量化位数',
+      parameter_count: '参数数量',
+      parameter_unit: '单位',
+      quantization_bits: '量化精度',
       memory_required: '所需内存',
       placeholder: '输入参数数量'
+    },
+    model_status: {
+      loading: '加载模型中...',
+      ready: '模型准备就绪',
+      error: '模型加载失败'
+    },
+    file_preview: {
+      pdf_document: 'PDF文档',
+      show_content: '查看内容',
+      hide_content: '收起内容',
+      file_types: {
+        pdf: 'PDF 文档',
+        word: 'Word 文档',
+        text: '文本文档',
+        markdown: 'Markdown 文档',
+        document: '文档',
+        excel: 'Excel 表格',
+        csv: 'CSV 表格',
+        ppt: 'PPT 演示文稿',
+        html: 'HTML 网页文档'
+      },
+      file_size: '文件大小'
     }
   },
   sidebar: {
@@ -827,6 +849,11 @@ const messages: Messages = {
       expand: '展开',
       collapse: '收起'
     },
+    model_status: {
+      loading: '加载模型中...',
+      ready: '模型准备就绪',
+      error: '模型加载失败'
+    },
     file_preview: {
       pdf_document: 'PDF文档',
       show_content: '查看内容',
@@ -848,6 +875,9 @@ const messages: Messages = {
       placeholder: '请输入对话内容...',
       send: '发送消息',
       stop: '停止生成',
+      connecting: '正在连接...',
+      thinking: '思考中...',
+      tool_calling: '工具调用中...',
       model_select: '选择对话模型',
       web_search: '开启/关闭网页搜索',
       upload_file: '上传文件',

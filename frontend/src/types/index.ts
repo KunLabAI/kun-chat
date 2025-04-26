@@ -1,15 +1,30 @@
+
+
 // 聊天相关类型
 export interface Message {
   id: string
-  role: 'user' | 'assistant'
+  role: 'system' | 'user' | 'assistant'
   content: string
   timestamp: string
-  model: string
+  model?: string
   image?: string
-  images?: string[]
+  images?: string | string[]
+  image_path?: string
   pdf?: PDFData
   document?: DocumentData
   showDocument?: boolean
+  metadata?: {
+    thinkTimes?: Array<{
+      startTime: number
+      endTime?: number
+      duration?: number
+    }>
+    [key: string]: any
+  }
+  currentThinkStartTime?: number
+  currentThinkEndTime?: number
+  showThinking?: boolean
+  preparing?: boolean  // 标记消息是否正在准备中，尚未添加到消息列表
 }
 
 export interface PDFData {
@@ -101,13 +116,15 @@ export interface SendMessagePayload {
 export interface ChatMessage {
   role: string
   content: string
-  images?: string[] 
-  pdf?: PDFData
+  image?: string
+  document?: DocumentData | string
 }
 
-export interface ProcessedChatMessage extends ChatMessage {
-  image?: string
-  images?: string[] 
+export interface ProcessedChatMessage {
+  role: string
+  content: string
+  images?: string[]
+  document?: DocumentData | string
 }
 
 export interface FileUpload {
@@ -141,4 +158,10 @@ export interface PDFResponse {
     encryption: null | any
   }
   total_images: number
+}
+
+// WebSocket消息类型
+export interface WebSocketMessage {
+  type: string
+  [key: string]: any
 }

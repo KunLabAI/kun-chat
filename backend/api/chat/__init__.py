@@ -17,19 +17,29 @@ class ChatCompletionRequest(BaseModel):
     messages: List[Dict[str, Any]]
     stream: bool = False
 
-class ConversationCreate(BaseModel):
-    title: str = "New Conversation"
-    model: Optional[str] = None
-
 class ConversationUpdate(BaseModel):
     messages: List[Message]
     model: Optional[str] = None
 
+class ConversationCreate(BaseModel):
+    title: str = "New Conversation"
+    model: Optional[str] = None
+
+# 创建主路由
+router = APIRouter()
+
+# 创建API路由组
+chat_router = APIRouter(prefix="/api/chat")
+
+# 这些底层模块被其他模块依赖，所以先导入它们
+from .client_pool import get_available_client
+from .message_processor import process_chat_messages, get_limited_history
+from .db_operations import save_message, verify_conversation_ownership
+from .websocket_handler import handle_websocket_connection, active_connections
+
 # 导入功能模块
 from .conversation import router as conversation_router
-from .message import router as message_router, websocket_endpoint, chat, active_connections, abort_generation
-
-router = APIRouter()
+from .message import router as message_router, websocket_endpoint, chat, abort_generation
 
 # 包含会话管理路由
 router.include_router(conversation_router)
@@ -59,4 +69,9 @@ async def abort_endpoint(
 ):
     return await abort_generation(conversation_id, current_user, db)
 
+# 添加子路由
+chat_router.include_router(message_router)
+chat_router.include_router(conversation_router)
+
 __all__ = ["router", "Message", "ChatCompletionRequest", "ConversationCreate", "ConversationUpdate"]
+
