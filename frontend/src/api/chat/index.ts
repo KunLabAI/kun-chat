@@ -121,36 +121,39 @@ export const chatApi = {
     let retryCount = 0
     const maxRetries = 3
 
-    const connectWebSocket = () => {
+    // 构建 WebSocket URL
+    const buildWsUrl = () => {
       const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-      
-      // 获取认证token
-      const authHeaders = getAuthHeaders()
-      const token = authHeaders.Authorization 
-        ? authHeaders.Authorization.replace('Bearer ', '') 
-        : ''
-      
-      // 添加认证token到WebSocket URL
-      const wsUrl = `${protocol}//${window.location.host}/api/chat/conversations/${conversationId}/stream?token=${encodeURIComponent(token)}`
-      
-      const ws = new WebSocket(wsUrl)
-      
-      ws.onopen = () => {
-        console.log('WebSocket 连接已建立')
-        ws.send(JSON.stringify({ messages, model }))
-      }
+      const token = getAuthHeaders().Authorization?.replace('Bearer ', '') ?? ''
+      return `${protocol}//${window.location.host}/api/chat/conversations/${conversationId}/stream?token=${encodeURIComponent(token)}`
+    }
 
-      ws.onmessage = (event) => {
+    // 发送初始载荷
+    const sendPayload = (ws: WebSocket) => {
+      console.log('WebSocket 连接已建立')
+      ws.send(JSON.stringify({ messages, model }))
+    }
+
+    // 建立并管理 WebSocket 连接
+    const connectWebSocket = (): WebSocket => {
+      const ws = new WebSocket(buildWsUrl())
+
+      // 连接打开
+      ws.onopen = () => sendPayload(ws)
+
+      // 接收消息
+      ws.onmessage = (event: MessageEvent) => {
         try {
           const data = JSON.parse(event.data)
           onMessage(data)
-        } catch (error) {
-          console.error('解析消息失败:', error)
-          onError(error)
+        } catch (err) {
+          console.error('解析消息失败:', err)
+          onError(err)
         }
       }
 
-      ws.onclose = (event) => {
+      // 连接关闭
+      ws.onclose = (event: CloseEvent) => {
         if (!event.wasClean && retryCount < maxRetries) {
           console.log(`WebSocket 连接关闭，${retryCount + 1}秒后重试...`)
           retryCount++
@@ -161,7 +164,8 @@ export const chatApi = {
         }
       }
 
-      ws.onerror = (error) => {
+      // 错误处理
+      ws.onerror = (error: Event) => {
         console.error('WebSocket 错误:', error)
         onError(error)
         ws.close()

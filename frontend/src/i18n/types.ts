@@ -449,6 +449,31 @@ export interface ModelMessages {
     placeholder: string;
   };
   
+  // 模型状态相关翻译
+  model_status?: {
+    loading: string;
+    ready: string;
+    error: string;
+  };
+  
+  file_preview?: {
+    pdf_document: string;
+    show_content: string;
+    hide_content: string;
+    file_types: {
+      pdf: string;
+      word: string;
+      text: string;
+      markdown: string;
+      document: string;
+      excel: string;
+      csv: string;
+      ppt: string;
+      html: string;
+    };
+    file_size: string;
+  };
+  
   detail: {
     back: string;
     favorite: string;
@@ -753,6 +778,11 @@ export interface ChatMessages {
     expand: string;
     collapse: string;
   };
+  model_status: {
+    loading: string;
+    ready: string;
+    error: string;
+  };
   file_preview: {
     pdf_document: string;
     show_content: string;
@@ -775,6 +805,9 @@ export interface ChatMessages {
     placeholder: string;
     send: string;
     stop: string;
+    connecting: string;
+    thinking: string;
+    tool_calling: string;
     model_select: string;
     web_search: string;
     upload_file: string;

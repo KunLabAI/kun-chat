@@ -48,6 +48,9 @@ const props = defineProps({
   }
 })
 
+// 定义事件
+const emit = defineEmits(['contentRendered'])
+
 const { t } = useLocalization()
 
 // 获取资源路径的辅助函数
@@ -264,6 +267,9 @@ watch(() => props.content, () => {
   // 使用 nextTick 确保 DOM 已更新
   nextTick(() => {
     handleCodeBlocksAutoScroll()
+    
+    // 触发内容渲染完成事件，通知父组件重新滚动
+    emit('contentRendered')
   })
 })
 </script>

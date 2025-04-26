@@ -821,6 +821,11 @@ const messages: Messages = {
       expand: 'Expand',
       collapse: 'Collapse'
     },
+    model_status: {
+      loading: 'Loading model...',
+      ready: 'Model ready',
+      error: 'Model loading failed'
+    },
     file_preview: {
       pdf_document: 'PDF Document',
       show_content: 'Show Content',
@@ -842,6 +847,9 @@ const messages: Messages = {
       placeholder: 'Type your message...',
       send: 'Send Message',
       stop: 'Stop Generating',
+      connecting: 'Connecting...',
+      thinking: 'Thinking...',
+      tool_calling: 'Using tools...',
       model_select: 'Select Model',
       web_search: 'Toggle Web Search',
       upload_file: 'Upload File',
