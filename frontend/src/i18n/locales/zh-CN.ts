@@ -405,7 +405,7 @@ const messages: Messages = {
     loading: "加载中..." ,
     delete_dialog: {
       title: '确认删除',
-      confirm_message: '确定要删除模型 "{0}" 吗？此操作不可撤销。'
+      confirm_message: '确定要删除这个模型吗？此操作不可撤销。'
     },
     actions: {
       view_details: '查看详情',

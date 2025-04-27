@@ -602,14 +602,47 @@ const isSubmitting = ref(false)
 
 // 系统提示词的token计数
 const tokenCount = computed(() => {
-  // 简单估算，实际应该使用tokenizer计算
-  return form.systemPrompt ? Math.round(form.systemPrompt.length / 3) : 0
+  if (!form.systemPrompt) return 0
+  
+  const text = form.systemPrompt
+  
+  // 计算不同类型字符的数量
+  const chineseChars = (text.match(/[\u4e00-\u9fa5]/g) || []).length
+  const englishWords = (text.match(/[a-zA-Z]+/g) || []).length
+  const numbers = (text.match(/\d+/g) || []).length
+  const symbols = (text.match(/[^\w\s\u4e00-\u9fa5]/g) || []).length
+  
+  // 根据不同字符类型估算token数量
+  // 中文字符通常是1-2个token
+  // 英文单词通常是1个token或根据长度分割
+  // 数字和符号有自己的token规则
+  return Math.round(
+    chineseChars * 1.5 + 
+    englishWords * 1.2 + 
+    numbers * 0.5 + 
+    symbols * 1.0
+  )
 })
 
 // 计算许可证token数量
 const licenseTokenCount = computed(() => {
-  // 简单估算，实际应该使用tokenizer计算
-  return form.license ? Math.round(form.license.length / 3) : 0
+  if (!form.license) return 0
+  
+  const text = form.license
+  
+  // 计算不同类型字符的数量
+  const chineseChars = (text.match(/[\u4e00-\u9fa5]/g) || []).length
+  const englishWords = (text.match(/[a-zA-Z]+/g) || []).length
+  const numbers = (text.match(/\d+/g) || []).length
+  const symbols = (text.match(/[^\w\s\u4e00-\u9fa5]/g) || []).length
+  
+  // 使用与系统提示词相同的估算方法
+  return Math.round(
+    chineseChars * 1.5 + 
+    englishWords * 1.2 + 
+    numbers * 0.5 + 
+    symbols * 1.0
+  )
 })
 
 // 本地存储的key

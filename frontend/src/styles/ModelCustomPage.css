@@ -95,7 +95,6 @@
   background: var(--bg-color-light);
   color: var(--text-color);
   font-size: 14px;
-  transition: all 0.2s ease;
   outline: none;
 }
 
