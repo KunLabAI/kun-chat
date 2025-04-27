@@ -296,7 +296,7 @@ const messages: Messages = {
     new_chat: 'Start New Chat',
     delete_model: {
       title: 'Confirm Deletion',
-      confirm_message: 'Are you sure you want to delete model "{0}"? This action cannot be undone.'
+      confirm_message: 'Are you sure you want to delete model ? This action cannot be undone.'
     }
   },
   history: {

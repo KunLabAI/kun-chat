@@ -346,20 +346,23 @@ onMounted(() => {
   loadCurrentConversation();
   
   const handleScroll = () => {
-    const { scrollTop, scrollHeight, clientHeight } = container;
-    const currentScroll = scrollTop + clientHeight;
-    isNearBottom.value = scrollHeight - currentScroll < 100;
+    const container = chatContainer.value;
+    if (!container) return;
     
-    // 检测滚动方向
-    const isScrollingUp = scrollTop < lastUserScrollPosition.value;
-    lastUserScrollPosition.value = scrollTop;
+    // 记录当前滚动位置
+    lastUserScrollPosition.value = container.scrollTop;
     
-    // 只有在接近底部时才启用自动滚动
-    if (isScrollingUp) {
-      shouldAutoScroll.value = false;
-    } else if (isNearBottom.value) {
-      shouldAutoScroll.value = true;
-    }
+    // 计算距离底部的距离
+    const distanceToBottom = container.scrollHeight - container.scrollTop - container.clientHeight;
+    
+    // 如果距离底部很近（例如小于50像素），则认为用户想要查看最新消息
+    const nearBottom = distanceToBottom < 50;
+    
+    // 更新自动滚动状态
+    shouldAutoScroll.value = nearBottom;
+    
+    // 更新是否接近底部的状态（用于显示/隐藏"滚动到底部"按钮）
+    isNearBottom.value = nearBottom;
   };
   
   container.addEventListener('scroll', handleScroll, { passive: true });
@@ -395,6 +398,11 @@ const scrollToBottom = (force = false, smooth = true) => {
       // 滚动到底部
       container.scrollTop = container.scrollHeight;
       
+      // 滚动完成后，如果是强制滚动，则重新启用自动滚动
+      if (force) {
+        shouldAutoScroll.value = true;
+      }
+      
       // 滚动结束后重置标记
       setTimeout(() => {
         isScrolling = false;
@@ -425,9 +433,9 @@ watch(() => chatStore.messages, (newMessages, oldMessages) => {
     const currentContent = newMessages[newMessages.length - 1].content || '';
     const currentLineCount = (currentContent.match(/\n/g) || []).length + 1;
     
-    // 如果行数增加了4行或更多，滚动到底部
-    if (currentLineCount - lastAssistantMessageLineCount >= 4) {
-      scrollToBottom(true, true);
+    // 如果行数增加了4行或更多，且用户允许自动滚动，则滚动到底部
+    if (currentLineCount - lastAssistantMessageLineCount >= 4 && shouldAutoScroll.value) {
+      scrollToBottom(false, true);
       lastAssistantMessageLineCount = currentLineCount;
     }
   }
@@ -798,9 +806,11 @@ const handleContentRendered = () => {
   contentRenderedTimer = setTimeout(() => {
     // 重置计数器
     contentRenderedCount = 0;
-    // 滚动到底部，使用平滑滚动
-    scrollToBottom(true, true);
-  }, 100); // 等待短时间，收集可能的多次渲染完成事件
+    // 只有当shouldAutoScroll为true时才滚动到底部
+    if (shouldAutoScroll.value) {
+      scrollToBottom(false, true);
+    }
+  }, 3);
 };
 </script>
 

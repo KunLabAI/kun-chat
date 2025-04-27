@@ -112,7 +112,7 @@ const showDeleteDialog = ref(false)
 const modelToDelete = ref<Model | null>(null)
 
 // GPU内存计算器引用
-const gpuCalculatorRef = ref(null)
+const gpuCalculatorRef = ref<InstanceType<typeof GPUMemoryCalculator> | null>(null)
 
 onMounted(async () => {
   await fetchModelsWithFavoriteStatus()
