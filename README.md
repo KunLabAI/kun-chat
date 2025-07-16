@@ -1,67 +1,23 @@
 <div align="center">
 
-<a href="https://kunpuai.com/"><img src="./frontend/src/assets/kunlab_bg_logo.svg" width="120" height="120" alt="kun-lab logo"></a>
+<a href="https://kunpuai.com/"><img src="/frontend/src/assets/kunlab_bg_logo.svg" width="120" height="120" alt="kun-lab logo"></a>
 
-# kun-lab
+# kun-chat
+## 此项目不再更新，请移步至kunavatar，此应用的最新版本，支持MCP工具调用，记忆系统等
+[https://github.com/KunLabAI/KunAvatar](https://github.com/KunLabAI/KunAvatar)
 
 <p align="center">
   <a href="./README-EN.md">English</a> |
-  <a href="./README.md">简体中文</a>
+  <a href="./README.md">简体中文</a> |
 </p>
-
-[![Version](https://img.shields.io/github/v/release/bahamutww/kun-lab?color=blue&include_prereleases&label=版本)](https://github.com/bahamutww/kun-lab/releases)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
-[![Windows Support](https://img.shields.io/badge/Windows-支持-blue.svg)](https://github.com/bahamutww/kun-lab/releases)
 
 </div>
 
-# kun-lab
+# kun-chat
 
 **您的本地化智能对话伙伴**
 
-kun-lab 是一款基于 Ollama 的轻量级 AI 对话应用，旨在为您提供简洁、高效、功能丰富的本地 AI 对话体验。无需繁琐的配置，开箱即用，即可轻松享受强大的 AI 能力，一切数据尽在本地掌控，保障您的隐私安全。
-
-## 📑 目录
-
-- [✨ 核心亮点](#-核心亮点)
-- [📷 应用截图](#-应用截图)
-- [🚀 快速上手](#-快速上手)
-- [📚 使用指南](#-使用指南)
-- [🔧 功能详解](#-功能详解)
-- [🛠️ 技术栈](#️-技术栈)
-- [📞 联系我们](#-联系我们)
-
-## 📷 应用截图
-
-<div align="center">
-  <img src="./frontend/src/assets/home_page.jpg" width="80%" alt="首页界面">
-  <p align="center"><em>首页界面 - 未收藏模型空状态</em></p>
-</div>
-
-<div align="center">
-  <img src="./frontend/src/assets/homemodel_page.jpg" width="80%" alt="首页界面">
-  <p align="center"><em>首页界面 - 收藏的模型在首页展示</em></p>
-</div>
-
-<div align="center">
-  <img src="./frontend/src/assets/chat_page.jpg" width="80%" alt="聊天界面">
-  <p align="center"><em>聊天界面 - 流畅的对话体验与丰富的功能支持</em></p>
-</div>
-
-<div align="center">
-  <img src="./frontend/src/assets/model_page.jpg" width="80%" alt="模型管理界面">
-  <p align="center"><em>模型管理 - 轻松管理和使用多种AI模型</em></p>
-</div>
-
-<div align="center">
-  <img src="./frontend/src/assets/modeldetails_page.jpg" width="80%" alt="模型详情界面">
-  <p align="center"><em>模型详情 - 本地模型的详细信息</em></p>
-</div>
-
-<div align="center">
-  <img src="./frontend/src/assets/custom_page.jpg" width="80%" alt="自定义模型界面">
-  <p align="center"><em>自定义模型 - 模型自定义让你获取更多控制扮演各种角色</em></p>
-</div>
+kun-chat 是一款基于 Ollama 的轻量级 AI 对话应用，旨在为您提供简洁、高效、功能丰富的本地 AI 对话体验。无需繁琐的配置，开箱即用，即可轻松享受强大的 AI 能力，一切数据尽在本地掌控，保障您的隐私安全。   
 
 
 ## ✨ 核心亮点
@@ -93,21 +49,19 @@ kun-lab 是一款基于 Ollama 的轻量级 AI 对话应用，旨在为您提供
    - 双击安装包，按照提示完成安装
    - 安装完成后即可直接运行，无需配置环境
 
-## 📚 使用指南
-
-#### 环境要求
+### 环境准备
 
 - **操作系统**：Windows/macOS/Linux（Windows 推荐）
 - **Python**：3.10+
 - **Node.js**：20.16.0+
-- **Ollama 服务**：确保 Ollama 服务已正确安装并运行
+- **Ollama 服务**：确保 Ollama 服务已正确安装并运行。
 
-#### 安装步骤
+### 安装指南
 
 1. **获取代码**：
 
    ```bash
-   git clone https://github.com/bahamutww/kun-lab.git
+   git clone [repository-url]
    cd kun-lab
    ```
 
@@ -151,7 +105,7 @@ kun-lab 是一款基于 Ollama 的轻量级 AI 对话应用，旨在为您提供
 7. 打开浏览器，访问 http://localhost:5173 即可开始体验 kun-lab！
 
 
-## 🔧 功能详解
+## 📚 主要功能详解
 
 ### 🤖 智能 AI 对话
 
@@ -258,7 +212,7 @@ cd frontend
 npm run dev
 ```
 
-## kun-lab 操作指南
+## kun-chat 操作指南
 
 ## 1. 拉取模型
 
@@ -297,7 +251,7 @@ npm run dev
 
 ## 🤝 参与贡献
 
-我们非常欢迎您为 kun-lab 项目贡献力量！
+我们非常欢迎您为 kun-chat 项目贡献力量！
 
 1. Fork 仓库
 2. 创建特性分支 (`git checkout -b feature/your-feature`)
@@ -329,4 +283,4 @@ Apache 2.0 License
 
 - 邮件：发送至 [service@kunpuai.com](service@kunpuai.com)
 
-> 温馨提示：kun-lab 仍在快速迭代开发中，您的贡献和反馈对我们至关重要！
+> 温馨提示：kun-chat 仍在快速迭代开发中，您的贡献和反馈对我们至关重要！

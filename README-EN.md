@@ -1,67 +1,22 @@
 <div align="center">
 
-<a href="https://kunpuai.com/"><img src="./frontend/src/assets/kunlab_bg_logo.svg" width="120" height="120" alt="kun-lab logo"></a>
+<a href="https://kunpuai.com/"><img src="/frontend/src/assets/kunlab_bg_logo.svg" width="120" height="120" alt="kun-lab logo"></a>
 
-# kun-lab
-
+# kun-chat
+## This project is no longer being updated. Please migrate to KunAvatar, the latest version of this application, which supports MCP tool invocation, a memory system, and more.
+[https://github.com/KunLabAI/KunAvatar](https://github.com/KunLabAI/KunAvatar)
 <p align="center">
   <a href="./README-EN.md">English</a> |
-  <a href="./README.md">简体中文</a>
+  <a href="./README.md">简体中文</a> |
 </p>
-
-[![Version](https://img.shields.io/github/v/release/bahamutww/kun-lab?color=blue&include_prereleases&label=Version)](https://github.com/bahamutww/kun-lab/releases)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
-[![Windows Support](https://img.shields.io/badge/Windows-Supported-blue.svg)](https://github.com/bahamutww/kun-lab/releases)
 
 </div>
 
-# kun-lab
+# kun-chat
 
 **Your Local Intelligent Conversation Partner**
 
-kun-lab is a lightweight AI conversation application based on Ollama, designed to provide you with a simple, efficient, and feature-rich local AI conversation experience. With no complicated configuration required, it's ready to use out of the box, allowing you to easily enjoy powerful AI capabilities while keeping all your data under local control, ensuring your privacy and security.
-
-## 📑 Table of Contents
-
-- [✨ Core Highlights](#-core-highlights)
-- [📷 Application Screenshots](#-application-screenshots)
-- [🚀 Quick Start](#-quick-start)
-- [📚 Usage Guide](#-usage-guide)
-- [🔧 Feature Details](#-feature-details)
-- [🛠️ Technology Stack](#️-technology-stack)
-- [📞 Contact Us](#-contact-us)
-
-## 📷 Application Screenshots
-
-<div align="center">
-  <img src="./frontend/src/assets/home_page.jpg" width="80%" alt="Home Page">
-  <p align="center"><em>Home Page - Empty state without favorited models</em></p>
-</div>
-
-<div align="center">
-  <img src="./frontend/src/assets/homemodel_page.jpg" width="80%" alt="Home Page with Models">
-  <p align="center"><em>Home Page - Favorited models displayed on the home page</em></p>
-</div>
-
-<div align="center">
-  <img src="./frontend/src/assets/chat_page.jpg" width="80%" alt="Chat Interface">
-  <p align="center"><em>Chat Interface - Smooth conversation experience with rich feature support</em></p>
-</div>
-
-<div align="center">
-  <img src="./frontend/src/assets/model_page.jpg" width="80%" alt="Model Management Interface">
-  <p align="center"><em>Model Management - Easily manage and use various AI models</em></p>
-</div>
-
-<div align="center">
-  <img src="./frontend/src/assets/modeldetails_page.jpg" width="80%" alt="Model Details Interface">
-  <p align="center"><em>Model Details - Detailed information of local models</em></p>
-</div>
-
-<div align="center">
-  <img src="./frontend/src/assets/custom_page.jpg" width="80%" alt="Custom Model Interface">
-  <p align="center"><em>Custom Model - Model customization gives you more control to play various roles</em></p>
-</div>
+kun-chat is a lightweight AI conversation application based on Ollama, designed to provide you with a simple, efficient, and feature-rich local AI conversation experience. With no complicated configuration required, it's ready to use out of the box, allowing you to easily enjoy powerful AI capabilities while keeping all your data under local control, ensuring your privacy and security.
 
 ## ✨ Core Highlights
 
@@ -93,25 +48,16 @@ kun-lab is a lightweight AI conversation application based on Ollama, designed t
    - Double-click the installation package and follow the prompts to complete the installation
    - After installation, you can run it directly without any additional configuration
 
-## 📚 Usage Guide
+### Installation Guide
 
-#### Environment Requirements
-
-- **Operating System**: Windows/macOS/Linux (Windows recommended)
-- **Python**: 3.10+
-- **Node.js**: 20.16.0+
-- **Ollama Service**: Ensure Ollama service is properly installed and running
-
-#### Installation Steps
-
-1. **Get the Code**:
+1. **Get the code**:
 
    ```bash
-   git clone https://github.com/bahamutww/kun-lab.git
+   git clone [repository-url]
    cd kun-lab
    ```
 
-2. **Virtual Environment Setup**:
+2. **Virtual environment installation**:
 
    ```bash
    python -m venv venv
@@ -141,17 +87,17 @@ kun-lab is a lightweight AI conversation application based on Ollama, designed t
    # Modify the configuration items in the .env file according to your actual situation
    ```
 
-6. **Start kun-lab**:
+6. **Start kun-chat**:
 
    ```bash
    # Run in the project root directory (after installing backend dependencies)
    python run_dev.py
    ```
 
-7. Open your browser and visit http://localhost:5173 to start experiencing kun-lab!
+7. Open your browser and visit http://localhost:5173 to start experiencing kun-chat!
 
 
-## 🔧 Feature Details
+## 📚 Detailed Features
 
 ### 🤖 Intelligent AI Conversation
 
@@ -258,7 +204,7 @@ cd frontend
 npm run dev
 ```
 
-## kun-lab Operation Guide
+## kun-chat Operation Guide
 
 ## 1. Pulling Models
 
@@ -297,7 +243,7 @@ npm run dev
 
 ## 🤝 Contributing
 
-We warmly welcome your contributions to the kun-lab project!
+We warmly welcome your contributions to the kun-chat project!
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/your-feature`)
@@ -329,5 +275,5 @@ If you have any questions or suggestions, please feel free to contact us through
 
 - Email: [service@kunpuai.com](service@kunpuai.com)
 
-> Friendly reminder: kun-lab is still in rapid iterative development, your contributions and feedback are crucial to us!
+> Friendly reminder: kun-chat is still in rapid iterative development, your contributions and feedback are crucial to us!
 
